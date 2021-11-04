@@ -10,6 +10,7 @@ $(window).on("load resize", function() {
         const $this = $(this);
         $this.addClass(showClass);
         $this.find($dropdownToggle).attr("aria-expanded", "true");
+        $this.find($dropdownToggle).addClass("hovered");
         $this.find($dropdownMenu).addClass(showClass);
       },
       function() {
@@ -17,6 +18,7 @@ $(window).on("load resize", function() {
         $this.removeClass(showClass);
         $this.find($dropdownToggle).attr("aria-expanded", "false");
         $this.find($dropdownMenu).removeClass(showClass);
+        $this.find($dropdownToggle).removeClass("hovered");
       }
     );
   } else {

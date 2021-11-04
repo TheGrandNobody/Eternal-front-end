@@ -17,15 +17,15 @@ body{font-family: 'Montserrat', sans-serif; color: #fff; background: #30083b}
 .input-group button{height: 46px; width: 115px; background: #7B878E; border-radius: 2px; color: white; font-size: 12px;  margin-left: -125px !important; margin-top: 8px; z-index: 9 !important; position: relative !important}
 .top-nav-btn{min-width: 141px;}
 .navbar{box-shadow: none; position: fixed; top: 0; width: 100%; z-index: 9; background: #30083b}
-.navbar-nav a{color: #fceee0; font-size: 14px; font-weight: bold}
 h1{font-size: 56px}
 h2{font-size: 24px;}
-.nav-item a:hover,.nav-item a:focus,.nav-item a:active{color: #C35C6C}
-.dropdown-menu{background: #beaae0; margin-top: 0; }
+.nav-item a{color: #fff; font-size: 14px; font-weight: bold}
 
-li a:hover{color: #C35C6C; padding-bottom: 5px; font-weight: bold}
-li.active a{color: #C35C6C; padding-bottom: 5px; border-bottom: 1px solid #C35C6C; font-weight: bold }
-.dropdown .nav-link:focus, .dropdown .nav-link:hover{color: #C35C6C !important; font-weight: bold}
+.nav-item a.active{color: #C35C6C; padding-bottom: 5px; border-bottom: 1px solid #C35C6C; font-weight: bold }
+.dropdown .dropdown-toggle.hovered{color: #C35C6C; padding-bottom: 5px; font-weight: bold }
+.dropdown .nav-link:focus, .dropdown .nav-link:hover, .nav-item .button{color: #C35C6C; font-weight: bold}
+.dropdown-menu .dropdown-item{color: #fff; background-color: #C35C6C; margin-top: 0}
+.dropdown-menu .dropdown-item:hover,.dropdown-menu .dropdown-item:focus,.dropdown-menu .dropdown-item:active{background-color: #c35c6cdc; margin-top: 0}
 
 .secondary .header{height: 100vh; background-image: url(..//img/secondary-cover.png); background-repeat: no-repeat; background-position: bottom; background-size: cover;}
 
@@ -81,9 +81,9 @@ a:hover .gage-block{opacity: 0.75}
 /*  ======================================================== User info end =================================================  */
 
 
-/*  ======================================================== Downlaod start =================================================  */
+/*  ======================================================== Download start =================================================  */
 .download-container{}
-/*  ======================================================== Downlaod end =================================================  */
+/*  ======================================================== Download end =================================================  */
 
 
 
