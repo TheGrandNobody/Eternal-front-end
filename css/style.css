@@ -20,10 +20,9 @@ body{font-family: 'Montserrat', sans-serif; color: #fff; background: #30083b}
 h1{font-size: 56px}
 h2{font-size: 24px;}
 .nav-item a{color: #fff; font-size: 14px; font-weight: bold}
-
 .nav-item a.active{color: #C35C6C; padding-bottom: 5px; border-bottom: 1px solid #C35C6C; font-weight: bold }
 .dropdown .dropdown-toggle.hovered{color: #C35C6C; padding-bottom: 5px; font-weight: bold }
-.dropdown .nav-link:focus, .dropdown .nav-link:hover, .nav-item .button{color: #C35C6C; font-weight: bold}
+.nav-link:focus, .nav-link:hover{color: #C35C6C; font-weight: bold}
 .dropdown-menu .dropdown-item{color: #fff; background-color: #C35C6C; margin-top: 0}
 .dropdown-menu .dropdown-item:hover,.dropdown-menu .dropdown-item:focus,.dropdown-menu .dropdown-item:active{background-color: #c35c6cdc; margin-top: 0}
 
