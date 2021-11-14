@@ -21,7 +21,7 @@ function Download() {
             </div>
             <div className='row m-0 position-relative select-gage'>
               <div className='col-sm-4 mb-4 mb-sm-0'>
-                <div className='text-center' onClick={() => handleOnClick('gases_whitepaper')}>
+                <div className='text-center' onClick={() => handleOnClick('gages_whitepaper')}>
                   <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
                     <img src='img/pdf.svg' />
                     <h5 className='color-white bold mt-5'>
