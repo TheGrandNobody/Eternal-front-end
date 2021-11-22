@@ -17,6 +17,7 @@
     "big-integer": "^1.6.51",
     "bignumber.js": "^9.0.1",
     "body-parser": "^1.19.0",
+    "electron": "^16.0.1",
     "ethers": "^5.5.1",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
