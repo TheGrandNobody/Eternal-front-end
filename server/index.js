@@ -1,5 +1,8 @@
 const express = require('express');
 const next = require('next');
+const handleError = require('./middlewares/errorhandling');
+const mongooseConnectionHandler = require('./lib/mongooseConnectionHandler');
+const bodyParser = require('body-parser');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -11,7 +14,16 @@ app
   .then(() => {
     const server = express();
     const routes = require('./routes/index');
+
+    server.use(bodyParser.json());
     server.use('/api', routes);
+    server.use(handleError);
+
+    mongooseConnectionHandler
+      .connect('mongodb://localhost:27017/eternal', {
+        useNewUrlParser: true,
+      })
+      .catch((err) => console.log(err));
 
     server.all('*', (req, res) => {
       return handle(req, res);

@@ -139,7 +139,7 @@ h2 {
 /*  ======================================================== Homepage start =================================================  */
 .main .header {
   height: 100vh;
-  background-image: url(../img/homepage-cover.png);
+  background-image: url(..//img/homepage-cover.png);
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: cover;
@@ -198,6 +198,15 @@ a:hover .gage-block {
 .risk-container {
   max-width: 596px;
 }
+.active-gage {
+  background: white;
+  opacity: 1;
+  transition: 0.5s;
+  color: #30083b;
+}
+.active-gage svg path {
+  fill: #30083b;
+}
 .percentage-block {
   width: 48px;
   height: 47px;
@@ -205,7 +214,14 @@ a:hover .gage-block {
   border-radius: 8px;
   color: white;
 }
-.percentage-val a:hover {
+
+.active-percentage-block {
+  background: #fff;
+  color: #c35c6c !important;
+  transition: 0.5s;
+}
+
+.percentage-block:hover {
   background: #fff;
   color: #c35c6c;
   transition: 0.5s;
