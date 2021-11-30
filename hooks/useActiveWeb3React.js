@@ -17,7 +17,7 @@ const useActiveWeb3React = () => {
 
   return {
     library: provider,
-    chainId: chainId ?? 56,
+    chainId: chainId,
     ...web3React,
   };
 };

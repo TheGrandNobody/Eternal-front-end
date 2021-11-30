@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import HEAD from 'next/head';
 import Navbar from '../navbar';
-import { handleClickOnConfirmBtn } from '../../hooks/useEternalHook';
 import { useWeb3React } from '@web3-react/core';
 import useAuth from '../../hooks/useAuth';
 import { useRouter } from 'next/router';
@@ -10,7 +9,6 @@ import { Injected } from '../../constant/constants';
 import Footer from '../Footer/Footer';
 
 function IndexPage() {
-  const [clicked, setClicked] = React.useState(false);
   const router = useRouter();
 
   const { account, active } = useWeb3React();
@@ -22,14 +20,13 @@ function IndexPage() {
       router.push('/user-info');
       return;
     }
-    router.push('/gage-selection-1');
+    router.push('/gage-selection');
   };
 
   const handleClickOnEarn = () => {
     if (!active) {
       login(Injected);
     }
-    setClicked(true);
     if (account && active) {
       checkUserStatusOnConnect(account);
     }
@@ -52,10 +49,6 @@ function IndexPage() {
         </div>
 
         <Footer />
-
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-        <script type='text/javascript' src='/js/mdb.min.js'></script>
-        <script src='/js/autodrop.js'></script>
       </body>
     </>
   );

@@ -2,12 +2,13 @@ import React from 'react';
 import { useEagerConnect, useInactiveListener } from '../hooks/useWeb3';
 import { useWeb3React } from '@web3-react/core';
 import getErrorMessage from '../utils/errorHelper';
-import useEternalPlatformContractfunction from '../hooks/useEternalPlatformContractFunctions';
+import useGageSol from '../hooks/useGageSol';
 
 export default function Web3ReactManager({ children }) {
   const context = useWeb3React();
   const { connector, error } = context;
   const [activatingConnector, setActivatingConnector] = React.useState();
+  // const gage = useGageSol();
 
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
@@ -18,7 +19,6 @@ export default function Web3ReactManager({ children }) {
   React.useEffect(() => {
     getErrorMessage(error);
   }, []);
-
 
   const triedEager = useEagerConnect();
 

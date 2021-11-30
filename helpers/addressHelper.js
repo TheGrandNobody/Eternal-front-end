@@ -9,3 +9,7 @@ export const getAddress = (address) => {
 export const getEternalPlatformAddress = () => {
   return getAddress(Addresses.eternalPlatform);
 };
+
+export const getEternalTokenAddress = () => {
+  return getAddress(Addresses.eternalTokenAddress);
+};

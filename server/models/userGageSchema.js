@@ -10,11 +10,17 @@ const UserGageSchema = new Schema(
     gageId: {
       type: String,
       required: 'Gage Id is required !',
+      unique: true,
     },
     gageAddress: {
       type: String,
       default: null,
-      // required: 'Gage address is required !',
+      unique: true,
+    },
+    gageType: {
+      type: String,
+      default: null,
+      required: 'Gage Type is required !',
     },
     riskType: {
       type: String,
@@ -41,6 +47,7 @@ const UserGageSchema = new Schema(
       type: Number,
       default: 0,
     },
+
     gageJoinedUsersAddresses: {
       type: Array,
       default: [],

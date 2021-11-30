@@ -8,16 +8,39 @@ import { useRouter } from 'next/router';
 import useEternalPlatformContractfunction from '../../hooks/useEternalPlatformContractFunctions';
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
-
+// import useGageSol from '../../hooks/useGageSol';
 
 function Navbar() {
   const [scroll, setScroll] = React.useState(false);
-  const [clicked, setClicked] = React.useState(false);
-
   const { account, active } = useWeb3React();
   const { login, logout } = useAuth();
   const router = useRouter();
-  const { eternalContract, handleOnNewGageEventEmitted } = useEternalPlatformContractfunction();
+
+  const { eternalContract } = useEternalPlatformContractfunction();
+
+  React.useEffect(() => {
+    if (!active) {
+      router.push('/');
+    }
+  }, [active]);
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // React.useEffect(() => {
+  //   if (active) {
+  //     eternalContract.on('NewGage', handleOnNewGageEventEmitted);
+  //     return () => {
+  //       if (eternalContract?.removeListener) {
+  //         eternalContract.removeListener('NewGage', handleOnNewGageEventEmitted);
+  //       }
+  //     };
+  //   }
+  // }, [active, account]);
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -28,49 +51,19 @@ function Navbar() {
     setScroll(false);
   };
 
-  React.useEffect(() => {
-    if (!active) {
-      router.push('/');
-    }
-  }, [active]);
-
-  React.useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  React.useEffect(() => {
-    if (active) {
-      eternalContract.on('NewGage', handleOnNewGageEventEmitted);
-      return () => {
-        if (eternalContract?.removeListener) {
-          eternalContract.removeListener('NewGage', handleOnNewGageEventEmitted);
-        }
-      };
-    }
-  }, [active, account]);
-
   const checkUserStatusOnConnect = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
       router.push('/user-info');
       return;
     }
-    router.push('/gage-selection-1');
+    router.push('/gage-selection');
   };
-
-  // React.useEffect(() => {
-  //   if (account) checkUserStatusOnConnect(account);
-  // }, [account]);
 
   const handleClickOnEarn = () => {
     if (!active) {
       login(Injected);
     }
-    setClicked(true);
     if (account && active) {
       checkUserStatusOnConnect(account);
     }
@@ -93,20 +86,20 @@ function Navbar() {
 
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <Link href='/'>
-              <div className='navbar-brand'>
+              <div className='navbar-brand' style={{ cursor: 'pointer' }}>
                 <img src='img/logo.svg' height='15' alt='' loading='lazy' />
               </div>
             </Link>
             <ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
               <li className='nav-item mx-4'>
-               {active ? (
+                {active ? (
                   <a className='nav-link' onClick={handleClickOnEarn}>
                     Earn
                   </a>
                 ) : (
                   <a className='nav-link disabled' onClick={handleClickOnEarn}>
                     Earn
-                  </ a>
+                  </a>
                 )}
               </li>
               <li className='nav-item mx-4'>

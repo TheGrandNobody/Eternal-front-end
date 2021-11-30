@@ -4,6 +4,8 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
 
 function getLibrary(provider) {
   const library = new Web3Provider(provider);
@@ -13,12 +15,14 @@ function getLibrary(provider) {
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <ToastContainer />
-      <Web3ReactManager>
-        <Component {...pageProps} />
-      </Web3ReactManager>
-    </Web3ReactProvider>
+    <Provider store={store}>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <ToastContainer />
+        <Web3ReactManager>
+          <Component {...pageProps} />
+        </Web3ReactManager>
+      </Web3ReactProvider>
+    </Provider>
   );
 }
 

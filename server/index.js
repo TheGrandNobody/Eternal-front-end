@@ -20,7 +20,7 @@ app
     server.use(handleError);
 
     mongooseConnectionHandler
-      .connect("mongodb+srv://dbUser:testtesttest@cluster0.n6wy7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+      .connect('mongodb://localhost:27017/eternal', {
         useNewUrlParser: true,
       })
       .catch((err) => console.log(err));

@@ -20,7 +20,7 @@ function Footer() {
       router.push('/user-info');
       return;
     }
-    router.push('/gage-selection-1');
+    router.push('/gage-selection');
   };
 
   const handleClickOnEarn = () => {

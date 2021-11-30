@@ -1,17 +1,36 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import HEAD from 'next/head';
-import Navbar from '../../components/navbar';
+import Navbar from '../navbar';
 import useEternalHook from '../../hooks/useEternalHook';
-import useEternalPlatformContractfunction from '../../hooks/useEternalPlatformContractFunctions';
+import Footer from '../Footer/Footer';
 import { useWeb3React } from '@web3-react/core';
-import Footer from '../../components/Footer/Footer';
+import { changeApproval } from '../../reducers/main';
+import { useDispatch, useSelector } from 'react-redux';
 
 function index() {
-  const { amount, riskType, riskPercentage, handleClickOnRiskPercentage, handleClickOnRiskType, handleOnAmountSelect, handleClickOnConfirmBtn } =
-    useEternalHook();
+  const {
+    gageType,
+    amount,
+    riskType,
+    riskPercentage,
+    handleClickOnRiskPercentage,
+    handleClickOnRiskType,
+    handleOnAmountSelect,
+    handleClickOnConfirmBtn,
+    handleClickOnApproveBtn,
+    handleUserApproval,
+  } = useEternalHook();
 
-  // const { eternalContract, handleOnNewGageEventEmitted } = useEternalPlatformContractfunction();
-  // const { active } = useWeb3React();
+  const dispatch = useDispatch();
+  const { approval } = useSelector((state) => state.eternal);
+  const { account } = useWeb3React();
+
+  useEffect(() => {
+    (async () => {
+      const req = await handleUserApproval(account);
+      dispatch(changeApproval({ approval: req?.approvalStatus || false }));
+    })();
+  }, [account]);
 
   return (
     <>
@@ -273,12 +292,26 @@ function index() {
                         )}
                       </div>
                     </div>
-                    {amount && riskType && riskPercentage && (
-                      <div className='col-sm-12 my-5 text-center'>
-                        <button onClick={() => handleClickOnConfirmBtn(amount, riskType, riskPercentage)} className='btn theme-btn'>
-                          Confirm
-                        </button>
-                      </div>
+                    {amount && riskType && riskPercentage ? (
+                      approval ? (
+                        <div className='col-sm-12 my-5 text-center'>
+                          <button onClick={() => handleClickOnConfirmBtn(gageType, amount, riskType, riskPercentage ,account)} className='btn theme-btn'>
+                            Confirm
+                          </button>
+                        </div>
+                      ) : (
+                        <div className='col-sm-12 my-5 text-center'>
+                          <button
+                            onClick={async () => {
+                              await handleClickOnApproveBtn();
+                            }}
+                            className='btn theme-btn'>
+                            Approve
+                          </button>
+                        </div>
+                      )
+                    ) : (
+                      ''
                     )}
                   </div>
                 </div>
@@ -288,10 +321,6 @@ function index() {
         </div>
 
         <Footer />
-
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-        <script type='text/javascript' src='/js/mdb.min.js'></script>
-        <script src='/js/autodrop.js'></script>
       </body>
     </>
   );

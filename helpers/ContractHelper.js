@@ -1,5 +1,8 @@
 import EternalPlatformAbi from '../constant/abis/EternalPlatform.json';
-import { getEternalPlatformAddress } from '../helpers/addressHelper';
+import EternalGageSolAbi from '../constant/abis/EternalGageSol.json';
+import EternalTokenAbi from '../constant/abis/EternalTokenSol.json';
+
+import { getEternalPlatformAddress, getEternalTokenAddress } from '../helpers/addressHelper';
 import { Contract } from '@ethersproject/contracts';
 
 export function getContract(address, ABI, library, account) {
@@ -8,6 +11,14 @@ export function getContract(address, ABI, library, account) {
 
 export const getEternalPlatformContract = (library, account) => {
   return getContract(getEternalPlatformAddress(), EternalPlatformAbi, library, account);
+};
+
+export const getGageSolContract = (library, account, contractAddress, abi) => {
+  return getContract(contractAddress, EternalGageSolAbi, library, account);
+};
+
+export const getEternalTokenContract = (library, account) => {
+  return getContract(getEternalTokenAddress(), EternalTokenAbi, library, account);
 };
 
 export function getProviderOrSigner(library, account) {

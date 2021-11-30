@@ -1,44 +1,64 @@
-import React, { useEffect, useCallback, useState } from 'react';
 import { useEternalPlatformContract } from './useContract';
 import { useWeb3React } from '@web3-react/core';
-import { createGage, findAndUpdateGageAddress } from '../services';
+import { createGage } from '../services';
 import { useRouter } from 'next/router';
 import { getWeb3NoAccount } from '../utils/web3';
 import { toast } from 'react-toastify';
-
+import { useDispatch, useSelector } from 'react-redux';
 import Web3 from 'web3';
+import { useEffect, useState } from 'react';
+import { changeGageAddress } from '../reducers/main';
 
 function useEternalPlatformContractfunction() {
-  const { active, library, account, error } = useWeb3React();
-  const router = useRouter();
+  const { library, account } = useWeb3React();
+  const { gageDepositAmount, gageType, gageRiskType, gageRiskPercentage } = useSelector((state) => state.eternal);
   const eternalContract = useEternalPlatformContract(library, account);
+  const [gageId, setGageId] = useState(null);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-  const initiateStanderedGage = async (amount, riskPercentage, riskType, users) => {
-    const initiateGage = await eternalContract.functions.initiateStandardGage(users);
+  useEffect(() => {
+    if (gageId) {
+      const timer = setInterval(async () => {
+        const gageAddress = await eternalContract.viewGageAddress(gageId);
+        if (gageAddress !== '0x0000000000000000000000000000000000000000') {
+          console.log(gageAddress);
+          await createGage(gageType, gageAddress, gageDepositAmount, gageRiskType, gageRiskPercentage, gageId, account);
+          dispatch(changeGageAddress({ gageAddress: gageAddress }));
+          toast.success('Gage Created Successfully', { toastId: 1 });
+          clearTimeout(timer);
+          router.push('/user-info');
+        }
+      }, 500);
+    }
+  }, [gageId]);
 
+  const initiateStanderedGage = async (gageType, amount, riskPercentage, riskType, users, handleOnGageInitiate, setFoundedGage) => {
+    const initiateGage = await eternalContract.initiateStandardGage(users);
     const interval = setInterval(async () => {
-      const receipt = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
-      if (receipt) {
-        const newGageId = Web3.utils.toDecimal(receipt.logs[0].data).toString();
-        await createGage(amount, riskPercentage, riskType, newGageId, account);
-        toast.success('Gage Created Successfully', { toastId: 1 });
+      let recieptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
+      console.log(recieptC);
+      if (recieptC) {
+        let id = Web3.utils.toDecimal(recieptC.logs[0].data);
+        console.log(id);
+        setGageId(id);
+        setFoundedGage({ gageId: id });
+        handleOnGageInitiate();
+
         clearInterval(interval);
-        router.push('/user-info');
       }
-    }, 100);
+    }, 5000);
   };
 
-  const handleOnNewGageEventEmitted = async (gageId, gageAddress) => {
-    await findAndUpdateGageAddress(gageId.toString(), gageAddress, account);
-  };
-
- 
+  // const handleOnNewGageEventEmitted = async (gageId, gageAddress) => {
+  //   // await findAndUpdateGageAddress(gageId.toString(), gageAddress, account);
+  //   dispatch(changeGageAddress({ gageAddress: gageAddress }));
+  // };
 
   return {
     initiateStanderedGage,
     eternalContract,
-    handleOnNewGageEventEmitted,
-  
+    // handleOnNewGageEventEmitted,
   };
 }
 
