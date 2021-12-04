@@ -295,7 +295,9 @@ function index() {
                     {amount && riskType && riskPercentage ? (
                       approval ? (
                         <div className='col-sm-12 my-5 text-center'>
-                          <button onClick={() => handleClickOnConfirmBtn(gageType, amount, riskType, riskPercentage ,account)} className='btn theme-btn'>
+                          <button
+                            onClick={() => handleClickOnConfirmBtn(gageType, amount, riskType, riskPercentage, account)}
+                            className='btn theme-btn'>
                             Confirm
                           </button>
                         </div>
@@ -303,7 +305,7 @@ function index() {
                         <div className='col-sm-12 my-5 text-center'>
                           <button
                             onClick={async () => {
-                              await handleClickOnApproveBtn();
+                              await handleClickOnApproveBtn(amount);
                             }}
                             className='btn theme-btn'>
                             Approve

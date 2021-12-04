@@ -17,7 +17,7 @@ export const findAndUpdateGageAddress = async (gageId, gageAddress, account) => 
 };
 
 export const getAllGagesAddresses = async (account) => {
-  return api.get(`getAllGagesAddresses/${account}`);
+  return api.get(`getAllGagesAddresses/${account}?page=1&limit=10`);
 };
 
 export const findAndUpdateGageStatus = async (id, status) => {
@@ -29,7 +29,7 @@ export const addUserAddressToGage = async (gageId, userAddress) => {
 };
 
 export const getGagesAccordingToStatus = async (account, status) => {
-  return api.get(`getAllGages/${account}/${status}`);
+  return api.get(`getAllGages/${account}/${status}?page=1&limit=10`);
 };
 
 export const createUserApprovalStatus = async (account, status) => {

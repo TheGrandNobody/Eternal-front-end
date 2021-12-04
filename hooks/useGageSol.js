@@ -33,7 +33,7 @@ function useGageSol() {
 
   const fetchStoreContracts = async () => {
     const req = await getAllGagesAddresses(account);
-    let contracts = useAllGagesSolContract(library, account, req?.data.results || {});
+    let contracts = useAllGagesSolContract(library, account, req?.data.results || []);
     dispatch(changeLoadedContracts({ loadedContracts: contracts }));
   };
 

@@ -33,7 +33,8 @@ function useEternalPlatformContractfunction() {
     }
   }, [gageId]);
 
-  const initiateStanderedGage = async (gageType, amount, riskPercentage, riskType, users, handleOnGageInitiate, setFoundedGage) => {
+  const initiateStanderedGage = async (users, handleOnGageInitiate, setFoundedGage) => {
+    console.log(users);
     const initiateGage = await eternalContract.initiateStandardGage(users);
     const interval = setInterval(async () => {
       let recieptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
@@ -44,21 +45,14 @@ function useEternalPlatformContractfunction() {
         setGageId(id);
         setFoundedGage({ gageId: id });
         handleOnGageInitiate();
-
         clearInterval(interval);
       }
     }, 5000);
   };
 
-  // const handleOnNewGageEventEmitted = async (gageId, gageAddress) => {
-  //   // await findAndUpdateGageAddress(gageId.toString(), gageAddress, account);
-  //   dispatch(changeGageAddress({ gageAddress: gageAddress }));
-  // };
-
   return {
     initiateStanderedGage,
     eternalContract,
-    // handleOnNewGageEventEmitted,
   };
 }
 

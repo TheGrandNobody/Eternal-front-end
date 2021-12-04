@@ -10,5 +10,5 @@ export const infoDropDownData = [
     title: 'Whitepaper',
     link: '/download',
   },
-  { title: 'Documentation', link: 'https://docs.eternal.money/' },
+  { title: 'Documentation', link: 'https://docs.eternal.market/' },
 ];

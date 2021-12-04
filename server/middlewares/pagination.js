@@ -20,10 +20,8 @@ function paginate(req, model, query) {
       };
     }
     try {
-  
       result.results = await query.limit(limit).skip(startIndex);
       return result;
-
     } catch (e) {
       console.log(e);
       //   res.status(500).json({ message: e.message });

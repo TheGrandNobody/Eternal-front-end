@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import useGageSol from './useGageSol';
 import { getWeb3NoAccount } from '../utils/web3';
+// import { BigNumber } from 'ethers';
+const BigNumber = require('bignumber.js');
 
 function useEternalHook() {
   const { account, library } = useWeb3React();
@@ -61,7 +63,9 @@ function useEternalHook() {
     })();
   }, []);
 
-  const handleClickOnApproveBtn = async () => {
+  const handleClickOnApproveBtn = async (amount) => {
+    const bg = new BigNumber(amount * 1000000000);
+
     const approvalreq = await eternalTokenContract.approve('0xbd4680367CD0fF4a83F1d5F21B665599A35B6c69', amount * 100000000000);
     let interval = setInterval(async () => {
       let reciept = await getWeb3NoAccount().eth.getTransactionReceipt(approvalreq.hash);
@@ -95,24 +99,23 @@ function useEternalHook() {
   const handleClickOnConfirmBtn = async (gageType, amount, riskType, riskPercentage) => {
     const req = await findExistingGage(gageType, amount, riskType, riskPercentage, 'pending');
     if (!req.data.length > 0) {
-      await initiateStanderedGage(gageType, amount, riskPercentage, riskType, 6, handleOnGageInitiate, setFoundedGage);
+      await initiateStanderedGage( 6, handleOnGageInitiate, setFoundedGage);
       return;
     }
     setFoundedGage(req?.data);
     let contract = useGageSolContract(library, account, req?.data[0].gageAddress);
     console.log('already exist >>>>>>>>>', req?.data, req?.data[0].gageAddress, contract);
-    (async () => {
-      const join = await contract.join('0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb', amount * 1000000000, riskPercentage, false);
-      let interval = setInterval(async () => {
-        let reciept = await getWeb3NoAccount().eth.getTransactionReceipt(join.hash);
-        if (reciept) {
-          await addUserAddressToGage(req?.data[0]?.gageId, account);
-          clearInterval(interval);
-          toast.success('Gage Joined Successfully', { toastId: 2 });
-          router.push('/user-info');
-        }
-      }, 1000);
-    })();
+
+    const join = await contract.join('0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb', amount * 1000000000, riskPercentage, false);
+    let interval = setInterval(async () => {
+      let reciept = await getWeb3NoAccount().eth.getTransactionReceipt(join.hash);
+      if (reciept) {
+        await addUserAddressToGage(req?.data[0]?.gageId, account);
+        clearInterval(interval);
+        toast.success('Gage Joined Successfully', { toastId: 2 });
+        router.push('/user-info');
+      }
+    }, 1000);
 
     // await gageContract1.join('0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb', amount * 1000000000, riskPercentage, false);
     // await addUserAddressToGage(req?.data?.gageId, account);

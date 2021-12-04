@@ -71,7 +71,7 @@ router.post('/findAndUpdateGageAddress', async (req, res) => {
       res.json(err);
       return;
     }
-    res.json({ message: 'Gage Address Update successfully!' });
+    res.json({ result: data });
     return;
   })
     .clone()
@@ -136,7 +136,11 @@ router.post('/addUserToGage', async (req, res) => {
         res.json({ message: 'User address Added to Db!' });
         return;
       }
-    ).exec();
+    )
+      .clone()
+      .catch(function (err) {
+        console.log(err);
+      });
     return;
   }
   res.send('the address already exist!');

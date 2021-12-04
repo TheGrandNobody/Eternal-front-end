@@ -1,6 +1,6 @@
 import React from 'react';
 import useAuth from '../../hooks/useAuth';
-import { Injected } from '../../constant/constants';
+// import { Injected } from '../../constant/constants';
 import { useWeb3React } from '@web3-react/core';
 import Link from 'next/link';
 import { getUserData } from '../../services';
@@ -8,15 +8,12 @@ import { useRouter } from 'next/router';
 import useEternalPlatformContractfunction from '../../hooks/useEternalPlatformContractFunctions';
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
-// import useGageSol from '../../hooks/useGageSol';
 
 function Navbar() {
   const [scroll, setScroll] = React.useState(false);
   const { account, active } = useWeb3React();
   const { login, logout } = useAuth();
   const router = useRouter();
-
-  const { eternalContract } = useEternalPlatformContractfunction();
 
   React.useEffect(() => {
     if (!active) {
@@ -30,17 +27,6 @@ function Navbar() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  // React.useEffect(() => {
-  //   if (active) {
-  //     eternalContract.on('NewGage', handleOnNewGageEventEmitted);
-  //     return () => {
-  //       if (eternalContract?.removeListener) {
-  //         eternalContract.removeListener('NewGage', handleOnNewGageEventEmitted);
-  //       }
-  //     };
-  //   }
-  // }, [active, account]);
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -62,7 +48,7 @@ function Navbar() {
 
   const handleClickOnEarn = () => {
     if (!active) {
-      login(Injected);
+      login('Injected');
     }
     if (account && active) {
       checkUserStatusOnConnect(account);
@@ -115,7 +101,7 @@ function Navbar() {
                 {'Connected ' + account.slice(1, 5) + '...' + account.slice(account.length - 5, account.length)}
               </button>
             ) : (
-              <button className='btn theme-btn top-nav-btn' onClick={() => login(Injected)}>
+              <button className='btn theme-btn top-nav-btn' onClick={() => login('Injected')}>
                 Connect Wallet
               </button>
             )}
