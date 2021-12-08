@@ -82,13 +82,18 @@ function Navbar() {
               <li className='nav-item mx-4'>
                 {active ? (
                   <a className={`nav-link ${handleActiveNavMenu() && 'active border'}`} onClick={handleClickOnEarn}>
-                    Earn
+                    Gage
                   </a>
                 ) : (
                   <a className='nav-link disabled' onClick={handleClickOnEarn}>
-                    Earn
+                    Gage
                   </a>
                 )}
+              </li>
+              <li className= 'nav-item mx-4'>
+                  <a className='nav-link disabled' onClick={}>
+                    Stake
+                  </a>
               </li>
               <li className='nav-item mx-4'>
                 <a className='nav-link disabled' href='#'>
