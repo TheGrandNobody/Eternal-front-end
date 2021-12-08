@@ -1,6 +1,5 @@
 import React from 'react';
 import useAuth from '../../hooks/useAuth';
-// import { Injected } from '../../constant/constants';
 import { useWeb3React } from '@web3-react/core';
 import Link from 'next/link';
 import { getUserData } from '../../services';

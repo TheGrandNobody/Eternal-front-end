@@ -5,7 +5,6 @@ import { useWeb3React } from '@web3-react/core';
 import useAuth from '../../hooks/useAuth';
 import { useRouter } from 'next/router';
 import { getUserData } from '../../services';
-import { Injected } from '../../constant/constants';
 import Footer from '../Footer/Footer';
 
 function IndexPage() {
@@ -25,7 +24,7 @@ function IndexPage() {
 
   const handleClickOnEarn = () => {
     if (!active) {
-      login(Injected);
+      login("Injected");
     }
     if (account && active) {
       checkUserStatusOnConnect(account);

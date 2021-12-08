@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import useAuth from '../../hooks/useAuth';
 import { useRouter } from 'next/router';
 import { getUserData } from '../../services';
-import { Injected } from '../../constant/constants';
+
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
 
@@ -27,7 +27,7 @@ function Footer() {
 
   const handleClickOnEarn = () => {
     if (!active) {
-      login(Injected);
+      login("Injected");
     }
     setClicked(true);
     if (account && active) {
