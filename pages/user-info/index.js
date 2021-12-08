@@ -14,7 +14,7 @@ import { useAllGagesSolContract } from '../../hooks/useContract';
 import { getWeb3NoAccount } from '../../utils/web3';
 import { toast } from 'react-toastify';
 import Web3 from 'web3';
-import { useRouter } from 'next/router';
+
 
 function index() {
   const { account, library } = useWeb3React();

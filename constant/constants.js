@@ -1,7 +1,7 @@
 import { injected } from '../connector/connector';
 import axios from 'axios';
 
-export const api = axios.create({ baseURL: 'http://localhost:3000/api/' });
+export const api = axios.create({ baseURL: 'http://localhost:3001/api/' });
 
 export const connectorsByName = {
   Injected: injected,
@@ -15,7 +15,6 @@ export const Addresses = {
     4: '0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb',
   },
 };
-
 
 export const connectorLocalStorageKey = 'web3Connection';
 

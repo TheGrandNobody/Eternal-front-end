@@ -2,7 +2,7 @@
   "name": "eternal",
   "private": true,
   "scripts": {
-    "dev": "nodemon server",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
