@@ -2,16 +2,10 @@ import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
-import fileDownload from 'js-file-download'
 function Download() {
-  const handleDownload = (url, filename) => {
-    axios.get(url, {
-      responseType: 'blob',
-    })
-    .then((res) => {
-      fileDownload(res.data, filename)
-    })
-  }
+  const handleDownload = (id) => {
+    window.open(`/api/${id}/download`);
+  };
   return (
     <>
       <HEAD>
