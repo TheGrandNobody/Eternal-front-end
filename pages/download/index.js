@@ -2,10 +2,16 @@ import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
+import fileDownload from 'js-file-download'
 function Download() {
-  const handleOnClick = (id) => {
-    window.open(`/api/${id}/download`);
-  };
+  const handleDownload = (url, filename) => {
+    axios.get(url, {
+      responseType: 'blob',
+    })
+    .then((res) => {
+      fileDownload(res.data, filename)
+    })
+  }
   return (
     <>
       <HEAD>
@@ -22,7 +28,7 @@ function Download() {
             </div>
             <div className='row m-0 position-relative select-gage'>
               <div className='col-sm-4 mb-4 mb-sm-0'>
-                <div onClick={() => handleOnClick('whitepaper-gages')}>
+                <div onClick={() => handleDownload('https://eternal.money/whitepaper-gages.pdf', 'whitepaper-gages.pdf')}>
                   <a className='text-center'>
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
                       <img src='img/pdf.svg' />
