@@ -1,7 +1,7 @@
 import { injected } from '../connector/connector';
 import axios from 'axios';
 
-export const api = axios.create({ baseURL: 'https://eternal-backed.herokuapp.com/api/' });
+export const api = axios.create({ baseURL: 'https://shrouded-ocean-93690.herokuapp.com/' });
 
 export const connectorsByName = {
   Injected: injected,
