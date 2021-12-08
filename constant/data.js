@@ -1,8 +1,8 @@
 export const socialDropDownData = [
-  { title: 'Twitter', link: '' },
-  { title: 'Reddit', link: '' },
-  { title: 'Telegram', link: '' },
-  { title: 'Medium', link: '' },
+  { title: 'Twitter', link: 'https://twitter.com/_eternalfinance' },
+  { title: 'Reddit', link: 'https://www.reddit.com/r/Eternal_Finance/' },
+  { title: 'Telegram', link: 'https://t.me/eternalfinance' },
+  { title: 'Medium', link: 'https://medium.com/@eternal.finance' },
 ];
 
 export const infoDropDownData = [
@@ -10,5 +10,5 @@ export const infoDropDownData = [
     title: 'Whitepaper',
     link: '/download',
   },
-  { title: 'Documentation', link: 'https://docs.eternal.market/' },
+  { title: 'Documentation', link: 'https://docs.eternal.money/' },
 ];
