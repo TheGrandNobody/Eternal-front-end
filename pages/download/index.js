@@ -36,22 +36,11 @@ function Download() {
               </div>
 
               <div className='col-sm-4 inactive mb-4 mb-sm-0'>
-                <div onClick={() => handleOnClick('eternal_whitepaper')}>
+                <div>
                   <a className='text-center'>
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
                       <img src='img/pdf.svg' />
                       <h5 className='color-white bold mt-5'>Whitepaper: Eternal</h5>
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <div className='col-sm-4 mb-4 mb-sm-0'>
-                <div onClick={() => handleOnClick('eternal_litepaper')}>
-                  <a className='text-center'>
-                    <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
-                      <img src='img/pdf.svg' />
-                      <h5 className='color-white bold mt-5'>Litepaper</h5>
                     </div>
                   </a>
                 </div>
