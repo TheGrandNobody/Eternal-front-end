@@ -91,9 +91,9 @@ function Navbar() {
                 )}
               </li>
               <li className= 'nav-item mx-4'>
-                  <a className='nav-link disabled' onClick={}>
-                    Stake
-                  </a>
+                <a className='nav-link disabled' href='#'>
+                  Stake
+                </a>
               </li>
               <li className='nav-item mx-4'>
                 <a className='nav-link disabled' href='#'>
