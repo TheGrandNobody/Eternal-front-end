@@ -96,7 +96,7 @@ function index() {
             </div>
 
             <div className='row m-0 position-relative gage-tabs'>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{justifyContent: 'space-between', alignItems: 'center' }}>
                 <ul className='nav nav-tabs mb-3' id='ex1' role='tablist'>
                   {tableTabs.map((item, index) => (
                     <li className={`nav-item ${item === currentTab && 'active'}`} role='presentation' key={index}>
