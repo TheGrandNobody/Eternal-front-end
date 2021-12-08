@@ -15,6 +15,9 @@ function Navbar() {
   const { login, logout } = useAuth();
   const router = useRouter();
 
+  const handleActiveNavMenu = () => {
+    return router.route === '/user-info' || router.route === '/gage-selection';
+  };
   React.useEffect(() => {
     if (!active) {
       router.push('/');
@@ -79,7 +82,7 @@ function Navbar() {
             <ul className='navbar-nav ms-auto mb-2 mb-lg-0'>
               <li className='nav-item mx-4'>
                 {active ? (
-                  <a className='nav-link' onClick={handleClickOnEarn}>
+                  <a className={`nav-link ${handleActiveNavMenu() && 'active border'}`} onClick={handleClickOnEarn}>
                     Earn
                   </a>
                 ) : (

@@ -9,7 +9,7 @@ export const connectorsByName = {
 
 export const Addresses = {
   eternalPlatform: {
-    4: '0xbd4680367CD0fF4a83F1d5F21B665599A35B6c69',
+    4: '0x2fDA645542F0495a30312A49e5804Efb91409544',
   },
   eternalTokenAddress: {
     4: '0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb',

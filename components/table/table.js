@@ -1,8 +1,18 @@
 import React from 'react';
 import TableRow from './components/tableRow';
 import TableRowSkeleton from './components/tableRowSkeleton';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeSelectedGage } from '../../reducers/main';
+
 function table(props) {
-  const { data } = props;
+  const { data, clickableRow } = props;
+  const dispatch = useDispatch();
+  const { selectedGage } = useSelector((state) => state.eternal);
+
+  const handleClickOnGage = (gageAddress) => {
+    dispatch(changeSelectedGage({ selectedGage: gageAddress }));
+  };
+
   return (
     <div className='grid'>
       <table className='table'>
@@ -20,12 +30,15 @@ function table(props) {
             data?.map((item, index) => (
               <TableRow
                 type={item.gageType}
+                active={item.gageAddress === selectedGage}
                 key={index}
+                index={index + 1}
                 created_at={item.created_at}
                 no_of_users={item.gageTotalUsers}
                 amount={item.amount}
                 riskType={item.riskType}
                 riskPercentage={item.riskPercentage}
+                handleClick={clickableRow ? () => handleClickOnGage(item.gageAddress) : () => ({})}
               />
             ))
           ) : (

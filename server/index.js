@@ -14,13 +14,18 @@ app
   .then(() => {
     const server = express();
     const routes = require('./routes/index');
-
     server.use(bodyParser.json());
     server.use('/api', routes);
     server.use(handleError);
 
+    // mongooseConnectionHandler
+    //   .connect('mongodb+srv://tamjeed:Macbookpro1@cluster0.f92lg.mongodb.net/eternal?retryWrites=true&w=majority', {
+    //     useNewUrlParser: true,
+    //   })
+    //   .catch((err) => console.log(err));
+
     mongooseConnectionHandler
-      .connect('mongodb+srv://dbUser:testtesttest@cluster0.n6wy7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+      .connect('mongodb://localhost:27017/eternal', {
         useNewUrlParser: true,
       })
       .catch((err) => console.log(err));

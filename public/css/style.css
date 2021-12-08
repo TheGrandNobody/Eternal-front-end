@@ -94,8 +94,12 @@ h2 {
 .nav-item a.active {
   color: #c35c6c;
   padding-bottom: 5px;
-  border-bottom: 1px solid #c35c6c;
+  /* border-bottom: 1px solid #c35c6c; */
+  border: none !important;
   font-weight: bold;
+}
+.nav-item a.active.border {
+  border-bottom: 1px solid #c35c6c !important;
 }
 .dropdown .dropdown-toggle.hovered {
   color: #c35c6c;
@@ -237,8 +241,12 @@ a:hover .gage-block {
 }
 .gage-tabs li {
   background: none;
-  border: none;
 }
+.gage-tabs li.active {
+  background: none;
+  border-bottom: 2px solid #c35c6c;
+}
+
 .gage-tabs li a {
   color: white !important;
   text-transform: inherit !important;
@@ -249,7 +257,9 @@ a:hover .gage-block {
   color: #c35c6c !important;
   font-weight: bold !important;
   background: none !important;
-  border: none !important;
+  /* border-bottom: 2px solid #c35c6c; */
+
+  /* border: none; */
 }
 .gage-tabs .table {
   border-spacing: 0 10px;

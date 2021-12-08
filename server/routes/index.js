@@ -36,7 +36,23 @@ router.get('/getAllGages/:account/:status', async (req, res) => {
   const data = await paginate(
     req,
     UserGages,
-    UserGages.find({ gageStatus: req.params.status.toLowerCase(), gageJoinedUsersAddresses: req.params.account })
+    UserGages.find({ gageStatus: req.params.status.toLowerCase(), gageJoinedUsersAddresses: req.params.account }).sort({ gageId: 1 })
+  )();
+  res.json(data);
+});
+
+router.post('/getUserOwnedGages', async (req, res) => {
+  const data = await paginate(
+    req,
+    UserGages,
+    UserGages.find({
+      amount: req.body.amount,
+      riskType: req.body.riskType,
+      riskPercentage: req.body.riskPercentage,
+      ownedByAddress: req.body.ownedByAddress,
+      gageType: req.body.gageType,
+      gageStatus: req.body.gageStatus,
+    })
   )();
   res.json(data);
 });
@@ -73,31 +89,27 @@ router.post('/findAndUpdateGageAddress', async (req, res) => {
     }
     res.json({ result: data });
     return;
-  })
-    .clone()
-    .catch(function (err) {
-      console.log(err);
-    });
+  });
+  // .clone()
+  // .catch(function (err) {
+  //   console.log(err);
+  // });
 });
 
 router.post('/findAndUpdateGageStatus', async (req, res) => {
-  await UserGages.updateOne({ gageId: req.body.gageId }, { $set: { gageStatus: req.body.gageStatus } }, (err, data) => {
+  UserGages.updateOne({ gageId: req.body.id }, { $set: { gageStatus: req.body.status } }, (err, data) => {
     if (err) {
       res.json(err);
       return;
     }
-    res.json({ message: 'Gage Status updated !' });
+    res.json({ result: data });
     return;
-  })
-    .clone()
-    .catch(function (err) {
-      console.log(err);
-    });
+  });
 });
 
 router.post('/createUserApprovalStatus', async (req, res) => {
-  const isExist = await UserApprovals.find({ account: req.body.account });
-  if (!isExist.length > 0) {
+  const isExist = await UserApprovals.findOne({ account: req.body.account }).exec();
+  if (!isExist) {
     const data = new UserApprovals({ account: req.body.account, approvalStatus: req.body.status });
     await data.save();
     res.json({ message: 'approval Created Successfully !' });
@@ -122,28 +134,87 @@ router.get('/findUserApprovalStatus/:account', async (req, res) => {
 });
 
 router.post('/addUserToGage', async (req, res) => {
-  const isExist = await UserGages.find({ gageId: req.body.gageId, gageJoinedUsersAddresses: req.body.userAddress }).exec();
-  console.log(isExist);
-  if (!isExist.length > 0) {
-    UserGages.updateOne(
+  const isExist = await UserGages.findOne({ gageId: req.body.gageId, gageJoinedUsersAddresses: req.body.userAddress }).exec();
+  if (!isExist) {
+    UserGages.findOneAndUpdate(
       { gageId: req.body.gageId },
-      { $push: { gageJoinedUsersAddresses: req.body.userAddress }, $inc: { gageUsersJoined: 1 } },
-
+      { $addToSet: { gageJoinedUsersAddresses: req.body.userAddress } },
+      { new: true },
       (err, data) => {
         if (err) {
           handleError(err);
         }
-        res.json({ message: 'User address Added to Db!' });
-        return;
+        UserGages.findOneAndUpdate(
+          { gageId: req.body.gageId },
+          { gageUsersJoined: data.gageJoinedUsersAddresses.length },
+          { new: true },
+          (err1, data1) => {
+            if (err) {
+              handleError(err1);
+            }
+            if (data.gageJoinedUsersAddresses.length === data.gageTotalUsers) {
+              UserGages.updateOne({ gageId: req.body.gageId }, { $set: { gageStatus: 'active' } }, { new: true }, (err2, data2) => {
+                if (err2) {
+                  res.json(err2);
+                  return;
+                }
+                res.json({ result: data2 });
+                return;
+              });
+            } else {
+              res.json({ result: data1 });
+              return;
+            }
+          }
+        );
       }
-    )
-      .clone()
-      .catch(function (err) {
-        console.log(err);
-      });
+    );
+
     return;
   }
   res.send('the address already exist!');
+});
+
+router.post('/removeUserFromGage', async (req, res) => {
+  const isExist = await UserGages.findOne({ gageId: req.body.gageId, gageJoinedUsersAddresses: req.body.userAddress }).exec();
+  if (isExist) {
+    UserGages.findOneAndUpdate(
+      { gageId: req.body.gageId },
+      { $pull: { gageJoinedUsersAddresses: req.body.userAddress } },
+      { new: true },
+      (err, data) => {
+        if (err) {
+          handleError(err);
+        }
+        UserGages.findOneAndUpdate(
+          { gageId: req.body.gageId },
+          { gageUsersJoined: data.gageJoinedUsersAddresses.length },
+          { new: true },
+          (err1, data1) => {
+            if (err1) {
+              handleError(err1);
+            }
+            if (data.gageJoinedUsersAddresses.length === 0) {
+              UserGages.findOneAndUpdate({ gageId: req.body.gageId }, { $set: { gageStatus: 'closed' } }, { new: true }, (err2, data2) => {
+                if (err2) {
+                  res.json(err2);
+                  return;
+                }
+                res.json({ result: data1 });
+                return;
+              });
+            } else {
+              res.json({ result: data1 });
+              return;
+            }
+          }
+        );
+      }
+    );
+
+    return;
+  }
+  res.send('the address donot exist!');
 });
 
 router.post('/register-user-gage', async (req, res) => {

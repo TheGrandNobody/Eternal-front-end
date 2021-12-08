@@ -8,7 +8,7 @@ export default function Web3ReactManager({ children }) {
   const context = useWeb3React();
   const { connector, error } = context;
   const [activatingConnector, setActivatingConnector] = React.useState();
-  // const gage = useGageSol();
+  const gage = useGageSol();
 
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {

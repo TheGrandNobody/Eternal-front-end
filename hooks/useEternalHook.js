@@ -1,7 +1,7 @@
 import useEternalPlatformContractfunction from './useEternalPlatformContractFunctions';
 import { findExistingGage, getUserApprovalStatus, createUserApprovalStatus, addUserAddressToGage } from '../services';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeGageDepositAmount, changeGageRiskPercentage, changeGageRiskType, changeApproval } from '../reducers/main';
+import { changeGageDepositAmount, changeGageRiskPercentage, changeGageRiskType, changeApproval, reset } from '../reducers/main';
 import { useGageSolContract } from './useContract';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
@@ -11,8 +11,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import useGageSol from './useGageSol';
 import { getWeb3NoAccount } from '../utils/web3';
-// import { BigNumber } from 'ethers';
-const BigNumber = require('bignumber.js');
+import Web3 from 'web3';
 
 function useEternalHook() {
   const { account, library } = useWeb3React();
@@ -30,46 +29,18 @@ function useEternalHook() {
   const dispatch = useDispatch();
   const { initiateStanderedGage } = useEternalPlatformContractfunction();
   const eternalTokenContract = useEternalTokenAddress(library, account);
-  const [gageInitiated, setGageInitiated] = useState(false);
+  // const [gageInitiated, setGageInitiated] = useState(false);
 
   const router = useRouter();
-  const handleOnGageInitiate = () => {
-    setGageInitiated(true);
-  };
+  // const handleOnGageInitiate = () => {
+  //   setGageInitiated(true);
+  // };
   const gage = useGageSol();
 
-  useEffect(() => {
-    if (gageInitiated && gageAddress) {
-      const gageContract = useGageSolContract(library, account, gageAddress);
-      (async () => {
-        const join = await gageContract.join('0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb', amount * 1000000000, riskPercentage, false);
-        let interval = setInterval(async () => {
-          let reciept = await getWeb3NoAccount().eth.getTransactionReceipt(join.hash);
-          if (reciept) {
-            await addUserAddressToGage(foundedGage?.gageId, account);
-            toast.success('Gage Joined Successfully', { toastId: 2 });
-            clearInterval(interval);
-          }
-        }, 1000);
-      })();
-    }
-  }, [gageAddress]);
-
-  useEffect(() => {
-    const gageContract = useGageSolContract(library, account, '0x2069793Aa98c0F6E7a0784Da0254376f79592D66');
-    (async () => {
-      const req = await gageContract.viewGageUserCount();
-      console.log(req);
-    })();
-  }, []);
-
   const handleClickOnApproveBtn = async (amount) => {
-    const bg = new BigNumber(amount * 1000000000);
-
-    const approvalreq = await eternalTokenContract.approve('0xbd4680367CD0fF4a83F1d5F21B665599A35B6c69', amount * 100000000000);
+    const approvalreq = await eternalTokenContract.approve('0x2fDA645542F0495a30312A49e5804Efb91409544', Web3.utils.toWei(`${amount}`, 'ether'));
     let interval = setInterval(async () => {
       let reciept = await getWeb3NoAccount().eth.getTransactionReceipt(approvalreq.hash);
-      console.log('Approval reciept >>>>>>>>>>.', reciept);
       if (reciept) {
         dispatch(changeApproval({ approval: true }));
         await createUserApprovalStatus(account, true);
@@ -99,13 +70,11 @@ function useEternalHook() {
   const handleClickOnConfirmBtn = async (gageType, amount, riskType, riskPercentage) => {
     const req = await findExistingGage(gageType, amount, riskType, riskPercentage, 'pending');
     if (!req.data.length > 0) {
-      await initiateStanderedGage( 6, handleOnGageInitiate, setFoundedGage);
+      await initiateStanderedGage(2);
       return;
     }
     setFoundedGage(req?.data);
     let contract = useGageSolContract(library, account, req?.data[0].gageAddress);
-    console.log('already exist >>>>>>>>>', req?.data, req?.data[0].gageAddress, contract);
-
     const join = await contract.join('0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb', amount * 1000000000, riskPercentage, false);
     let interval = setInterval(async () => {
       let reciept = await getWeb3NoAccount().eth.getTransactionReceipt(join.hash);
@@ -114,12 +83,9 @@ function useEternalHook() {
         clearInterval(interval);
         toast.success('Gage Joined Successfully', { toastId: 2 });
         router.push('/user-info');
+        dispatch(reset());
       }
     }, 1000);
-
-    // await gageContract1.join('0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb', amount * 1000000000, riskPercentage, false);
-    // await addUserAddressToGage(req?.data?.gageId, account);
-    // toast.success('Gage Joined Successfully', { toastId: 1 });
   };
 
   return {

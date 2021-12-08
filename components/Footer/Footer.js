@@ -13,7 +13,9 @@ function Footer() {
 
   const { account, active } = useWeb3React();
   const { login, logout } = useAuth();
-
+  const handleActiveNavMenu = () => {
+    return router.route === '/user-info' || router.route === '/gage-selection';
+  };
   const checkUserStatusOnConnect = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
@@ -41,7 +43,7 @@ function Footer() {
         <ul className='navbar-nav m-auto d-flex mt-5 mb-0 flex-row'>
           <li className='nav-item mx-4'>
             {active ? (
-              <a className='nav-link' onClick={handleClickOnEarn}>
+              <a className={`nav-link ${handleActiveNavMenu() && 'active border'}`} onClick={handleClickOnEarn}>
                 Earn
               </a>
             ) : (

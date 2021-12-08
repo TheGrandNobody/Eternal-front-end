@@ -41,7 +41,7 @@ const UserGageSchema = new Schema(
     },
     gageTotalUsers: {
       type: Number,
-      default: 6,
+      default: 2,
     },
     gageUsersJoined: {
       type: Number,

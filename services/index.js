@@ -28,8 +28,12 @@ export const addUserAddressToGage = async (gageId, userAddress) => {
   return api.post('addUserToGage', { gageId, userAddress });
 };
 
-export const getGagesAccordingToStatus = async (account, status) => {
-  return api.get(`getAllGages/${account}/${status}?page=1&limit=10`);
+export const removeUserAddressToGage = async (gageId, userAddress) => {
+  return api.post('removeUserFromGage', { gageId, userAddress });
+};
+
+export const getGagesAccordingToStatus = async (account, status, limit, currentPage) => {
+  return api.get(`getAllGages/${account}/${status}?page=${currentPage}&limit=${limit}`);
 };
 
 export const createUserApprovalStatus = async (account, status) => {
@@ -38,4 +42,8 @@ export const createUserApprovalStatus = async (account, status) => {
 
 export const getUserApprovalStatus = async (account) => {
   return api.get(`findUserApprovalStatus/${account}`, { account });
+};
+
+export const getUserOwnedGages = async (amount, riskType, riskPercentage, ownedByAddress, gageType, gageStatus) => {
+  return api.post(`getUserOwnedGages?page=1&limit=10`, { amount, riskType, riskPercentage, ownedByAddress, gageType, gageStatus });
 };

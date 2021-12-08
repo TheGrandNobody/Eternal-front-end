@@ -7,45 +7,91 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import Web3 from 'web3';
 import { useEffect, useState } from 'react';
-import { changeGageAddress } from '../reducers/main';
+import { changeGageAddress, reset } from '../reducers/main';
+import { useGageSolContract } from './useContract';
+import { addUserAddressToGage } from '../services';
+import { functions, reject } from 'lodash';
 
 function useEternalPlatformContractfunction() {
   const { library, account } = useWeb3React();
   const { gageDepositAmount, gageType, gageRiskType, gageRiskPercentage } = useSelector((state) => state.eternal);
   const eternalContract = useEternalPlatformContract(library, account);
-  const [gageId, setGageId] = useState(null);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (gageId) {
-      const timer = setInterval(async () => {
-        const gageAddress = await eternalContract.viewGageAddress(gageId);
-        if (gageAddress !== '0x0000000000000000000000000000000000000000') {
-          console.log(gageAddress);
-          await createGage(gageType, gageAddress, gageDepositAmount, gageRiskType, gageRiskPercentage, gageId, account);
-          dispatch(changeGageAddress({ gageAddress: gageAddress }));
-          toast.success('Gage Created Successfully', { toastId: 1 });
-          clearTimeout(timer);
-          router.push('/user-info');
-        }
-      }, 500);
-    }
-  }, [gageId]);
-
-  const initiateStanderedGage = async (users, handleOnGageInitiate, setFoundedGage) => {
-    console.log(users);
+  const initiateStanderedGage = async (users) => {
     const initiateGage = await eternalContract.initiateStandardGage(users);
     const interval = setInterval(async () => {
       let recieptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
-      console.log(recieptC);
       if (recieptC) {
-        let id = Web3.utils.toDecimal(recieptC.logs[0].data);
-        console.log(id);
-        setGageId(id);
-        setFoundedGage({ gageId: id });
-        handleOnGageInitiate();
         clearInterval(interval);
+        let id = Web3.utils.toDecimal(recieptC.logs[0].data);
+        const timer = setInterval(() => {
+          new Promise(function (resolve, reject) {
+            resolve(eternalContract.viewGageAddress(id));
+          })
+            .then((res1) => {
+              if (res1 !== '0x0000000000000000000000000000000000000000') {
+                clearTimeout(timer);
+                new Promise(function (resolve, reject) {
+                  resolve(createGage(gageType, res1, gageDepositAmount, gageRiskType, gageRiskPercentage, id, account));
+                })
+                  .then((res2) => {
+                    dispatch(changeGageAddress({ gageAddress: res1 }));
+                    toast.success('Gage Created Successfully', { toastId: 1 });
+                    const gageContract = useGageSolContract(library, account, res1);
+                    new Promise(function (resolve, reject) {
+                      resolve(
+                        gageContract.join('0xb4351FF4feCc544dC5416c1Cf99bbEA19E924cFb', gageDepositAmount * 1000000000, gageRiskPercentage, false)
+                      );
+                    })
+                      .then((res3) => {
+                        const timer1 = setInterval(() => {
+                          new Promise(function (resolve, reject) {
+                            resolve(getWeb3NoAccount().eth.getTransactionReceipt(res3.hash));
+                          })
+                            .then((res4) => {
+                              if (res4) {
+                                clearInterval(timer1);
+                                new Promise(function (resolve, reject) {
+                                  resolve(addUserAddressToGage(id, account));
+                                })
+                                  .then(() => {
+                                    toast.success('Gage Joined Successfully', { toastId: 2 });
+                                    dispatch(reset());
+                                    router.push('/user-info');
+                                  })
+                                  .catch((err) => {
+                                    toast.error(`Error while joining gage in backend! ${err}`, { toastId: 2 });
+                                    return;
+                                  });
+                              }
+                            })
+                            .catch((err) => {
+                              toast.error(`Error while fetching joining gage reciept! ${err}`, { toastId: 2 });
+                              return;
+                            });
+                        }, 1000);
+                      })
+                      .catch((err) => {
+                        toast.error(`Error while joining gage! ${err}`, { toastId: 2 });
+                        return;
+                      });
+                  })
+                  .catch((err) => {
+                    toast.error('Gage not registered in backend!', { toastId: 1 });
+                    clearTimeout(timer);
+                    return;
+                  });
+              }
+            })
+            .catch((err) => {
+              toast.error(`Error while initiate Gage ${err}`, { toastId: 1 });
+              clearTimeout(timer);
+              return;
+            });
+        }, 1000);
       }
     }, 5000);
   };
