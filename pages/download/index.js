@@ -7,8 +7,8 @@ import fileDownload from 'js-file-download';
 
 function Download() {
   const handleDownload = (file) => {
-    api.get(`download/${file}`).then((response) => {
-      fileDownload(response.data);
+    api.get(`download/${file}`, {responseType: 'blob'}).then((response) => {
+      fileDownload(response.data, file);
     });
   };
 
