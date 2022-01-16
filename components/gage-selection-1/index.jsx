@@ -28,17 +28,17 @@ function index() {
               <div className='col-sm-4 mb-4 mb-sm-0'>
                 <div
                   onClick={() => {
-                    dispatch(changeGageType({ gageType: 'Standard Gage' }));
+                    dispatch(changeGageType({ gageType: 'Liquid Gage' }));
                   }}>
                   <a className='text-center'>
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
                       <img src='img/standard-gage.svg' />
                     </div>
                     <div className='d-flex align-items-center justify-content-center mt-4'>
-                      <h2 className='color-white mt-1'>Standard Gage</h2>
+                      <h2 className='color-white mt-1'>Liquid Gage</h2>
                       <Tooltip
                         text={
-                          'A standard 6-holder gage contract with 1:5 risk to reward. Deposit an asset, choose a risk percentage and get paired with five other users. Last one to withdraw his funds wins the risk percentage of the others and a percentage of their accumulated fees. Are you the most patient? (Reward redistribution-friendly)'
+                          'Provide liquidity at a 50% discount, instantly earn 10% of your original deposit and leave it be for long enough to win another 10%!'
                         }>
                         <a className='ms-2'>
                           <svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -89,7 +89,7 @@ function index() {
                     <h2 className='color-white mt-1'>Yield Gage</h2>
                     <Tooltip
                       text={
-                        '“A yield gage adds additional layers of passive revenue, by sending the deposit of your gage to a yield farming strategy. Profit from ETRNL fees, yield farming and gaging all at once: exponentially more money for your patience!”'
+                        '“Contender for the highest earning potential of all DeFi! A yield gage is a liquid gage whose deposit is sent to a yield farming strategy.”'
                       }>
                       <a className='ms-2'>
                         <svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'>
