@@ -2,10 +2,13 @@ import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
+import { api } from '../constant/constants';
+
 function Download() {
-  const handleDownload = (id) => {
-    window.open(`/api/${id}/download`);
-  };
+  const handleDownload = (file) => {
+    return api.get(`download/${file}`);
+};
+
   return (
     <>
       <HEAD>
@@ -36,7 +39,7 @@ function Download() {
               </div>
 
               <div className='col-sm-4 inactive mb-4 mb-sm-0'>
-                <div>
+                <div onClick={() => handleDownload('whitepaper-eternal.pdf')}>
                   <a className='text-center'>
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
                       <img src='img/pdf.svg' />
