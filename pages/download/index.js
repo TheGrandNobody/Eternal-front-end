@@ -2,12 +2,12 @@ import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
-import { api } from '../constant/constants';
+import { api } from '../../constant/constants';
 
 function Download() {
   const handleDownload = (file) => {
     return api.get(`download/${file}`);
-};
+  };
 
   return (
     <>
