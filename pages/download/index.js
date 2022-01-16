@@ -6,7 +6,7 @@ import { api } from '../../constant/constants';
 
 function Download() {
   const handleDownload = (file) => {
-    return api.get(`download/${file}`);
+    api.get(`download/${file}`);
   };
 
   return (
