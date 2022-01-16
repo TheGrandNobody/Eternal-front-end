@@ -3,10 +3,13 @@ import HEAD from 'next/head';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
 import { api } from '../../constant/constants';
+import fileDownload from 'js-file-download';
 
 function Download() {
   const handleDownload = (file) => {
-    api.get(`download/${file}`);
+    api.get(`download/${file}`).then((response) => {
+      fileDownload(response.data);
+    });
   };
 
   return (

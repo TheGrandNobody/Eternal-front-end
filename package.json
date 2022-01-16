@@ -25,6 +25,7 @@
     "ethers": "^5.5.1",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
+    "js-file-download": "^0.4.12",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "mime": "^3.0.0",
