@@ -6,9 +6,11 @@ export const socialDropDownData = [
 ];
 
 export const infoDropDownData = [
-  {
-    title: 'Whitepaper',
-    link: '/download',
-  },
+  { title: 'Whitepaper', link: '/download', },
   { title: 'Documentation', link: 'https://docs.eternal.money/' },
 ];
+
+export const tokenOptionData = [
+  { token: 'AVAX', icon: 'img/avax.png'},
+  { token: 'MIM', icon: 'img/mim.png'}
+]

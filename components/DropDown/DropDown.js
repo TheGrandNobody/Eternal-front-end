@@ -1,14 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import Link from 'next/link';
-import {infoDropDownData , socialDropDownData} from '../../constant/data'
+
 
 const SubLinkContainer = styled.li`
   &: hover {
     background: #e9ecef;
   } ;
 `;
-const SubLink = styled.a``;
 
 const DropDownContent = styled.ul`
   background: #c35c6c;
@@ -31,7 +29,7 @@ const DropDown = styled.li`
   }
 `;
 
-function DropDownComponent({ optionsToMap, name = '', handleOnChange }) {
+function DropDownComponent({ optionsToMap, name = ''}) {
   return (
     <DropDown className='nav-item dropdown mx-4'>
       <DropDownBtn className={'nav-link dropdown-toggle'}>{name}</DropDownBtn>
@@ -45,7 +43,6 @@ function DropDownComponent({ optionsToMap, name = '', handleOnChange }) {
           </SubLinkContainer>
         ))}
 
-        
       </DropDownContent>
     </DropDown>
   );

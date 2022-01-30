@@ -44,11 +44,11 @@ function Footer() {
           <li className='nav-item mx-4'>
             {active ? (
               <a className={`nav-link ${handleActiveNavMenu() && 'active border'}`} onClick={handleClickOnEarn}>
-                Earn
+                Gage
               </a>
             ) : (
               <a className='nav-link disabled' onClick={handleClickOnEarn}>
-                Earn
+                Gage
               </a>
             )}
           </li>
@@ -61,10 +61,9 @@ function Footer() {
           <DropDownComponent name={'Info'} optionsToMap={infoDropDownData} />
         </ul>
         <p className='color-white text-center mt-3 mb-5'>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem <br />
-          accusantium doloremque laudantium, totam rem aperiam, eaque <br />
-          ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae <br />
-          dicta sunt explicabo.
+        <b><font size="+1">Less Risk, More Reward.</font></b> 
+        <br></br> <font size="2">There's nothing better than making money
+        <br></br> while making the world a better place.</font>
         </p>
       </div>
 

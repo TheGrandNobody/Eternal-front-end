@@ -1,11 +1,9 @@
 import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../navbar';
-import Link from 'next/link';
 import Footer from '../Footer/Footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeGageType } from '../../reducers/main';
-import { useRouter } from 'next/router';
 import Tooltip from '../ToolTip/Tooltip';
 
 function index() {

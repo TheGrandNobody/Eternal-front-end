@@ -8,6 +8,8 @@ import { changeApproval } from '../../reducers/main';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserOwnedGages } from '../../services';
 import { changeAllowedToChangeGage } from '../../reducers/main';
+import { tokenOptionData } from '../../constant/data';
+import CreateLiquidGage from '../LiquidGage/LiquidGage';
 
 function index() {
   const {
@@ -57,17 +59,20 @@ function index() {
         <div className='header d-flex align-items-center'>
           <Navbar />
 
-          <div className='container select-gage-container' style={{ marginBottom: 50 }}>
-            <div className='select-deposit-bg'>
-              <div className='position-relative text-center'>
-                <h1 className='color-white bold mb-5'>Select a deposit</h1>
-              </div>
-              <div className='select-deposit position-relative'>
-                <div className='select-deposit-input d-flex'>
-                  <input type='text' inputmode='decimal' title='Token Amount' autocomplete='off' autocorrect='off' pattern='^[0-9]*[.,]?[0-9]*$' placeholder = '0.0' minlength='1' maxlength='79' spellcheck='false'></input>
-                  <div></div>
-                </div>
-              </div>
+          <div className='container select-deposit-container'>
+            <CreateLiquidGage optionsToMap={tokenOptionData}></CreateLiquidGage>
+          </div>
+        </div>
+        <Footer />
+      </body>
+    </>
+  );
+}
+
+export default index;
+
+
+              /**
               <React.Fragment>
                   {allowedToCreateGage ? (
                         amount && riskType && riskPercentage ? (
@@ -95,14 +100,4 @@ function index() {
                         )
                       ) : null} 
                 </React.Fragment>
-            </div>
-          </div>
-        </div>
-
-        <Footer />
-      </body>
-    </>
-  );
-}
-
-export default index;
+              */
