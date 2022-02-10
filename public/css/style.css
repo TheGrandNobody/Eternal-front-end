@@ -14,7 +14,7 @@
 body {
   font-family: 'Montserrat', sans-serif;
   color: #fff;
-  background: #30083b;
+  background: hsl(287, 76%, 13%);
 }
 
 .theme-btn {
@@ -172,14 +172,14 @@ a:hover .gage-block {
 }
 .select-gage-container {
   max-width: 909px;
-  margin-top: 125px;
 }
 
-.select-deposit-container {
+.select-bg {
   max-width: 909px;
-  margin-top: 125px;
-  height: 80vh;
+  margin-top: 10%;
+  height: 85vh;
 }
+
 .select-deposit-pg .header {
   height: auto;
 }
@@ -192,35 +192,20 @@ a:hover .gage-block {
   color: white;
   outline: none;
   text-overflow: ellipsis;
-  font-size: large;
-  white-space:nowrap;
-  overflow: hidden;
+  font-size: 2.5vh;
+  white-space: nowrap;
 }
 
 .select-deposit input:focus{
   outline: none;
 }
 
-.token-list {
-  width: 20%;
-  background: #30083b;
-  border-radius: 6px;
-  overflow: hidden;
-  margin-left: 65%;
-  padding-left: 0;
-  margin-top: 2%;
-}
-
 .token-option {
   list-style: none;
-  padding-top: 20%;
   cursor: pointer;
   position: relative;
-  width: 100%;
-  box-sizing: border-box;
-  line-height: 0;
-  display: flex;
-  justify-content: flex-start;
+  border-radius: 6px;
+  height: 50%;
 }
 
 .token-option:hover {
@@ -234,12 +219,11 @@ a:hover .gage-block {
   left: 12.5%;
 }
 
-.token-option p {
-  position: relative;
-  font-size: 85%;
-  left: 40%;
+.token-option header {
+  font-size: 1.65vh;
   font-weight: 535;
-  padding-bottom: 5%;
+  position: relative;
+  left: 40%;
 }
 
 .hide {
@@ -254,20 +238,20 @@ a:hover .gage-block {
   color: #bbabe3;
 }
 
-.gage-stats h2 {
-  color: rgba(255, 255, 255, 0.70);
-  font-weight: 500;
-}
-
-.gage-stats p{
-  font-weight: 800;
-}
-
-.tooltip-up {
-  bottom: 4px;
+.gage-stats {
+  z-index: 25;
   position: relative;
 }
 
+.gage-stats p, .stake-stats p {
+  font-weight: 800;
+}
+
+.stake-stats h2, .gage-stats h2 {
+  color: rgba(255, 255, 255, 0.70);
+  font-weight: 500;
+  font-size: 2.5vh;
+}
 /*  ======================================================== Gage Selection end =================================================  */
 
 /*  ======================================================== User info start =================================================  */

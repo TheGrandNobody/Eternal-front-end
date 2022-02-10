@@ -20,9 +20,10 @@ function table(props) {
           <tr>
             <th scope='col'>Gage Type</th>
             <th scope='col'>Date of Initiation</th>
-            <th scope='col'>Total Number of Users</th>
             <th scope='col'>Deposit</th>
+            <th scope='col'>Bonus</th>
             <th scope='col'>Risk</th>
+            <th scope='col'>Condition</th>
           </tr>
         </thead>
         <tbody>
@@ -34,10 +35,11 @@ function table(props) {
                 key={index}
                 index={index + 1}
                 created_at={item.created_at}
-                no_of_users={item.gageTotalUsers}
                 amount={item.amount}
-                riskType={item.riskType}
+                asset={item.asset}
                 riskPercentage={item.riskPercentage}
+                bonusPercentage={item.bonusPercentage}
+                condition = {item.condition}
                 handleClick={clickableRow ? () => handleClickOnGage(item.gageAddress) : () => ({})}
               />
             ))

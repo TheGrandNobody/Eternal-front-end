@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore} from '@reduxjs/toolkit';
 import eternalReducer from '../reducers/main';
 
 export const store = configureStore({

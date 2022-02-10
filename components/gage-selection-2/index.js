@@ -1,11 +1,11 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import HEAD from 'next/head';
 import Navbar from '../navbar';
 import useEternalHook from '../../hooks/useEternalHook';
 import Footer from '../Footer/Footer';
 import { useWeb3React } from '@web3-react/core';
 import { changeApproval } from '../../reducers/main';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getUserOwnedGages } from '../../services';
 import { changeAllowedToChangeGage } from '../../reducers/main';
 import { tokenOptionData } from '../../constant/data';
@@ -15,31 +15,32 @@ function index() {
   const {
     gageType,
     amount,
-    riskType,
+    asset,
     riskPercentage,
-    handleClickOnRiskPercentage,
-    handleClickOnRiskType,
+    bonusPercentage,
+    condition,
     handleOnAmountSelect,
+    handleOnAssetSelect,
+    handlePercents,
     handleClickOnConfirmBtn,
     handleClickOnApproveBtn,
-    handleUserApproval,
+    handleUserApproval
   } = useEternalHook();
 
   const dispatch = useDispatch();
-  const { approval, allowedToCreateGage } = useSelector((state) => state.eternal);
   const { account } = useWeb3React();
 
   useEffect(() => {
     (async () => {
-      const req = await handleUserApproval(account);
-      dispatch(changeApproval({ approval: req?.approvalStatus || false }));
+      const approved = await handleUserApproval(asset, amount);
+      dispatch(changeApproval({ approval: approved}));
     })();
   }, [account]);
 
   useEffect(() => {
-    if (amount && riskType && riskPercentage && account && gageType) {
+    if (amount && asset && account && gageType) {
       (async () => {
-        const req = await getUserOwnedGages(amount, riskType, riskPercentage, account, gageType, 'pending');
+        const req = await getUserOwnedGages(amount, bonusPercentage, riskPercentage, account, gageType, 'pending');
         if (req?.data?.results?.length > 0) {
           dispatch(changeAllowedToChangeGage({ permission: false }));
         } else if (req?.data?.results?.length === 0) {
@@ -47,7 +48,7 @@ function index() {
         }
       })();
     }
-  }, [amount, riskType, riskPercentage, account, gageType]);
+  }, [amount, asset, account, gageType]);
 
   return (
     <>
@@ -58,9 +59,14 @@ function index() {
       <body className='secondary select-deposit-pg'>
         <div className='header d-flex align-items-center'>
           <Navbar />
-
-          <div className='container select-deposit-container'>
-            <CreateLiquidGage optionsToMap={tokenOptionData}></CreateLiquidGage>
+          <div className='container select-bg'>
+            <CreateLiquidGage 
+            optionsToMap={tokenOptionData} 
+            handleClickOnApproveBtn={handleClickOnApproveBtn} 
+            handleClickOnConfirmBtn={handleClickOnConfirmBtn}
+            handleOnAssetSelect={handleOnAssetSelect}
+            handleOnAmountSelect={handleOnAmountSelect}
+            handlePercents={handlePercents} />
           </div>
         </div>
         <Footer />
@@ -70,34 +76,3 @@ function index() {
 }
 
 export default index;
-
-
-              /**
-              <React.Fragment>
-                  {allowedToCreateGage ? (
-                        amount && riskType && riskPercentage ? (
-                          approval ? (
-                            <div className='col-sm-12 my-5 text-center'>
-                              <button
-                                onClick={() => handleClickOnConfirmBtn(gageType, amount, riskType, riskPercentage, account)}
-                                className='btn theme-btn'>
-                                Confirm
-                              </button>
-                            </div>
-                          ) : (
-                            <div className='col-sm-12 my-5 text-center'>
-                              <button
-                                onClick={async () => {
-                                  await handleClickOnApproveBtn(amount);
-                                }}
-                                className='btn theme-btn'>
-                                Approve
-                              </button>
-                            </div>
-                          )
-                        ) : (
-                          ''
-                        )
-                      ) : null} 
-                </React.Fragment>
-              */

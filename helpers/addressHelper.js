@@ -1,15 +1,4 @@
-import { Addresses } from '../constant/constants';
-export const getAddress = (address) => {
-  // const chainId = 97;
-  const chainId = 4;
-
-  return address[chainId];
-};
-
-export const getEternalPlatformAddress = () => {
-  return getAddress(Addresses.eternalPlatform);
-};
-
-export const getEternalTokenAddress = () => {
-  return getAddress(Addresses.eternalTokenAddress);
+import { addresses } from '../constant/constants';
+export const getAddress = (entity) => {
+  return addresses[entity];
 };

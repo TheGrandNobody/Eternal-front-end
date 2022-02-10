@@ -41,7 +41,7 @@ function IndexPage() {
           <Navbar />
           <div className='container banner-content text-center'>
             <h1 className='color-white bold mb-5'>Less Risk, More Reward.</h1>
-            <button className='btn theme-btn' onClick={handleClickOnEarn}>
+            <button className='btn theme-btn' onClick={() => handleClickOnEarn()}>
               Go to platform
             </button>
           </div>

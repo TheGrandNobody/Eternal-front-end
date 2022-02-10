@@ -4,8 +4,10 @@ const initialState = {
   gageType: null,
   loadedContracts: {},
   gageDepositAmount: null,
+  gageAsset: null,
   gageRiskPercentage: null,
-  gageRiskType: null,
+  gageBonusPercentage: null,
+  gageCondition: null,
   gageAddress: null,
   approval: false,
   selectedGage: null,
@@ -22,11 +24,17 @@ export const eternalSlice = createSlice({
     changeGageRiskPercentage: (state, action) => {
       state.gageRiskPercentage = action.payload.riskPercentage;
     },
-    changeGageRiskType: (state, action) => {
-      state.gageRiskType = action.payload.riskType;
+    changeGageBonusPercentage: (state, action) => {
+      state.gageBonusPercentage = action.payload.bonusPercentage;
+    },
+    changeGageCondition: (state, action) => {
+      state.gageCondition = action.payload.condition;
     },
     changeGageDepositAmount: (state, action) => {
       state.gageDepositAmount = action.payload.depositAmount;
+    },
+    changeGageAsset: (state, action) => {
+      state.gageAsset = action.payload.asset;
     },
     changeLoadedContracts: (state, action) => {
       state.loadedContracts = action.payload.loadedContracts;
@@ -52,7 +60,9 @@ export const eternalSlice = createSlice({
       state.loadedContracts = {};
       state.gageDepositAmount = null;
       state.gageRiskPercentage = null;
-      state.gageRiskType = null;
+      state.gageBonusPercentage = null;
+      state.gageCondition = null;
+      state.gageAsset = null;
       state.gageAddress = null;
       state.approval = false;
       state.selectedGage = null;
@@ -63,7 +73,9 @@ export const eternalSlice = createSlice({
 export const {
   changeGageType,
   changeGageRiskPercentage,
-  changeGageRiskType,
+  changeGageBonusPercentage,
+  changeGageCondition,
+  changeGageAsset,
   changeApproval,
   changeGageDepositAmount,
   changeLoadedContracts,

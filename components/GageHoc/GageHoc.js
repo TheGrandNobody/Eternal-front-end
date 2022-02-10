@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import GageSelection1 from '../gage-selection-1';
 import GageSelection2 from '../gage-selection-2';
 

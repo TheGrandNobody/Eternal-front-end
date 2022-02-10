@@ -6,11 +6,9 @@ import { getWeb3NoAccount } from '../utils/web3';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import Web3 from 'web3';
-import { useEffect, useState } from 'react';
 import { changeGageAddress, reset } from '../reducers/main';
 import { useGageSolContract } from './useContract';
 import { addUserAddressToGage } from '../services';
-import { functions, reject } from 'lodash';
 
 function useEternalPlatformContractfunction() {
   const { library, account } = useWeb3React();

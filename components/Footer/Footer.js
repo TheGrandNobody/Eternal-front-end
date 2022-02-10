@@ -8,14 +8,24 @@ import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
 
 function Footer() {
-  const [clicked, setClicked] = React.useState(false);
   const router = useRouter();
 
   const { account, active } = useWeb3React();
   const { login, logout } = useAuth();
-  const handleActiveNavMenu = () => {
-    return router.route === '/user-info' || router.route === '/gage-selection';
+
+  const handleActiveNavMenu = (number = 0) => {
+    switch (number) {
+      case 1: 
+        return router.route === '/user-info' || router.route === '/gage-selection';
+      case 2:
+        return router.route === '/stake';
+      case 3:
+        return router.route === '/igo';
+      default:
+        return;
+    }
   };
+
   const checkUserStatusOnConnect = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
@@ -25,29 +35,54 @@ function Footer() {
     router.push('/gage-selection');
   };
 
-  const handleClickOnEarn = () => {
+  const handleClickOnEarn = (number = 0) => {
     if (!active) {
-      login("Injected");
+      login('Injected');
     }
-    setClicked(true);
     if (account && active) {
-      checkUserStatusOnConnect(account);
+      switch (number) {
+      case 0:
+        router.push('/');
+        break;
+      case 1: 
+        checkUserStatusOnConnect(account);
+        break;
+      case 2:
+        router.push('/stake');
+        break;
+      case 3:
+        router.push('/igo');
+        break;
+      default:
+        return;
+    }
     }
   };
   return (
     <footer>
       <div className='container d-flex align-items-center justify-content-center py-5 flex-column'>
-        <a href='' className='mt-5'>
+        <a className='mt-5' onClick={() => handleClickOnEarn(0)}>
           <img src='img/footer-logo.svg' />
         </a>
         <ul className='navbar-nav m-auto d-flex mt-5 mb-0 flex-row'>
           <li className='nav-item mx-4'>
             {active ? (
-              <a className={`nav-link ${handleActiveNavMenu() && 'active border'}`} onClick={handleClickOnEarn}>
+              <a className={`nav-link ${handleActiveNavMenu(3) && 'active border'}`} onClick={() => handleClickOnEarn(3)}>
+                IGO
+              </a>
+            ) : (
+              <a className='nav-link disabled' onClick={() => handleClickOnEarn(3)}>
+                IGO
+              </a>
+            )}
+            </li>
+          <li className='nav-item mx-4'>
+            {active ? (
+              <a className={`nav-link ${handleActiveNavMenu(1) && 'active border'}`} onClick={() => handleClickOnEarn(1)}>
                 Gage
               </a>
             ) : (
-              <a className='nav-link disabled' onClick={handleClickOnEarn}>
+              <a className='nav-link disabled' onClick={() => handleClickOnEarn(1)}>
                 Gage
               </a>
             )}
@@ -57,12 +92,23 @@ function Footer() {
               Governance
             </a>
           </li>
+          <li className= 'nav-item mx-4'>
+            {active ? (
+              <a className={`nav-link ${handleActiveNavMenu(2) && 'active border'}`} onClick={() => handleClickOnEarn(2)}>
+                Stake
+              </a>
+            ) : (
+              <a className={`nav-link disabled`} onClick={() => handleClickOnEarn(2)}>
+                Stake
+              </a>
+            )}
+          </li>
           <DropDownComponent name={'Social'} optionsToMap={socialDropDownData} />
           <DropDownComponent name={'Info'} optionsToMap={infoDropDownData} />
         </ul>
         <p className='color-white text-center mt-3 mb-5'>
         <b><font size="+1">Less Risk, More Reward.</font></b> 
-        <br></br> <font size="2">There's nothing better than making money
+        <br></br> <font size="2">There's nothing better than earning money
         <br></br> while making the world a better place.</font>
         </p>
       </div>

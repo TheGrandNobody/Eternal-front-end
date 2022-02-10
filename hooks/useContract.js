@@ -1,4 +1,4 @@
-import { getEternalPlatformContract, getGageSolContract, getEternalTokenContract } from '../helpers/ContractHelper';
+import { getEternalPlatformContract, getGageSolContract, getERC20Contract } from '../helpers/ContractHelper';
 import { useMemo } from 'react';
 import Web3 from 'web3';
 
@@ -21,7 +21,7 @@ export const useGageSolContract = (library, account, contractAddress) => {
   return getGageSolContract(library, account, contractAddress);
 };
 
-export const useEternalTokenAddress = (library, account) => {
+export const useERC20 = (address, library, account) => {
   const web3 = new Web3(library);
-  return useMemo(() => getEternalTokenContract(library, account), [web3]);
+  return useMemo(() => getERC20Contract(address, library, account), [web3]);
 };
