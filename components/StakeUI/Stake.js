@@ -44,9 +44,11 @@ const SmallBackground = styled.div`
 `;
 
 const SmallHeader = styled.p`
-    font-size: 5vmin;
+    font-size: 4vmin;
     font-weight: 550;
     border-bottom: 3.5px ridge #ece3e1;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
 `;
 
 const SelectHeader = styled.p`

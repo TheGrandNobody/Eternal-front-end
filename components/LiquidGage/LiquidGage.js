@@ -25,7 +25,7 @@ const SelectContainer = styled.div`
     width: 65%;
     height: 10%;
     margin: 0 auto;
-    margin-bottom: 7.5%;
+    margin-bottom: 11%;
 `;
 
 const InputContainer = styled.div`
@@ -86,7 +86,7 @@ const Chevron = styled.img`
 `;
 
 const StatsContainer = styled.div`
-    margin-bottom: 3.5%;
+    margin-bottom: 7%;
 `;
 
 const RewardsContainer = styled.div`
@@ -150,7 +150,7 @@ function CreateLiquidGage({optionsToMap,
 
     return (
         <SelectBackground>
-            <div className='d-flex align-items-center justify-content-center' style={{marginTop: '6.425%'}}>
+            <div className='d-flex align-items-center justify-content-center' style={{marginTop: '3%'}}>
                 <SelectHeader>Select a deposit</SelectHeader>
                 <Tooltip
                 text={

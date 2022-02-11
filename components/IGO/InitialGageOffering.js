@@ -47,9 +47,11 @@ const SelectHeader = styled.p`
 `;
 
 const SmallHeader = styled.p`
-    font-size: 5vmin;
+    font-size: 4vmin;
     font-weight: 550;
     border-bottom: 3.5px ridge #d3d3d3;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
 `;
 
 const InputContainer = styled.div`
