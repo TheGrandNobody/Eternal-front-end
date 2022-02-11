@@ -10,14 +10,14 @@ const SelectBackground = styled.div`
   justify-content: center;
   margin-bottom: 110%;
   margin: 0 auto;
-  width: 80%;
+  width: 60%;
   border-top: 7.5px groove #ece3e1;
   border-bottom: 7.5px ridge #ece3e1;
 `;
 
 const SelectHeader = styled.p`
     padding-top: 2.5%;
-    font-size: 275%;
+    font-size: 3.5vmin;
     font-weight: 550;
 `;
 
@@ -29,7 +29,7 @@ const SelectContainer = styled.div`
 `;
 
 const InputContainer = styled.div`
-    width: 70%;
+    width: 84.5%;
     height: 110%;
     background: hsl(287, 76%, 13%);
     border: 5px solid hsl(287, 90%, 13%);
@@ -96,7 +96,7 @@ const RewardsContainer = styled.div`
 
 const RewardsBlock = styled.div`
     margin: 0 auto;
-    width: 45.5%;
+    width: 55%;
     height: 72.5%;
     background: hsl(287, 76%, 13%);
     border: 5px solid hsl(287, 90%, 13%);
@@ -110,7 +110,7 @@ const Amount = styled.div`
     overflow: hidden;
     width: 60%;
     text-overflow: ellipsis;
-    font-size: 2.5vh;
+    font-size: 2.5vmin;
 `
 
 function CreateLiquidGage({optionsToMap, 
@@ -150,7 +150,7 @@ function CreateLiquidGage({optionsToMap,
 
     return (
         <SelectBackground>
-            <div className='d-flex align-items-center justify-content-center'>
+            <div className='d-flex align-items-center justify-content-center' style={{marginTop: '6.425%'}}>
                 <SelectHeader>Select a deposit</SelectHeader>
                 <Tooltip
                 text={
@@ -230,29 +230,13 @@ function CreateLiquidGage({optionsToMap,
                     </SelectToken>
                 </RewardsBlock>
             </RewardsContainer>
-            {allowedToCreateGage ? (
-                amount && (deposit !== 'Select') ? (
-                    approval ? (
-                        <div className='col-sm-12 my-5 text-center'>
-                            <button
-                                onClick={() => handleClickOnConfirmBtn(gageType, amount, riskType, riskPercentage, account)}
-                                className='btn theme-btn'>
-                                Confirm
-                            </button>
-                        </div>
-                    ) : (
-                        <div className='col-sm-12 my-5 text-center'>
-                            <button
-                                onClick={async () => { await handleClickOnApproveBtn(amount);}}
-                                className='btn theme-btn'>
-                                Approve
-                            </button>
-                        </div>
-                        )
-                    ) : (
-                          ''
-                        )
-                    ) : null} 
+                <div className='col-sm-12 my-5 text-center'>
+                    <button
+                        onClick={async () => { await handleClickOnApproveBtn(amount);}}
+                        className='btn theme-btn'>
+                        Approve
+                    </button>
+                </div>
         </SelectBackground>
   );
 }

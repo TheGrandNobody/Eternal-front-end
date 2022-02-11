@@ -23,7 +23,6 @@ const IGOSwitch = styled(Switch)(() => ({
 const SelectBackground = styled.div`
     background-color: #bbabe34d;
     border-radius: 16px;
-    height: 70%;
     width: 70%;
     justify-content: center;
     position: relative;
@@ -35,29 +34,22 @@ const SelectBackground = styled.div`
 const SmallBackground = styled.div`
     background-color: #bbabe34d;
     border-radius: 16px;
-    height: 47.5%;
-    width: 35%;
     justify-content: center;
     position: relative;
-    right: 5%;
     border-top: 5px groove #ece3e1;
     border-bottom: 5px ridge #ece3e1;
 `;
 
 const SelectHeader = styled.p`
-    font-size: 3.5vh;
+    font-size: 3.5vmin;
     font-weight: 550;
     padding-top: 3.75%;
 `;
 
-const HeaderContainer = styled.div`
-    margin-top: -3.75%;
-`;
-
 const SmallHeader = styled.p`
-    font-size: 240%;
+    font-size: 5vmin;
     font-weight: 550;
-    border-bottom: 5px ridge #d3d3d3;
+    border-bottom: 3.5px ridge #d3d3d3;
 `;
 
 const InputContainer = styled.div`
@@ -141,7 +133,7 @@ const Amount = styled.div`
     overflow: hidden;
     width: 60%;
     text-overflow: ellipsis;
-    font-size: 2.5vh;
+    font-size: 2.5vmin;
 `
 
 
@@ -184,9 +176,9 @@ function InitialGageOffering({optionsToMap,
 
     return (
         <div className='container select-bg d-flex justify-content-center'>
-            <SmallBackground>
-                <SmallHeader className='text-center'>IGO Stats</SmallHeader>
-                <div className='stake-stats' style={{paddingTop: '3.75%'}}>
+            <SmallBackground className='container' style={{right: '5vmin', height: '47.5%', width: '35%'}}>
+                <SmallHeader className='text-center'>Your stats</SmallHeader>
+                <div className='stake-stats'>
                     <div className='d-flex align-center justify-content-center'>
                         <h2>Total Contribution</h2>
                         <Tooltip
@@ -195,7 +187,7 @@ function InitialGageOffering({optionsToMap,
                         }>
                         </Tooltip>
                     </div>
-                    <p className='text-center'>5000 ETRNL</p>
+                    <p className='text-center' style={{fontSize: '2vmin'}}>5000 ETRNL</p>
                     <div className='d-flex align-center justify-content-center'>
                         <h2>Amount Gaged</h2>
                         <Tooltip
@@ -204,7 +196,7 @@ function InitialGageOffering({optionsToMap,
                         }>
                         </Tooltip>
                     </div>
-                    <p className='text-center'>4500 ETRNL</p>
+                    <p className='text-center' style={{fontSize: '2vmin'}}>4500 ETRNL</p>
                     <div className='d-flex align-center justify-content-center'>
                         <h2>Amount Deposited</h2>
                         <Tooltip
@@ -213,30 +205,31 @@ function InitialGageOffering({optionsToMap,
                         }>
                         </Tooltip>
                     </div>
-                    <p className='text-center'>500 ETRNL</p>
+                    <p className='text-center' style={{fontSize: '2vmin'}}>500 ETRNL</p>
                 </div>    
             </SmallBackground>
             <SelectBackground style={{height: height}}>
                 <FormControlLabel 
                     className='position-relative'
-                    style={{left: '85%', top: '1.25%'}} 
-                    control={<IGOSwitch defaultChecked 
+                    style={{left: '85%', top: '1.75%'}} 
+                    sx={{width: '5%', height: '5%', minHeight: 2, minWidth: 2}}
+                    control={<IGOSwitch defaultChecked
                     onClick={() => {
                         setIGO(offering === 'Gage' ? 'Deposit' : 'Gage'); 
                         setHeight(height === '70%' ? '85%' : '70%')}}/>} 
-                    label={<Typography color={'#ffff'} fontWeight={450}>{offering}</Typography>}
+                    label={<Typography fontSize={'calc(0.7rem + 0.5vmin)'} color={'#ffff'} fontWeight={450}>{offering}</Typography>}
                     labelPlacement='bottom' 
                 />
               { offering === 'Deposit' ? 
               <>
-                <HeaderContainer className='d-flex align-items-center justify-content-center'>
+                <div className='d-flex align-items-center justify-content-center'>
                     <SelectHeader>Select a deposit</SelectHeader>
                     <Tooltip
                     text={
                     "Deposit MIM or AVAX and get ETRNL in return. The deposit will be automatically added to its corresponding ETRNL liquidity pair's reserves."
                     }>
                     </Tooltip>
-                </HeaderContainer>
+                </div>
                 <SelectContainer style={{marginBottom: '9%'}}>
                     <InputContainer className='input-container' style={{height: '125%'}}>
                         <input type='text' inputMode='decimal' title='Token Amount' autoComplete='off' autoCorrect='off' pattern='^[0-9]*[.,]?[0-9]*$' placeholder = '0.0' minLength='1' maxLength='79' spellCheck='false' onKeyPress={handleKeyPress} onChange={handleChange}></input>
@@ -257,7 +250,7 @@ function InitialGageOffering({optionsToMap,
                 </SelectContainer>
                 <RewardsContainer style={{marginBottom: '10%'}}>
                     <div className='d-flex align-center justify-content-center'>
-                        <h2>You get</h2>
+                        <h2 style={{fontSize: '3vmin'}}>You get</h2>
                         <Tooltip
                             text={
                             'The amount of ETRNL you receive in return for your deposit.'
@@ -275,14 +268,14 @@ function InitialGageOffering({optionsToMap,
              </>
             : 
              <>
-                <HeaderContainer className='d-flex align-items-center justify-content-center'>
+                <div className='d-flex align-items-center justify-content-center'>
                     <SelectHeader>Select a deposit</SelectHeader>
                     <Tooltip
                     text={
                     "The deposit is the asset you provide to the loyalty gage. You can withdraw it whenever you want."
                     }>
                     </Tooltip>
-                </HeaderContainer>
+                </div>
                 <SelectContainer style={{marginBottom: '8.5%'}}>
                     <InputContainer className='input-container' style={{height: '102.5%'}}>
                         <input type='text' inputMode='decimal' title='Token Amount' autoComplete='off' autoCorrect='off' pattern='^[0-9]*[.,]?[0-9]*$' placeholder = '0.0' minLength='1' maxLength='79' spellCheck='false' onKeyPress={handleKeyPress} onChange={handleChange}></input>
@@ -312,7 +305,7 @@ function InitialGageOffering({optionsToMap,
                                 }>
                                 </Tooltip>
                             </div>
-                            <p className='text-center'>10%</p>
+                            <p className='text-center' style={{fontSize: '2vmin'}}>30%</p>
                         </div>
                         <div>
                             <div className='d-flex align-center justify-content-center'>
@@ -323,7 +316,7 @@ function InitialGageOffering({optionsToMap,
                                 }>
                                 </Tooltip>
                             </div>
-                            <p className='text-center'>1%</p>
+                            <p className='text-center' style={{fontSize: '2vmin'}}>1%</p>
                         </div>
                         <div>
                             <div className='d-flex align-center justify-content-center'>
@@ -334,13 +327,13 @@ function InitialGageOffering({optionsToMap,
                                 }>
                                 </Tooltip>
                             </div>
-                            <p className='text-center'>0.025%</p>
+                            <p className='text-center' style={{fontSize: '2vmin'}}>0.025%</p>
                         </div>
                     </div>
                 </div>
                 <RewardsContainer style={{marginBottom: '6.5%'}}>
                     <div className='d-flex align-center justify-content-center'>
-                        <h2>Instant Reward</h2>
+                        <h2 style={{fontSize: '3vmin'}}>Instant Reward</h2>
                         <Tooltip
                         text={
                         'The amount of ETRNL you instantly receive upon entering the loyalty gage.'
@@ -363,7 +356,13 @@ function InitialGageOffering({optionsToMap,
                         Approve
                     </button>
                 </div>
-            </SelectBackground>         
+            </SelectBackground>     
+            <SmallBackground className='text-center container' style={{left: '5vmin', height: '35%', width: '25%', paddingTop: '1.25%'}}>
+                <SmallHeader style={{fontSize: '3.5vmin'}}>IGO Info</SmallHeader>
+                <p style={{fontSize: '2vmin', color: 'rgba(255, 255, 255, 0.70)'}}>1 ETRNL = 0.01 AVAX</p>
+                <p style={{fontSize: '2vmin', color: 'rgba(255, 255, 255, 0.70)'}}>1 ETRNL = 0.9 MIM</p>
+                <p style={{fontSize: '1.25vmin', fontWeight: 550}}>3 000 000 000 ETRNL left before gaging bonus decreases</p>
+            </SmallBackground>    
         </div>
   );
 }

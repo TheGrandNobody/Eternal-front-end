@@ -175,9 +175,9 @@ a:hover .gage-block {
 }
 
 .select-bg {
-  max-width: 909px;
   margin-top: 10%;
-  height: 85vh;
+  height: 82.5vmin;
+  width: 82.5vw;
 }
 
 .select-deposit-pg .header {
@@ -192,7 +192,7 @@ a:hover .gage-block {
   color: white;
   outline: none;
   text-overflow: ellipsis;
-  font-size: 2.5vh;
+  font-size: 2.5vmin;
   white-space: nowrap;
 }
 
@@ -220,7 +220,7 @@ a:hover .gage-block {
 }
 
 .token-option header {
-  font-size: 1.65vh;
+  font-size: 1.65vmin;
   font-weight: 535;
   position: relative;
   left: 40%;
@@ -250,7 +250,7 @@ a:hover .gage-block {
 .stake-stats h2, .gage-stats h2 {
   color: rgba(255, 255, 255, 0.70);
   font-weight: 500;
-  font-size: 2.5vh;
+  font-size: 2.5vmin;
 }
 /*  ======================================================== Gage Selection end =================================================  */
 

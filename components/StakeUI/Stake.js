@@ -24,7 +24,7 @@ const SelectBackground = styled.div`
     border-radius: 16px;
     height: 70%;
     margin: 0 auto;
-    width: 70%;
+    width: 45%;
     justify-content: center;
     position: relative;
     border-top: 7.5px groove #ece3e1;
@@ -35,28 +35,24 @@ const SmallBackground = styled.div`
     background-color: #bbabe34d;
     border-radius: 16px;
     height: 47.5%;
-    width: 35%;
+    width: 30%;
+    left: 9%;
     justify-content: center;
     position: relative;
-    right: 5%;
     border-top: 5px groove #ece3e1;
     border-bottom: 5px ridge #ece3e1;
 `;
 
 const SmallHeader = styled.p`
-    font-size: 5vh;
+    font-size: 5vmin;
     font-weight: 550;
-    border-bottom: 5px ridge #ece3e1;
-`;
-
-const HeaderContainer = styled.div`
-    margin-top: -3.75%;
+    border-bottom: 3.5px ridge #ece3e1;
 `;
 
 const SelectHeader = styled.p`
     padding-top: 3.75%;
     font-weight: 550;
-    font-size: 3.5vh;
+    font-size: 3.5vmin;
 `;
 
 const InputContainer = styled.div`
@@ -114,9 +110,9 @@ function StakeUI({handleClickOnApproveBtn, handleClickOnConfirmBtn, handleOnAmou
 
     return (
         <div className='container select-bg d-flex justify-content-center'>
-            <SmallBackground>
-                <SmallHeader className='text-center'>Staking Info</SmallHeader>
-                <div className='stake-stats' style={{paddingTop: '3.75%'}}>
+            <SmallBackground className='container'>
+                <SmallHeader className='text-center'>Your stats</SmallHeader>
+                <div className='stake-stats' >
                     <div className='d-flex align-center justify-content-center'>
                         <h2>Total Stake</h2>
                         <Tooltip
@@ -146,33 +142,34 @@ function StakeUI({handleClickOnApproveBtn, handleClickOnConfirmBtn, handleOnAmou
                     <p className='text-center'>500 ETRNL</p>
                 </div>    
             </SmallBackground>
-            <SelectBackground>
+            <SelectBackground className='container'>
                 <FormControlLabel 
                 className='position-relative'
-                style={{left: '85%', top: '1.25%'}} 
+                style={{left: '85%', top: '1.75%'}} 
+                sx={{width: '5%', height: '5%', minHeight: 2, minWidth: 2}} 
                 control={<StakeSwitch defaultChecked 
                 onClick={() => {setStake(stake === 'Stake' ? 'Unstake' : 'Stake')}} />} 
                 label={<Typography color={'#ffff'} fontWeight={450}>{stake}</Typography>}
                 labelPlacement='bottom' 
                 />
                 { stake === 'Stake' ? 
-                    <HeaderContainer className='d-flex align-items-center justify-content-center'>
+                    <div className='d-flex align-items-center justify-content-center'>
                         <SelectHeader>Deposit ETRNL</SelectHeader>
                         <Tooltip
                         text={
                         "Join forces with the Eternal Treasury by staking your ETRNL. You earn a percentage of all gaging fees!"
                         }>
                         </Tooltip>
-                    </HeaderContainer>
+                    </div>
                 :
-                    <HeaderContainer className='d-flex align-items-center justify-content-center'>
+                    <div className='d-flex align-items-center justify-content-center'>
                         <SelectHeader>Withdraw ETRNL</SelectHeader>
                         <Tooltip
                         text={
                         "Unstake your ETRNL and earn any accumulated rewards proportional to the amount you withdraw. See you later!"
                         }>
                         </Tooltip>
-                    </HeaderContainer>  
+                    </div>  
                 }
                 <InputContainer className='input-container'>
                     <input type='text' inputMode='decimal' title='Token Amount' autoComplete='off' autoCorrect='off' pattern='^[0-9]*[.,]?[0-9]*$' placeholder = '0.0' minLength='1' maxLength='79' spellCheck='false' onKeyPress={handleKeyPress} onChange={handleChange}></input>

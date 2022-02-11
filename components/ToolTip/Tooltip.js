@@ -17,7 +17,11 @@ function TooltipComponent({ text }) {
       TransitionComponent={Fade}
       TransitionProps={{ timeout: 350 }}
       title={text}>
-      <Button sx={{minWidth: '1px', height: 25, width: 25, borderRadius: '50%'}}>
+      <Button sx={{minWidth: '1px', 
+                  height: '3vmin', 
+                  width: '3vmin', 
+                  borderRadius: '50%',
+                  }}>
           <svg height='20' width='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <circle cx='10' cy='10' r='10' fill='white' />
               <path

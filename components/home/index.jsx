@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../navbar';
 import { useWeb3React } from '@web3-react/core';
