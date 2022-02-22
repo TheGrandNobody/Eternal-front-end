@@ -1,10 +1,10 @@
 import React from 'react';
-import GageHoc from '../../components/GageHoc/GageHoc';
+import GageHook from '../../components/GageHook/GageHook';
 
 function index() {
   return (
     <div>
-      <GageHoc />
+      <GageHook />
     </div>
   );
 }

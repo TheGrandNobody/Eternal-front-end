@@ -2,7 +2,7 @@ import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../navbar';
 import Footer from '../Footer/Footer';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { changeGageType } from '../../reducers/main';
 import Tooltip from '../ToolTip/Tooltip';
 
