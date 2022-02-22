@@ -1,7 +1,7 @@
 * {
   box-sizing: border-box;
 }
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap");
 
 .vertical-center {
   margin: 0;
@@ -12,7 +12,7 @@
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: #fff;
   background: hsl(287, 76%, 13%);
 }
@@ -26,7 +26,7 @@ body {
   text-transform: inherit;
   color: #fff;
   background: #c35c6c;
-  width: 177px;
+  width: 200px;
   padding: 0;
 }
 .theme-btn:hover {
@@ -176,7 +176,7 @@ a:hover .gage-block {
 
 .select-bg {
   margin-top: 10%;
-  height: 82.5vmin;
+  /* height: 82.5vmin; */
   width: 82.5vw;
 }
 
@@ -196,7 +196,7 @@ a:hover .gage-block {
   white-space: nowrap;
 }
 
-.select-deposit input:focus{
+.select-deposit input:focus {
   outline: none;
 }
 
@@ -243,12 +243,14 @@ a:hover .gage-block {
   position: relative;
 }
 
-.gage-stats p, .stake-stats p {
+.gage-stats p,
+.stake-stats p {
   font-weight: 800;
 }
 
-.stake-stats h2, .gage-stats h2 {
-  color: rgba(255, 255, 255, 0.70);
+.stake-stats h2,
+.gage-stats h2 {
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
   font-size: 2.5vmin;
 }
@@ -524,12 +526,33 @@ a:hover .gage-block {
     opacity: 1;
   }
 }
+.MuiButtonBase-root .fas.fa-bars {
+  color: white;
+}
+@media (max-width: 1160px) {
+  .navbar-collapse .mx-4 {
+    margin-right: 14px !important;
+    margin-left: 14px !important;
+  }
+}
 
 @media (max-width: 768px) {
+  h1 {
+    font-size: 35px;
+  }
   .secondary .header {
     height: auto;
     padding-bottom: 5rem;
     padding-top: 5rem;
+  }
+  .select-bg {
+    margin-top: 2%;
+    height: 100%;
+    width: 100%;
+  }
+  .footer-main {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
   }
   .banner-content h1 {
     font-size: 42px;
@@ -560,4 +583,55 @@ a:hover .gage-block {
   .grid-btn {
     width: 100px;
   }
+  .footer-decription {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.navbar-drawer {
+  display: none;
+}
+@media (max-width: 992px) {
+  .navbar-drawer {
+    display: block;
+  }
+  .select-bg {
+    padding-top: 40px;
+    padding-bottom: 20px;
+  }
+}
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1600px;
+  }
+}
+@media (min-width: 2500px) {
+  .container {
+    max-width: 2160px;
+  }
+}
+@media (min-width: 3000px) {
+  .container {
+    max-width: 2560px;
+  }
+}
+@media (min-width: 3500px) {
+  .container {
+    max-width: 3060px;
+  }
+}
+@media (min-width: 4000px) {
+  .container {
+    max-width: 3060px;
+  }
+}
+.align-center {
+  align-items: center;
+}
+
+.option-padding {
+  padding: 10px 0px;
+}
+.igo-option-padding {
+  padding: 8px 0;
 }

@@ -1,11 +1,11 @@
-import React from 'react';
-import HEAD from 'next/head';
-import Navbar from '../navbar';
-import { useWeb3React } from '@web3-react/core';
-import useAuth from '../../hooks/useAuth';
-import { useRouter } from 'next/router';
-import { getUserData } from '../../services';
-import Footer from '../Footer/Footer';
+import React from "react";
+import HEAD from "next/head";
+import Navbar from "../navbar";
+import { useWeb3React } from "@web3-react/core";
+import useAuth from "../../hooks/useAuth";
+import { useRouter } from "next/router";
+import { getUserData } from "../../services";
+import Footer from "../Footer/Footer";
 
 function IndexPage() {
   const router = useRouter();
@@ -16,10 +16,10 @@ function IndexPage() {
   const checkUserStatusOnConnect = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
-      router.push('/user-info');
+      router.push("/user-info");
       return;
     }
-    router.push('/gage-selection');
+    router.push("/gage-selection");
   };
 
   const handleClickOnEarn = () => {
@@ -36,12 +36,15 @@ function IndexPage() {
         <title>Eternal</title>
       </HEAD>
 
-      <body className='main'>
-        <div className='header d-flex align-items-center'>
+      <body className="main">
+        <div className="header d-flex align-items-center">
           <Navbar />
-          <div className='container banner-content text-center'>
-            <h1 className='color-white bold mb-5'>Less Risk, More Reward.</h1>
-            <button className='btn theme-btn' onClick={() => handleClickOnEarn()}>
+          <div className="container banner-content text-center">
+            <h1 className="color-white bold mb-5">Less Risk, More Reward.</h1>
+            <button
+              className="btn theme-btn"
+              onClick={() => handleClickOnEarn()}
+            >
               Go to platform
             </button>
           </div>

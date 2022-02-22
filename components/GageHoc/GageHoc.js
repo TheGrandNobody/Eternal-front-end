@@ -5,7 +5,7 @@ import GageSelection2 from '../gage-selection-2';
 
 function GageHoc() {
   const { gageType } = useSelector((state) => state.eternal);
-  return <> {gageType ? <GageSelection2 /> : <GageSelection1 />}</>;
+  return <> {!gageType ? <GageSelection2 /> : <GageSelection1 />}</>;
 }
 
 export default GageHoc;
