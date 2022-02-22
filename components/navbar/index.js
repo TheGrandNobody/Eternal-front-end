@@ -2,13 +2,11 @@ import React from "react";
 import useAuth from "../../hooks/useAuth";
 import { useWeb3React } from "@web3-react/core";
 import Drawer from "./Drawer";
-import Link from "next/link";
 import { getUserData } from "../../services";
 import { useRouter } from "next/router";
 import useEternalPlatformContractfunction from "../../hooks/useEternalPlatformContractFunctions";
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
-import { Hidden } from "@mui/material";
 
 function Navbar() {
   const [scroll, setScroll] = React.useState(false);
