@@ -187,7 +187,7 @@ function Navbar() {
             {active ? (
               <button className="btn theme-btn top-nav-btn" onClick={logout}>
                 {"Connected " +
-                  account.slice(1, 5) +
+                  account.slice(0, 5) +
                   "..." +
                   account.slice(account.length - 5, account.length)}
               </button>
