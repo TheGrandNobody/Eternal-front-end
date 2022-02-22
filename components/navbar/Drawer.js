@@ -8,8 +8,6 @@ import { useRouter } from 'next/router';
 import { getUserData } from '../../services';
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
 
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState({
