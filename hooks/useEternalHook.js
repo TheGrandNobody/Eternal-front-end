@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import { getWeb3NoAccount } from '../utils/web3';
 import Web3 from 'web3';
 import { getAddress } from '../helpers/addressHelper';
-import { toNumber } from 'lodash';
 
 function useEternalHook() {
   const { account, library } = useWeb3React();
