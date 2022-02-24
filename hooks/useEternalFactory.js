@@ -19,12 +19,13 @@ function useFactoryFunction() {
   const dispatch = useDispatch();
 
   const initiateLiquidGage = async () => {
-    const initiateGage;
+    let initiateGage;
     if (gageAsset == 'AVAX') {
-      const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')}
-      initiateGage = await factory.initiateLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), options);
+      const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
+      console.log(options);
+      initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), options);
     } else {
-      initiateGage = await factory.initiateLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'));
+      initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'));
     }
     const interval = setInterval(async () => {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);

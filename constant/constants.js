@@ -5,8 +5,8 @@ import StorageABI from './abis/Storage.json';
 import FactoryABI from './abis/Factory.json';
 import TreasuryABI from './abis/Treasury.json';
 import OfferingABI from './abis/Offering.json';
-import GageABI from '.abis/Gage.json';
-import LoyaltyABI from '.abis/LoyaltyGage.json';
+import GageABI from './abis/Gage.json';
+import LoyaltyABI from './abis/LoyaltyGage.json';
 import TokenABI from './abis/Token.json';
 
 export const api = axios.create({ baseURL: 'https://shrouded-ocean-93690.herokuapp.com/api' });

@@ -4,13 +4,13 @@ const initialState = {
   gageType: null,
   loadedContracts: {},
   gageDepositAmount: null,
-  gageAsset: null,
+  gageAsset: 'AVAX',
   gageRiskPercentage: null,
   gageBonusPercentage: null,
   gageCondition: null,
   approval: false,
   selectedGage: null,
-  allowedToCreateGage: false,
+  depositInETRNL: '0.0',
 };
 
 export const eternalSlice = createSlice({
@@ -48,8 +48,8 @@ export const eternalSlice = createSlice({
       }
       state.selectedGage = action.payload.selectedGage;
     },
-    changeAllowedToChangeGage: (state, action) => {
-      state.allowedToCreateGage = action.payload.permission;
+    changeDepositInETRNL: (state, action) => {
+      state.depositInETRNL = action.payload.depositInETRNL;
     },
     reset: (state) => {
       state.gageType = null;
@@ -58,7 +58,7 @@ export const eternalSlice = createSlice({
       state.gageRiskPercentage = null;
       state.gageBonusPercentage = null;
       state.gageCondition = null;
-      state.gageAsset = null;
+      state.gageAsset = "AVAX";
       state.approval = false;
       state.selectedGage = null;
     },
@@ -74,8 +74,8 @@ export const {
   changeApproval,
   changeGageDepositAmount,
   changeLoadedContracts,
-  changeAllowedToChangeGage,
   changeSelectedGage,
+  changeDepositInETRNL,
   reset,
 } = eternalSlice.actions;
 

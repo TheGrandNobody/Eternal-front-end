@@ -4,7 +4,6 @@ import { useWeb3React } from "@web3-react/core";
 import Drawer from "./Drawer";
 import { getUserData } from "../../services";
 import { useRouter } from "next/router";
-import useEternalPlatformContractfunction from "../../hooks/useEternalPlatformContractFunctions";
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
 

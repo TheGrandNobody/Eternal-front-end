@@ -23,7 +23,3 @@ export const findAndUpdateGageStatus = async (id, status) => {
 export const getGagesAccordingToStatus = async (account, status, limit, currentPage) => {
   return api.get(`getAllGages/${account}/${status}?page=${currentPage}&limit=${limit}`);
 };
-
-export const getUserOwnedGages = async (amount, riskType, riskPercentage, ownedByAddress, gageType, gageStatus) => {
-  return api.post(`getUserOwnedGages?page=1&limit=10`, { amount, riskType, riskPercentage, ownedByAddress, gageType, gageStatus });
-};

@@ -4,7 +4,7 @@ import Web3 from 'web3';
 
 export const useContract = (entity, ABI, library, account) => {
   const web3 = new Web3(library);
-  return useMemo(() => getContract(entity, ABI, library, account), [web3]);
+  return useMemo(() => getContract(entity, ABI, library, account), [web3, entity]);
 };
 
 export const getAllGages = (library, account, contractIDs) => {

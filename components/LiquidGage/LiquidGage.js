@@ -1,3 +1,4 @@
+import { toNumber } from "lodash";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -133,9 +134,11 @@ function CreateLiquidGage({
   const [amount, setAmount] = useState("0.0");
   const [period, setPeriod] = useState(false);
 
-  const { approval, allowedToCreateGage } = useSelector(
-    (state) => state.eternal
-  );
+  const { approval,
+          gageRiskPercentage, 
+          gageBonusPercentage,
+          gageCondition, 
+          depositInETRNL } = useSelector((state) => state.eternal);
 
   const handleKeyPress = (event) => {
     if ((period && !/[0-9]/.test(event.key)) || !/[0-9\.]/.test(event.key)) {
@@ -146,7 +149,8 @@ function CreateLiquidGage({
   const handleChange = (event) => {
     setPeriod(/\./.test(event.target.value));
     setAmount(event.target.value);
-    handleOnAmountSelect(amount);
+    console.log(toNumber(event.target.value));
+    handleOnAmountSelect(event.target.value, toNumber(event.target.value) > 0 && deposit != 'Select');
   };
 
   useEffect(() => {
@@ -204,7 +208,7 @@ function CreateLiquidGage({
                 setDeposit(item.token);
                 setIcon(item.icon);
                 setVisibility(!visibility);
-                handleOnAssetSelect(deposit);
+                handleOnAssetSelect(item.token);
               }}
             >
               <img className="vertical-center" src={item.icon}></img>
@@ -224,7 +228,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">10%</p>
+            <p className="text-center">{gageBonusPercentage}%</p>
           </div>
           <div>
             <div className="d-flex align-center justify-content-center">
@@ -235,7 +239,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">1%</p>
+            <p className="text-center">{gageRiskPercentage - gageBonusPercentage}%</p>
           </div>
           <div>
             <div className="d-flex align-center justify-content-center">
@@ -246,7 +250,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">0.025%</p>
+            <p className="text-center">{gageCondition}%</p>
           </div>
         </div>
       </StatsContainer>
@@ -260,7 +264,7 @@ function CreateLiquidGage({
           ></Tooltip>
         </div>
         <RewardsBlock>
-          <Amount>{amount == "0" || amount == "" ? "0.0" : amount}</Amount>
+          <Amount>{amount == "0" || amount == "" ? "0.0" : depositInETRNL}</Amount>
           <SelectToken style={{ cursor: "auto" }}>
             <TokenIcon src="img/etrnl.png"></TokenIcon>
             <TokenName>ETRNL</TokenName>
@@ -268,37 +272,36 @@ function CreateLiquidGage({
         </RewardsBlock>
       </RewardsContainer>
       {
-        (approval && deposit != "AVAX") 
-        ?
-        <div className="col-sm-12 my-5 text-center">
-          <button
-            onClick={async () => {
-              await handleClickOnApproveBtn();
-            }}
-            className="btn theme-btn"
-          >
-            Approve
-          </button>
-        </div>
-        :
-          (deposit != "Select") 
-          ?
+        (deposit == "Select" || amount <= 0) ?
           <div className="col-sm-12 my-5 text-center">
-            <button
-              onClick={async () => {
-                await handleClickOnConfirmBtn();
-              }}
-              className="btn theme-btn"
-            >
+            <button className="disabled btn theme-btn">
               Confirm
             </button>
           </div>
+        :
+          ( (approval)  ?
+            <div className="col-sm-12 my-5 text-center">
+              <button
+                onClick={async () => {
+                  await handleClickOnConfirmBtn();
+                }}
+                className="btn theme-btn"
+              >
+                Confirm
+              </button>
+            </div>
           :
-          <div className="col-sm-12 my-5 text-center">
-            <button className="disabled btn theme-btn">
-              Approve
-            </button>
-          </div>
+            <div className="col-sm-12 my-5 text-center">
+              <button
+                onClick={async () => {
+                  await handleClickOnApproveBtn();
+                }}
+                className="btn theme-btn"
+              >
+                Approve
+              </button>
+            </div>
+          )
       }
     </SelectBackground>
   );
