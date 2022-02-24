@@ -1,24 +1,14 @@
-import EternalPlatformAbi from '../constant/abis/EternalPlatform.json';
-import EternalGageSolAbi from '../constant/abis/EternalGageSol.json';
-import ERC20Abi from '../constant/abis/ERC20.json';
-
-import { getAddress} from '../helpers/addressHelper';
+import { getAddress, getABI} from '../helpers/addressHelper';
 import { Contract } from '@ethersproject/contracts';
 
-export function getContract(address, ABI, library, account) {
-  return new Contract(address, ABI, getProviderOrSigner(library, account));
+export function getContract(entity, ABI, library, account) {
+  return new Contract(getAddress(entity), getABI(ABI), getProviderOrSigner(library, account));
 }
 
-export const getEternalPlatformContract = (library, account) => {
-  return getContract(getAddress('factory'), EternalPlatformAbi, library, account);
-};
-
-export const getGageSolContract = (library, account, contractAddress, abi) => {
-  return getContract(contractAddress, EternalGageSolAbi, library, account);
-};
-
-export const getERC20Contract = (address, library, account) => {
-  return getContract(getAddress(address), ERC20Abi, library, account);
+export const getGage = async (ABI, library, account, id) => {
+  const storage = useContract('storage', 'storage', library, account);
+  const address = await storage.getAddress(Web3.utils.soliditySha3(getAddress('factory')), Web3.utils.soliditySha3('gages', id));
+  return getContract(address, getABI(ABI), library, account);
 };
 
 export function getProviderOrSigner(library, account) {

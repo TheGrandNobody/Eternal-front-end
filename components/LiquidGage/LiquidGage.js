@@ -152,7 +152,7 @@ function CreateLiquidGage({
   useEffect(() => {
     if (deposit) {
       (async () => {
-        await handlePercents(deposit);
+        await handlePercents();
       })();
     }
   }, [deposit]);
@@ -267,16 +267,39 @@ function CreateLiquidGage({
           </SelectToken>
         </RewardsBlock>
       </RewardsContainer>
-      <div className="col-sm-12 my-5 text-center">
-        <button
-          onClick={async () => {
-            await handleClickOnApproveBtn(amount);
-          }}
-          className="btn theme-btn"
-        >
-          Approve
-        </button>
-      </div>
+      {
+        (approval && deposit != "AVAX") 
+        ?
+        <div className="col-sm-12 my-5 text-center">
+          <button
+            onClick={async () => {
+              await handleClickOnApproveBtn();
+            }}
+            className="btn theme-btn"
+          >
+            Approve
+          </button>
+        </div>
+        :
+          (deposit != "Select") 
+          ?
+          <div className="col-sm-12 my-5 text-center">
+            <button
+              onClick={async () => {
+                await handleClickOnConfirmBtn();
+              }}
+              className="btn theme-btn"
+            >
+              Confirm
+            </button>
+          </div>
+          :
+          <div className="col-sm-12 my-5 text-center">
+            <button className="disabled btn theme-btn">
+              Approve
+            </button>
+          </div>
+      }
     </SelectBackground>
   );
 }

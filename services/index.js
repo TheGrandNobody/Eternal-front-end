@@ -4,32 +4,20 @@ export const getUserData = async (account) => {
   return api.get(`getUserStatus/${account}`);
 };
 
-export const createGage = async (gageType, gageAddress, amount, riskType, riskPercentage, gageId, ownedByAddress) => {
-  return api.post('register-user-gage', { gageType, gageAddress, amount, riskType, riskPercentage, gageId, ownedByAddress });
+export const createGage = async (id, type, receiver, deposit) => {
+  return api.post('register-user-gage', { id, type, receiver, deposit });
 };
 
-export const findExistingGage = async (gageType, amount, riskType, riskPercentage, status) => {
-  return api.post('find-gage', { gageType, amount, riskType, riskPercentage, status });
+export const findExistingGage = async (type, receiver, deposit) => {
+  return api.post('find-gage', { type, receiver, deposit});
 };
 
-export const findAndUpdateGageAddress = async (gageId, gageAddress, account) => {
-  return api.post('findAndUpdateGageAddress', { gageId, gageAddress, account });
-};
-
-export const getAllGagesAddresses = async (account) => {
+export const getAllGageIDs = async (account) => {
   return api.get(`getAllGagesAddresses/${account}?page=1&limit=10`);
 };
 
 export const findAndUpdateGageStatus = async (id, status) => {
   return api.post('findAndUpdateGageStatus', { id: id, status: status });
-};
-
-export const addUserAddressToGage = async (gageId, userAddress) => {
-  return api.post('addUserToGage', { gageId, userAddress });
-};
-
-export const removeUserAddressToGage = async (gageId, userAddress) => {
-  return api.post('removeUserFromGage', { gageId, userAddress });
 };
 
 export const getGagesAccordingToStatus = async (account, status, limit, currentPage) => {

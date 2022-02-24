@@ -15,7 +15,7 @@ const useAuth = () => {
         toast.error(getErrorMessage(error), { toastId: 1 });
       });
     } else {
-      toast.error("Can't find connector The connector config is wrong", { toastId: 1 });
+      toast.error("Can't find connector. The connector config is wrong.", { toastId: 1 });
     }
   }, []);
 
