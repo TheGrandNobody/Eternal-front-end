@@ -4,8 +4,11 @@ import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
 import StakeUI from '../../components/StakeUI/Stake';
 import useEternalHook from '../../hooks/useEternalHook';
+import { useDispatch } from 'react-redux';
 
 function index() {
+
+  const { account } = useWeb3React();
 
   const {
     amount,
@@ -18,6 +21,8 @@ function index() {
     handleClickOnApproveBtn,
     handleUserApproval
   } = useEternalHook();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {

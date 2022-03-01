@@ -9,7 +9,7 @@ import { getUserData } from '../../services';
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
 import { useDispatch } from 'react-redux';
-import { reset, changeGageType } from '../../reducers/main';
+import { reset, changeGageType, changeGageAsset } from '../../reducers/main';
 
 export default function TemporaryDrawer() {
   const router = useRouter();
@@ -68,6 +68,7 @@ export default function TemporaryDrawer() {
         handleAccount(account);
         break;
       case 2:
+        dispatch(changeGageAsset({ asset: 'ETRNL'}));
         router.push('/stake');
         break;
       case 3:

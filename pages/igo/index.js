@@ -11,53 +11,53 @@ import { changeApproval } from '../../reducers/main';
 
 function index() {
 
-    const { account } = useWeb3React();
-    const {
-        amount,
-        asset,
-        handleOnAmountSelect,
-        handleOnAssetSelect,
-        handleConversionToETRNL,
-        handlePercents,
-        handleClickOnConfirmBtn,
-        handleClickOnApproveBtn,
-        handleUserApproval,
-        offeringStats
-      } = useEternalHook();
+  const { account } = useWeb3React();
+  const {
+    amount,
+    asset,
+    handleOnAmountSelect,
+    handleOnAssetSelect,
+    handleConversionToETRNL,
+    handlePercents,
+    handleClickOnConfirmBtn,
+    handleClickOnApproveBtn,
+    handleUserApproval,
+    offeringStats
+  } = useEternalHook();
 
-      const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-      useEffect(() => {
-        (async () => {
-          const approved = await handleUserApproval('offering');
-          dispatch(changeApproval({ approval: approved}));
-        })();
-      }, [account, asset, amount]);
+  useEffect(() => {
+    (async () => {
+      const approved = await handleUserApproval('offering');
+      dispatch(changeApproval({ approval: approved }));
+    })();
+  }, [account, asset, amount]);
 
-    return (
-        <>
-            <HEAD>
-                <title>Initial Gage Offering | Eternal</title>
-            </HEAD>
+  return (
+    <>
+      <HEAD>
+        <title>Initial Gage Offering | Eternal</title>
+      </HEAD>
 
-            <body className='secondary select-deposit-pg'>
-                <div className='header d-flex align-items-center'>
-                    <Navbar />
-                    <InitialGageOffering 
-                    optionsToMap={tokenOptionData}
-                    handleClickOnApproveBtn={handleClickOnApproveBtn} 
-                    handleClickOnConfirmBtn={handleClickOnConfirmBtn}
-                    handleOnAssetSelect={handleOnAssetSelect}
-                    handleOnAmountSelect={handleOnAmountSelect}
-                    handleConversionToETRNL={handleConversionToETRNL}
-                    handlePercents={handlePercents}
-                    offeringStats={offeringStats}
-                    />
-                </div>
-                <Footer />
-            </body>
-        </>
-    );
+      <body className='secondary select-deposit-pg'>
+        <div className='header d-flex align-items-center'>
+          <Navbar />
+          <InitialGageOffering
+            optionsToMap={tokenOptionData}
+            handleClickOnApproveBtn={handleClickOnApproveBtn}
+            handleClickOnConfirmBtn={handleClickOnConfirmBtn}
+            handleOnAssetSelect={handleOnAssetSelect}
+            handleOnAmountSelect={handleOnAmountSelect}
+            handleConversionToETRNL={handleConversionToETRNL}
+            handlePercents={handlePercents}
+            offeringStats={offeringStats}
+          />
+        </div>
+        <Footer />
+      </body>
+    </>
+  );
 }
 
 export default index;

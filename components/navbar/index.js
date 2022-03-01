@@ -72,6 +72,7 @@ function Navbar() {
           handleAccount(account);
           break;
         case 2:
+          dispatch(changeGageAsset({ asset: 'ETRNL'}));
           router.push("/stake");
           break;
         case 3:
