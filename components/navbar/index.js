@@ -6,11 +6,14 @@ import { getUserData } from "../../services";
 import { useRouter } from "next/router";
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
+import { useDispatch } from "react-redux";
+import { changeGageType, reset } from "../../reducers/main";
 
 function Navbar() {
   const [scroll, setScroll] = React.useState(false);
   const { account, active } = useWeb3React();
   const { login, logout } = useAuth();
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const handleActiveNavMenu = (number = 0) => {
@@ -49,7 +52,7 @@ function Navbar() {
     setScroll(false);
   };
 
-  const checkUserStatusOnConnect = async (account) => {
+  const handleAccount = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
       router.push("/user-info");
@@ -63,14 +66,16 @@ function Navbar() {
       login("Injected");
     }
     if (account && active) {
+      dispatch(reset());
       switch (number) {
         case 1:
-          checkUserStatusOnConnect(account);
+          handleAccount(account);
           break;
         case 2:
           router.push("/stake");
           break;
         case 3:
+          dispatch(changeGageType({ gageType: 'Loyalty' }));
           router.push("/igo");
           break;
         default:

@@ -3,16 +3,17 @@ import { useWeb3React } from "@web3-react/core";
 import useAuth from "../../hooks/useAuth";
 import { useRouter } from "next/router";
 import { getUserData } from "../../services";
-
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
 import { Hidden } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { reset, changeGageType } from '../../reducers/main';
 
 function Footer() {
-  const router = useRouter();
-
   const { account, active } = useWeb3React();
   const { login, logout } = useAuth();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleActiveNavMenu = (number = 0) => {
     switch (number) {
@@ -29,7 +30,7 @@ function Footer() {
     }
   };
 
-  const checkUserStatusOnConnect = async (account) => {
+  const handleAccount = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
       router.push("/user-info");
@@ -43,17 +44,19 @@ function Footer() {
       login("Injected");
     }
     if (account && active) {
+      dispatch(reset());
       switch (number) {
         case 0:
           router.push("/");
           break;
         case 1:
-          checkUserStatusOnConnect(account);
+          handleAccount(account);
           break;
         case 2:
           router.push("/stake");
           break;
         case 3:
+          dispatch(changeGageType({ gageType: 'Loyalty' }));
           router.push("/igo");
           break;
         default:

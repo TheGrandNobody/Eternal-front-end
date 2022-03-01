@@ -53,6 +53,9 @@ const SelectToken = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  &:hover {
+    color: #bbabe3;
+  }
 `;
 
 const TokenIcon = styled.img`
@@ -66,9 +69,6 @@ const TokenName = styled.header`
   font-weight: 525;
   right: 15%;
   transition: color 0.25s;
-  &:hover {
-    color: #bbabe3;
-  }
 `;
 
 const TokenList = styled.ul`
@@ -126,12 +126,13 @@ function CreateLiquidGage({
   handleClickOnConfirmBtn,
   handleOnAssetSelect,
   handleOnAmountSelect,
+  handleConversionToETRNL,
   handlePercents,
 }) {
-  const [deposit, setDeposit] = useState("Select");
-  const [icon, setIcon] = useState("");
+  const [deposit, setDeposit] = useState('Select');
+  const [icon, setIcon] = useState('');
   const [visibility, setVisibility] = useState(false);
-  const [amount, setAmount] = useState("0.0");
+  const [amount, setAmount] = useState('0.0');
   const [period, setPeriod] = useState(false);
 
   const { approval,
@@ -139,6 +140,19 @@ function CreateLiquidGage({
           gageBonusPercentage,
           gageCondition, 
           depositInETRNL } = useSelector((state) => state.eternal);
+
+  useEffect(async () => {
+    await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', true, 0);
+  }, [amount]);
+
+  useEffect(() => {
+    if (deposit != 'Select') {
+      (async () => {
+        const bonus = await handlePercents(false);
+        handleConversionToETRNL(toNumber(amount) > 0, true, bonus);
+      })();
+    }
+  }, [deposit]);
 
   const handleKeyPress = (event) => {
     if ((period && !/[0-9]/.test(event.key)) || !/[0-9\.]/.test(event.key)) {
@@ -149,17 +163,8 @@ function CreateLiquidGage({
   const handleChange = (event) => {
     setPeriod(/\./.test(event.target.value));
     setAmount(event.target.value);
-    console.log(toNumber(event.target.value));
-    handleOnAmountSelect(event.target.value, toNumber(event.target.value) > 0 && deposit != 'Select');
+    handleOnAmountSelect(event.target.value);
   };
-
-  useEffect(() => {
-    if (deposit) {
-      (async () => {
-        await handlePercents();
-      })();
-    }
-  }, [deposit]);
 
   return (
     <SelectBackground>
@@ -205,10 +210,10 @@ function CreateLiquidGage({
               className="token-option option-padding d-flex align-items-center justify-content-start"
               key={index}
               onClick={() => {
-                setDeposit(item.token);
                 setIcon(item.icon);
-                setVisibility(!visibility);
                 handleOnAssetSelect(item.token);
+                setDeposit(item.token);
+                setVisibility(!visibility);
               }}
             >
               <img className="vertical-center" src={item.icon}></img>
@@ -228,7 +233,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">{gageBonusPercentage}%</p>
+            <p className="text-center">{gageBonusPercentage == null ? '' : `${gageBonusPercentage}%`}</p>
           </div>
           <div>
             <div className="d-flex align-center justify-content-center">
@@ -239,7 +244,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">{gageRiskPercentage - gageBonusPercentage}%</p>
+            <p className="text-center">{(gageRiskPercentage == null ? '' : `${gageRiskPercentage - gageBonusPercentage}%`)}</p>
           </div>
           <div>
             <div className="d-flex align-center justify-content-center">
@@ -250,7 +255,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">{gageCondition}%</p>
+            <p className="text-center">{gageCondition == null ? '' : `${gageCondition}%`}</p>
           </div>
         </div>
       </StatsContainer>
@@ -283,7 +288,7 @@ function CreateLiquidGage({
             <div className="col-sm-12 my-5 text-center">
               <button
                 onClick={async () => {
-                  await handleClickOnConfirmBtn();
+                  await handleClickOnConfirmBtn(2);
                 }}
                 className="btn theme-btn"
               >
@@ -294,7 +299,7 @@ function CreateLiquidGage({
             <div className="col-sm-12 my-5 text-center">
               <button
                 onClick={async () => {
-                  await handleClickOnApproveBtn();
+                  await handleClickOnApproveBtn('treasury');
                 }}
                 className="btn theme-btn"
               >

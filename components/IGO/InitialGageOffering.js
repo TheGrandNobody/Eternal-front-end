@@ -7,6 +7,7 @@ import Switch from "@mui/material/Switch";
 import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 import { Typography, Grid, Box } from "@mui/material";
+import { set, toNumber } from "lodash";
 
 const IGOSwitch = styled(Switch)(() => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -27,7 +28,6 @@ const SelectBackground = styled.div`
   position: relative;
   border-top: 7.5px groove #ece3e1;
   border-bottom: 7.5px ridge #ece3e1;
-  transition: height 0.25s;
   margin-bottom: 20px;
 `;
 
@@ -73,6 +73,9 @@ const SelectToken = styled.div`
   justify-content: flex-end;
   align-items: center;
   cursor: pointer;
+  &:hover {
+    color: #bbabe3;
+  }
 `;
 
 const TokenIcon = styled.img`
@@ -86,9 +89,6 @@ const TokenName = styled.header`
   font-weight: 535;
   right: 15%;
   transition: color 0.25s;
-  &:hover {
-    color: #bbabe3;
-  }
 `;
 
 const SelectContainer = styled.div`
@@ -145,7 +145,9 @@ function InitialGageOffering({
   handleClickOnConfirmBtn,
   handleOnAssetSelect,
   handleOnAmountSelect,
+  handleConversionToETRNL,
   handlePercents,
+  offeringStats
 }) {
   const [deposit, setDeposit] = useState("Select");
   const [icon, setIcon] = useState("");
@@ -153,31 +155,63 @@ function InitialGageOffering({
   const [amount, setAmount] = useState("0.0");
   const [period, setPeriod] = useState(false);
   const [offering, setIGO] = useState("Gage");
-  const [height, setHeight] = useState("82.5%");
+  const [totalContribution, setTotalContribution] = useState('');
+  const [liquidityDeposited, setLiquidityDeposited] = useState('');
+  const [remainingETRNL, setRemainingETRNL] = useState('');
+  const [priceAVAX, setpriceAVAX] = useState('');
+  const [priceMIM, setpriceMIM] = useState('');
 
-  const { approval, allowedToCreateGage } = useSelector(
-    (state) => state.eternal
-  );
+  const { approval,          
+          gageRiskPercentage, 
+          gageBonusPercentage,
+          gageCondition, 
+          depositInETRNL } = useSelector((state) => state.eternal);
+
+  
+  useEffect( async () => {
+    const {
+      totalContribution, 
+      liquidityDeposited,
+      remainingETRNL,
+      priceAVAX,
+      priceMIM,
+    } = await offeringStats();
+
+    setTotalContribution(totalContribution);
+    setLiquidityDeposited(liquidityDeposited);
+    setRemainingETRNL(remainingETRNL);
+    setpriceAVAX(priceAVAX);
+    setpriceMIM(priceMIM);
+  }, []);
+
+  useEffect(async () => {
+    await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', offering == 'Gage', 0);
+  }, [amount, offering]);
+
+  useEffect(() => {
+    if (deposit != 'Select') {
+      if (offering == 'Gage') {
+        (async () => {
+          const bonus = await handlePercents(true);
+          handleConversionToETRNL(toNumber(amount) > 0, true, bonus);
+        })();
+      } else {
+        handleConversionToETRNL(toNumber(amount) > 0, false, 0);
+      }
+    }
+  }, [deposit]);
+
+  const handleChange = (event) => {
+    setPeriod(/\./.test(event.target.value));
+    setAmount(event.target.value);
+    handleOnAmountSelect(event.target.value);
+  };
 
   const handleKeyPress = (event) => {
     if ((period && !/[0-9]/.test(event.key)) || !/[0-9\.]/.test(event.key)) {
       event.preventDefault();
     }
   };
-
-  const handleChange = (event) => {
-    setPeriod(/\./.test(event.target.value));
-    setAmount(event.target.value);
-    handleOnAmountSelect(amount);
-  };
-
-  useEffect(() => {
-    if (deposit) {
-      (async () => {
-        await handlePercents(deposit);
-      })();
-    }
-  }, [deposit]);
 
   return (
     <div className="container select-bg d-flex justify-content-center">
@@ -190,23 +224,23 @@ function InitialGageOffering({
                 <h2>Total Contribution</h2>
                 <Tooltip
                   text={
-                    "The total amount of ETRNL sent to liquidity pairs as a result of your MIM/AVAX contributions to gages or simple deposits."
+                    "The total amount of ETRNL used in your MIM/AVAX contributions to gages or simple deposits."
                   }
                 ></Tooltip>
               </div>
               <p className="text-center" style={{ fontSize: "2vmin" }}>
-                5000 ETRNL
+                {totalContribution} ETRNL
               </p>
               <div className="d-flex align-center justify-content-center">
                 <h2>Amount Gaged</h2>
                 <Tooltip
                   text={
-                    "The total amount of ETRNL sent to liquidity pairs as a result of your usage of a loyalty gage."
+                    "The total amount of ETRNL used in your MIM/AVAX contributions with loyalty gages."
                   }
                 ></Tooltip>
               </div>
               <p className="text-center" style={{ fontSize: "2vmin" }}>
-                4500 ETRNL
+                {totalContribution - liquidityDeposited} ETRNL
               </p>
               <div className="d-flex align-center justify-content-center">
                 <h2>Amount Deposited</h2>
@@ -217,14 +251,13 @@ function InitialGageOffering({
                 ></Tooltip>
               </div>
               <p className="text-center" style={{ fontSize: "2vmin" }}>
-                500 ETRNL
+                {liquidityDeposited} ETRNL
               </p>
             </div>
           </SmallBackground>
         </Grid>
         <Grid item md={6} xs={12}>
           <SelectBackground
-            // style={{ height: height }}
             className="center-sec"
           >
             <FormControlLabel
@@ -236,7 +269,6 @@ function InitialGageOffering({
                   defaultChecked
                   onClick={() => {
                     setIGO(offering === "Gage" ? "Deposit" : "Gage");
-                    setHeight(height === "70%" ? "85%" : "70%");
                   }}
                 />
               }
@@ -300,7 +332,7 @@ function InitialGageOffering({
                           setDeposit(item.token);
                           setIcon(item.icon);
                           setVisibility(!visibility);
-                          handleOnAssetSelect(deposit);
+                          handleOnAssetSelect(item.token);
                         }}
                       >
                         <img className="vertical-center" src={item.icon}></img>
@@ -320,7 +352,7 @@ function InitialGageOffering({
                   </div>
                   <RewardsBlock style={{ height: "82.5%" }}>
                     <Amount>
-                      {amount == "0" || amount == "" ? "0.0" : amount}
+                      {amount == "0" || amount == "" ? "0.0" : depositInETRNL}
                     </Amount>
                     <SelectToken style={{ cursor: "auto" }}>
                       <TokenIcon src="img/etrnl.png"></TokenIcon>
@@ -378,7 +410,7 @@ function InitialGageOffering({
                           setDeposit(item.token);
                           setIcon(item.icon);
                           setVisibility(!visibility);
-                          handleOnAssetSelect(deposit);
+                          handleOnAssetSelect(item.token);
                         }}
                       >
                         <img className="vertical-center" src={item.icon}></img>
@@ -399,7 +431,7 @@ function InitialGageOffering({
                         ></Tooltip>
                       </div>
                       <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        30%
+                        {gageBonusPercentage == null ? '' : `${gageBonusPercentage}%`}
                       </p>
                     </div>
                     <div>
@@ -412,7 +444,7 @@ function InitialGageOffering({
                         ></Tooltip>
                       </div>
                       <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        1%
+                        {(gageRiskPercentage == null ? '' : `${gageRiskPercentage - gageBonusPercentage}%`)}
                       </p>
                     </div>
                     <div>
@@ -425,7 +457,7 @@ function InitialGageOffering({
                         ></Tooltip>
                       </div>
                       <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        0.025%
+                        {gageCondition == null ? '' : `${gageCondition}%`}
                       </p>
                     </div>
                   </div>
@@ -441,7 +473,7 @@ function InitialGageOffering({
                   </div>
                   <RewardsBlock style={{ height: "67.5%" }}>
                     <Amount>
-                      {amount == "0" || amount == "" ? "0.0" : amount}
+                      {amount == "0" || amount == "" ? "0.0" : depositInETRNL}
                     </Amount>
                     <SelectToken style={{ cursor: "auto" }}>
                       <TokenIcon src="img/etrnl.png"></TokenIcon>
@@ -452,14 +484,30 @@ function InitialGageOffering({
               </>
             )}
             <Box className="text-center" sx={{ pb: 3 }}>
-              <button
-                onClick={async () => {
-                  await handleClickOnApproveBtn(amount);
-                }}
-                className="btn theme-btn"
-              >
-                Approve
-              </button>
+              {(deposit == "Select" || amount <= 0) ?
+                  <button className="disabled btn theme-btn">
+                    Confirm
+                  </button>
+                :
+                  ( (approval)  ?
+                    <button
+                      onClick={async () => {
+                        await handleClickOnConfirmBtn(offering == 'Gage' ? 3 : 1);
+                      }}
+                      className="btn theme-btn"
+                    >
+                      Confirm
+                    </button>
+                  :
+                    <button
+                      onClick={async () => {
+                        await handleClickOnApproveBtn('offering');
+                      }}
+                      className="btn theme-btn"
+                    >
+                      Approve
+                    </button>
+                  )}
             </Box>
           </SelectBackground>
         </Grid>
@@ -469,15 +517,15 @@ function InitialGageOffering({
             <p
               style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
             >
-              1 ETRNL = 0.01 AVAX
+              1 ETRNL = {priceAVAX} AVAX
             </p>
             <p
               style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
             >
-              1 ETRNL = 0.9 MIM
+              1 ETRNL = {priceMIM} MIM
             </p>
             <p style={{ fontSize: "1.25vmin", fontWeight: 550 }}>
-              3 000 000 000 ETRNL left before gaging bonus decreases
+              {remainingETRNL} ETRNL left before gaging bonus decreases
             </p>
           </SmallBackground>
         </Grid>

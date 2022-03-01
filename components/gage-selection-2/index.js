@@ -15,6 +15,7 @@ function index() {
     asset,
     handleOnAmountSelect,
     handleOnAssetSelect,
+    handleConversionToETRNL,
     handlePercents,
     handleClickOnConfirmBtn,
     handleClickOnApproveBtn,
@@ -26,7 +27,7 @@ function index() {
 
   useEffect(() => {
     (async () => {
-      const approved = await handleUserApproval(asset, amount);
+      const approved = await handleUserApproval('treasury');
       dispatch(changeApproval({ approval: approved}));
     })();
   }, [account, asset, amount]);
@@ -47,6 +48,7 @@ function index() {
             handleClickOnConfirmBtn={handleClickOnConfirmBtn}
             handleOnAssetSelect={handleOnAssetSelect}
             handleOnAmountSelect={handleOnAmountSelect}
+            handleConversionToETRNL={handleConversionToETRNL}
             handlePercents={handlePercents} />
           </div>
         </div>

@@ -9,23 +9,22 @@ import Web3 from 'web3';
 import { reset } from '../reducers/main';
 import { getAddress } from '../helpers/addressHelper';
 
-function useFactoryFunction() {
+function useOfferingFunction() {
   const { library, account } = useWeb3React();
   const { gageDepositAmount, gageAsset, gageType} = useSelector((state) => state.eternal);
-  const factory = useContract('factory', 'factory', library, account);
-  const storage = useContract('storage', 'storage', library, account);
+  const offering = useContract('offering', 'offering', library, account);
 
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const initiateLiquidGage = async () => {
+  const initiateLoyaltyGage = async () => {
     let initiateGage;
     if (gageAsset == 'AVAX') {
       const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
       console.log(options);
-      initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), options);
+      initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset), options);
     } else {
-      initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'));
+      initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset));
     }
     const interval = setInterval(async () => {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
@@ -34,7 +33,7 @@ function useFactoryFunction() {
         let id = Web3.utils.toDecimal(receiptC.logs[0].data);
         const timer = setInterval(() => {
           new Promise(function (resolve, reject) {
-            resolve(storage.getAddress(Web3.utils.soliditySha3(getAddress('factory')), Web3.utils.soliditySha3('gages', id)));
+            resolve(offering.viewGage(id));
           })
             .then((res1) => {
               if (res1 !== '0x0000000000000000000000000000000000000000') {
@@ -64,9 +63,28 @@ function useFactoryFunction() {
     }, 5000);
   };
 
+  const initiateDeposit = async () => {
+    let initiateDeposit;
+    if (gageAsset == 'AVAX') {
+      const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
+      console.log(options);
+      initiateDeposit = await offering.provideLiquidity(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset), options);
+    } else {
+      initiateDeposit = await offering.provideLiquidity(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset));
+    }
+    let interval = setInterval(async () => {
+        let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(initiateDeposit.hash);
+        if (receipt) {
+          toast.success('Deposit succesful!', { toastId: 2 });
+          clearInterval(interval);
+        }
+      }, 500);
+  };
+
   return {
-    initiateLiquidGage
+    initiateLoyaltyGage,
+    initiateDeposit
   };
 }
 
-export default useFactoryFunction;
+export default useOfferingFunction;

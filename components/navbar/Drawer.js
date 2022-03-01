@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { React, useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -8,9 +8,16 @@ import { useRouter } from 'next/router';
 import { getUserData } from '../../services';
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
+import { useDispatch } from 'react-redux';
+import { reset, changeGageType } from '../../reducers/main';
 
 export default function TemporaryDrawer() {
-  const [state, setState] = React.useState({
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { account, active } = useWeb3React();
+  const { login, logout } = useAuth();
+
+  const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
@@ -25,11 +32,6 @@ export default function TemporaryDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
-  const router = useRouter();
-
-  const { account, active } = useWeb3React();
-  const { login, logout } = useAuth();
-
   const handleActiveNavMenu = (number = 0) => {
     switch (number) {
       case 1: 
@@ -43,7 +45,7 @@ export default function TemporaryDrawer() {
     }
   };
 
-  const checkUserStatusOnConnect = async (account) => {
+  const handleAccount = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
       router.push('/user-info');
@@ -57,17 +59,19 @@ export default function TemporaryDrawer() {
       login('Injected');
     }
     if (account && active) {
+      dispatch(reset());
       switch (number) {
       case 0:
         router.push('/');
         break;
       case 1: 
-        checkUserStatusOnConnect(account);
+        handleAccount(account);
         break;
       case 2:
         router.push('/stake');
         break;
       case 3:
+        dispatch(changeGageType({ gageType: 'Loyalty' }));
         router.push('/igo');
         break;
       default:
@@ -80,7 +84,6 @@ export default function TemporaryDrawer() {
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <ul className='navbar-nav m-automt-5 mb-0'>
@@ -131,7 +134,7 @@ export default function TemporaryDrawer() {
   return (
     <div>
       {['left'].map((anchor) => (
-        <React.Fragment key={anchor}>
+        <Fragment key={anchor}>
           <IconButton onClick={toggleDrawer(anchor, true)}><i className='fas fa-bars'></i></IconButton>
           <Drawer
           sx={{".MuiPaper-root":{bgcolor: 'hsl(287, 76%, 13%)'}}}
@@ -141,7 +144,7 @@ export default function TemporaryDrawer() {
           >
             {list(anchor)}
           </Drawer>
-        </React.Fragment>
+        </Fragment>
       ))}
     </div>
   );

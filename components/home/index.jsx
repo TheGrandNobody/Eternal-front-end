@@ -13,7 +13,7 @@ function IndexPage() {
   const { account, active } = useWeb3React();
   const { login, logout } = useAuth();
 
-  const checkUserStatusOnConnect = async (account) => {
+  const handleAccount = async (account) => {
     const req = await getUserData(account);
     if (req.data.length > 0) {
       router.push("/user-info");
@@ -27,7 +27,7 @@ function IndexPage() {
       login("Injected");
     }
     if (account && active) {
-      checkUserStatusOnConnect(account);
+      handleAccount(account);
     }
   };
   return (

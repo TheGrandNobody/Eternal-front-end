@@ -61,6 +61,7 @@ export const eternalSlice = createSlice({
       state.gageAsset = "AVAX";
       state.approval = false;
       state.selectedGage = null;
+      state.depositInETRNL = '0.0';
     },
   },
 });

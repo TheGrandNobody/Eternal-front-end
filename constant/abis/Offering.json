@@ -118,6 +118,49 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountETRNL",
+				"type": "uint256"
+			}
+		],
+		"name": "checkGlobalLimit",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountETRNL",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "checkIndividualLimit",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "eternal",
 		"outputs": [
@@ -301,11 +344,43 @@
 				"type": "address"
 			}
 		],
+		"name": "viewLiquidityDeposited",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
 		"name": "viewLiquidityOffered",
 		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "viewRisk",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "risk",
 				"type": "uint256"
 			}
 		],

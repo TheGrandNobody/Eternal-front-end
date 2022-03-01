@@ -26,7 +26,7 @@ function index() {
               <div className='col-sm-4 mb-4 mb-sm-0'>
                 <div
                   onClick={() => {
-                    dispatch(changeGageType({ gageType: 'Liquid Gage' }));
+                    dispatch(changeGageType({ gageType: 'Liquid' }));
                   }}>
                   <a className='text-center'>
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>

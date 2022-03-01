@@ -1,35 +1,38 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import HEAD from 'next/head';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
-import styled from 'styled-components';
-import Switch from '@mui/material/Switch';
 import InitialGageOffering from '../../components/IGO/InitialGageOffering';
 import { tokenOptionData } from '../../constant/data';
 import useEternalHook from '../../hooks/useEternalHook';
-import Web3 from 'web3';
-import { toast } from 'react-toastify';
-
-const IGOSwitch = styled(Switch)(() => ({
-
-}));
+import { useWeb3React } from '@web3-react/core';
+import { useDispatch } from 'react-redux';
+import { changeApproval } from '../../reducers/main';
 
 function index() {
 
+    const { account } = useWeb3React();
     const {
-        gageType,
         amount,
         asset,
-        riskPercentage,
-        bonusPercentage,
-        condition,
         handleOnAmountSelect,
         handleOnAssetSelect,
+        handleConversionToETRNL,
         handlePercents,
         handleClickOnConfirmBtn,
         handleClickOnApproveBtn,
-        handleUserApproval
+        handleUserApproval,
+        offeringStats
       } = useEternalHook();
+
+      const dispatch = useDispatch();
+
+      useEffect(() => {
+        (async () => {
+          const approved = await handleUserApproval('offering');
+          dispatch(changeApproval({ approval: approved}));
+        })();
+      }, [account, asset, amount]);
 
     return (
         <>
@@ -46,7 +49,9 @@ function index() {
                     handleClickOnConfirmBtn={handleClickOnConfirmBtn}
                     handleOnAssetSelect={handleOnAssetSelect}
                     handleOnAmountSelect={handleOnAmountSelect}
+                    handleConversionToETRNL={handleConversionToETRNL}
                     handlePercents={handlePercents}
+                    offeringStats={offeringStats}
                     />
                 </div>
                 <Footer />
