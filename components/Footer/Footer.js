@@ -11,7 +11,7 @@ import { reset, changeGageType } from '../../reducers/main';
 
 function Footer() {
   const { account, active } = useWeb3React();
-  const { login, logout } = useAuth();
+  const { login } = useAuth();
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -53,7 +53,6 @@ function Footer() {
           handleAccount(account);
           break;
         case 2:
-          dispatch(changeGageAsset({ asset: 'ETRNL'}));
           router.push("/stake");
           break;
         case 3:

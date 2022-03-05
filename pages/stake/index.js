@@ -1,27 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import HEAD from 'next/head';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
 import StakeUI from '../../components/StakeUI/Stake';
 import useEternalHook from '../../hooks/useEternalHook';
 import { useDispatch } from 'react-redux';
+import { changeApproval, changeGageAsset } from '../../reducers/main';
+import { useWeb3React } from '@web3-react/core';
 
 function index() {
 
   const { account } = useWeb3React();
-
   const {
     amount,
-    asset,
     handleOnAmountSelect,
-    handleOnAssetSelect,
-    handleConversionToETRNL,
-    handlePercents,
     handleClickOnConfirmBtn,
     handleClickOnApproveBtn,
-    handleUserApproval
+    handleUserApproval,
+    stakingStats,
+    stakingEstimates
   } = useEternalHook();
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +27,11 @@ function index() {
       const approved = await handleUserApproval('treasury');
       dispatch(changeApproval({ approval: approved }));
     })();
-  }, [account, asset, amount]);
+  }, [account, amount]);
+
+  useEffect(() => {
+    dispatch(changeGageAsset({ asset: 'ETRNL' }));
+  });
 
   return (
     <>
@@ -40,7 +42,12 @@ function index() {
       <body className='secondary select-deposit-pg'>
         <div className='header d-flex align-items-center'>
           <Navbar />
-          <StakeUI handleClickOnApproveBtn={handleClickOnApproveBtn} />
+          <StakeUI handleClickOnApproveBtn={handleClickOnApproveBtn}
+            handleClickOnConfirmBtn={handleClickOnConfirmBtn}
+            handleOnAmountSelect={handleOnAmountSelect}
+            stakingStats={stakingStats}
+            stakingEstimates={stakingEstimates}
+            account={account} />
         </div>
         <Footer />
       </body>

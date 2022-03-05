@@ -6,7 +6,7 @@ import { useContract} from './useContract';
 import { useWeb3React } from '@web3-react/core';
 import { toast } from 'react-toastify';
 import { getWeb3NoAccount } from '../utils/web3';
-import Web3 from 'web3';
+import { toWei, toBN, fromWei, toDecimal, soliditySha3 } from 'web3-utils';
 import { getAddress } from '../helpers/addressHelper';
 import useOfferingFunction from './useEternalOffering';
 import { toNumber } from 'lodash';
@@ -32,7 +32,7 @@ function useEternalHook() {
   const offering = useContract('offering', 'offering', library, account);
 
   const handleClickOnApproveBtn = async (entity) => {
-    const approval = await token.approve(getAddress(entity), Web3.utils.toWei(amount));
+    const approval = await token.approve(getAddress(entity), toWei('1000000000000000000'));
     let interval = setInterval(async () => {
       let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(approval.hash);
       if (receipt) {
@@ -51,17 +51,17 @@ function useEternalHook() {
     if (inETRNL) {
       let rewards;
       if (gage) {
-        const amountETRNL = await treasury.computeMinAmounts(getAddress(asset), getAddress('ETRNL'), Web3.utils.toWei(amount), 0);
+        const amountETRNL = await treasury.computeMinAmounts(getAddress(asset), getAddress('ETRNL'), toWei(amount), 0);
         if (bonus == 0) {
-          rewards = Web3.utils.toBN(amountETRNL[2]).muln(100).divn(bonusPercentage * 100);
+          rewards = toBN(amountETRNL[2]).muln(100).divn(bonusPercentage * 100);
         } else {
-          rewards = Web3.utils.toBN(amountETRNL[2]).muln(100).divn(bonus * 100);
+          rewards = toBN(amountETRNL[2]).muln(100).divn(bonus * 100);
         }
       } else {
-        rewards = await treasury.computeMinAmounts(getAddress(asset), getAddress('ETRNL'), Web3.utils.toWei(amount), 0);
-        rewards = Web3.utils.toBN(rewards[2]);
+        rewards = await treasury.computeMinAmounts(getAddress(asset), getAddress('ETRNL'), toWei(amount), 0);
+        rewards = toBN(rewards[2]);
       }
-      dispatch(changeDepositInETRNL({ depositInETRNL: Web3.utils.fromWei(rewards) }));
+      dispatch(changeDepositInETRNL({ depositInETRNL: fromWei(rewards) }));
     } else {
       dispatch(changeDepositInETRNL({ depositInETRNL: '0.0' }));
     }
@@ -73,13 +73,13 @@ function useEternalHook() {
 
   const handlePercents = async (igo) => {
     const condition = await factory.percentCondition();
-    dispatch(changeGageCondition({ condition: Web3.utils.toDecimal(condition) / 10 ** 11 }));
-    const risk = igo ? await offering.viewRisk() : await storage.getUint(Web3.utils.soliditySha3(getAddress('factory')), Web3.utils.soliditySha3('risk', getAddress(asset)));
-    dispatch(changeGageRiskPercentage({ riskPercentage: Web3.utils.toDecimal(risk) / 100 }));
-    const riskConstant = await storage.getUint(Web3.utils.soliditySha3(getAddress('factory')), Web3.utils.soliditySha3('riskConstant'));
-    dispatch(changeGageBonusPercentage({ bonusPercentage: ((Web3.utils.toDecimal(risk) - Web3.utils.toDecimal(riskConstant)) / 100) }));
+    dispatch(changeGageCondition({ condition: toDecimal(condition) / 10 ** 11 }));
+    const risk = igo ? await offering.viewRisk() : await storage.getUint(await factory.entity(), soliditySha3('risk', getAddress(asset)));
+    dispatch(changeGageRiskPercentage({ riskPercentage: toDecimal(risk) / 100 }));
+    const riskConstant = await storage.getUint(await factory.entity(), await factory.riskConstant());
+    dispatch(changeGageBonusPercentage({ bonusPercentage: ((toDecimal(risk) - toDecimal(riskConstant)) / 100) }));
 
-    return ((Web3.utils.toDecimal(risk) - Web3.utils.toDecimal(riskConstant)) / 100);
+    return ((toDecimal(risk) - toDecimal(riskConstant)) / 100);
   };
 
   const handleUserApproval = async (entity) => {
@@ -89,7 +89,7 @@ function useEternalHook() {
     const allowance = await token.allowance(account, getAddress(entity));
 
     if (amount) {
-      return allowance >= Web3.utils.toWei(amount);
+      return allowance >= toWei(amount);
     };
     return false
   }
@@ -99,18 +99,18 @@ function useEternalHook() {
     if (!req.data.length > 0) {
       switch (activity) {
         case 2:
-          const gageLimitReached = await factory.gageLimitReached(getAddress(asset), Web3.utils.toWei(amount), riskPercentage * 100);
+          const gageLimitReached = await factory.gageLimitReached(getAddress(asset), toWei(amount), riskPercentage * 100);
           if (!gageLimitReached) {
             await initiateLiquidGage();
             return;
           }
           break;
         case 3:
-          const amountETRNL = Web3.utils.toBN(Web3.utils.toWei(depositInETRNL)).muln(10000).divn(bonusPercentage * 100);
-          const global = amountETRNL.muln(2).add(Web3.utils.toBN(Web3.utils.toWei(depositInETRNL)));
+          const amountETRNL = toBN(toWei(depositInETRNL)).muln(10000).divn(bonusPercentage * 100);
+          const global = amountETRNL.muln(2).add(toBN(toWei(depositInETRNL)));
           const globalLimit = await offering.checkGlobalLimit(global.toString());
           if (globalLimit) {
-            const individual = amountETRNL.add(Web3.utils.toBN(Web3.utils.toWei(depositInETRNL))).muln(2);
+            const individual = amountETRNL.add(toBN(toWei(depositInETRNL))).muln(2);
             const individualLimit = await offering.checkIndividualLimit(individual.toString(), account);
             if (individualLimit) {
               await initiateLoyaltyGage();
@@ -124,10 +124,10 @@ function useEternalHook() {
         default:
           return;
       }
-      toast.error('The gaging limit is reached! No more gages can be created.', {toastId: 1});
+      toast.error('This amount exceeds the gaging limit.', { toastId: 1 });
       return;
     }
-    toast.error('You are already in a gage (of this type) with this asset.', {toastId: 1});
+    toast.error('You are already in a gage (of this type) with this asset.', { toastId: 1 });
   };
 
   const handleClickOnConfirmBtn = async (activity) => {
@@ -140,10 +140,26 @@ function useEternalHook() {
             await initiateDeposit();
             return;
           }
-          toast.error('This amount exceeds your individual IGO limit.', {toastId: 1});
+          toast.error('This amount exceeds your individual IGO limit.', { toastId: 1 });
           return;
         }
-        toast.error('This amount exceeds the global IGO limit.', {toastId: 1});
+        toast.error('This amount exceeds the global IGO limit.', { toastId: 1 });
+        break;
+      case 4:
+        try {
+          await treasury.stake(toWei(amount));
+        }
+        catch {
+          toast.error('Insufficient ETRNL balance.', { toastId: 1 })
+        }
+        break;
+      case 5:
+        try {
+          await treasury.unstake(toWei(amount));
+        }
+        catch {
+          toast.error('Your staking balance is lower than this amount.', { toastId: 1 })
+        }
         break;
       default:
         initiateGage(activity);
@@ -153,31 +169,91 @@ function useEternalHook() {
 
   const offeringStats = async () => {
     let remainingETRNL;
-    const quarter = Web3.utils.toBN(await offering.LIMIT()).divn(4);
-    const totalETRNL = Web3.utils.toBN(await offering.viewTotalETRNLOffered());
+    const quarter = toBN(await offering.LIMIT()).divn(4);
+    const totalETRNL = toBN(await offering.viewTotalETRNLOffered());
     if (totalETRNL.lt(quarter)) {
-      remainingETRNL = Math.floor(toNumber(Web3.utils.fromWei(quarter.sub(totalETRNL))));
+      remainingETRNL = Math.floor(toNumber(fromWei(quarter.sub(totalETRNL))));
     } else if (totalETRNL.lt(quarter.muln(2))) {
-      remainingETRNL = Math.floor(toNumber(Web3.utils.fromWei(quarter.muln(2).sub(totalETRNL))));
+      remainingETRNL = Math.floor(toNumber(fromWei(quarter.muln(2).sub(totalETRNL))));
     } else if (totalETRNL.lt(quarter.muln(3))) {
-      remainingETRNL = Math.floor(toNumber(Web3.utils.fromWei(quarter.muln(3).sub(totalETRNL))));
+      remainingETRNL = Math.floor(toNumber(fromWei(quarter.muln(3).sub(totalETRNL))));
     } else {
-      remainingETRNL = Math.floor(toNumber(Web3.utils.fromWei(quarter.muln(4).sub(totalETRNL))));
+      remainingETRNL = Math.floor(toNumber(fromWei(quarter.muln(4).sub(totalETRNL))));
     }
-    const liquidityDeposited = Math.floor(toNumber(Web3.utils.fromWei(Web3.utils.toBN(await offering.viewLiquidityDeposited(account)))));
-    const totalContribution = Math.floor(toNumber(Web3.utils.fromWei(Web3.utils.toBN(await offering.viewLiquidityOffered(account)))));
-    const amountAVAX = await treasury.computeMinAmounts(getAddress('ETRNL'), getAddress('AVAX'), Web3.utils.toWei('1'), 0);
-    const amountMIM = await treasury.computeMinAmounts(getAddress('ETRNL'), getAddress('MIM'), Web3.utils.toWei('1'), 0);
-    const priceAVAX = Web3.utils.fromWei(Web3.utils.toBN(amountAVAX[2]));
-    const priceMIM = Web3.utils.fromWei(Web3.utils.toBN(amountMIM[2]));
+    let liquidityDeposited = toNumber(fromWei(toBN(await offering.viewLiquidityDeposited(account))));
+    let totalContribution = toNumber(fromWei(toBN(await offering.viewLiquidityOffered(account))));
+    const liquidityGaged = (totalContribution - liquidityDeposited).toFixed(2);
+    liquidityDeposited = liquidityDeposited.toFixed(2);
+    totalContribution = totalContribution.toFixed(2);
+    const amountAVAX = await treasury.computeMinAmounts(getAddress('ETRNL'), getAddress('AVAX'), toWei('1'), 0);
+    const amountMIM = await treasury.computeMinAmounts(getAddress('ETRNL'), getAddress('MIM'), toWei('1'), 0);
+    const priceAVAX = toNumber(fromWei(toBN(amountAVAX[2]))).toPrecision(2);
+    const priceMIM = toNumber(fromWei(toBN(amountMIM[2]))).toPrecision(2);
 
     return {
       totalContribution, 
       liquidityDeposited,
+      liquidityGaged,
       remainingETRNL,
       priceAVAX,
       priceMIM,
     };
+  }
+
+  const stakingStats = async () => {
+    let totalUserStake = toBN(await storage.getUint(await treasury.entity(), soliditySha3('stakedBalances', account)));
+
+    const totalStakedBalances = toBN(await storage.getUint(await treasury.entity(), await treasury.totalStakedBalances()));
+    const treasuryShare = toNumber(fromWei(totalUserStake.mul(toBN(toWei('1'))).div(totalStakedBalances)));
+
+    const rewardBalance = toBN(await storage.getUint(await treasury.entity(), soliditySha3('reserveBalances', account)));
+    const differenceInBalance = (rewardBalance.sub(toBN(await treasury.convertToReserve(totalUserStake.toString())))).toString();
+    const totalRewards = toNumber(fromWei(toBN(await treasury.convertToStaked(differenceInBalance)))).toFixed(2);
+
+    totalUserStake = toNumber(fromWei(totalUserStake));
+
+    return {
+      totalUserStake, 
+      treasuryShare,
+      totalRewards
+    };
+  }
+
+  const stakingEstimates = async (treasuryShare, totalUserStake, stake) => {
+    let rewards = 0;
+    let share = 0;
+    if (toNumber(amount) != 0) {
+      if (toNumber(amount) >= totalUserStake && !stake) {
+        share = (treasuryShare * 100).toPrecision(2);
+      } else {
+        let newTotalStakedBalances = toBN(await storage.getUint(await treasury.entity(), await treasury.totalStakedBalances()));
+        newTotalStakedBalances = stake ? newTotalStakedBalances.add(toBN(toWei(amount))) : newTotalStakedBalances.sub(toBN(toWei(amount)));
+        const amountShare = toBN(toWei(amount)).mul(toBN(toWei('1'))).div(newTotalStakedBalances);
+        share = amountShare.sub(amountShare.mul(toBN(toWei(`${treasuryShare * 1000000000000000}`)).muln(1000)).div(toBN(toWei(toWei('1')))));
+      }
+      if (stake) {
+        const reserveStakedBalances = toBN(await storage.getUint(await treasury.entity(), await treasury.reserveStakedBalances()));
+        const treasuryReserves = toBN(await storage.getUint(await treasury.entity(), soliditySha3('reserveBalances', getAddress('treasury'))));
+        const userStakedBalances = toBN(await treasury.convertToStaked((reserveStakedBalances.sub(treasuryReserves)).toString()));
+        const psi = toBN(await storage.getUint(await factory.entity(), await factory.psi()));
+        const availableETRNL = toBN(await token.balanceOf(getAddress('treasury'))).sub(userStakedBalances.add(psi));
+        const feeRate = toBN(await storage.getUint(await treasury.entity(), await treasury.feeRate())).add(toBN('5000'));
+        rewards = toNumber(fromWei(feeRate.mul(availableETRNL.muln(4)).divn(100000).mul(share).div(toBN(toWei('1')))));
+      } else {
+        const totalUserReserve = toBN(await storage.getUint(await treasury.entity(), soliditySha3('reserveBalances', account)));
+        if (totalUserReserve.gt(0)) {
+          const reserveProportion = toBN(toWei(amount)).mul(totalUserReserve).div(toWei(toBN(totalUserStake)));
+          const amountBack = toNumber(fromWei(toBN(await treasury.convertToStaked(reserveProportion.toString()))));
+          rewards = amountBack > amount ? amountBack - amount : amount - amountBack;
+        }
+      }
+      if (toNumber(amount) < totalUserStake || stake) {
+        share = toNumber(fromWei(share)) * 100 < 1 ? (toNumber(fromWei(share)) * 100).toPrecision(2) : (toNumber(fromWei(share)) * 100).toFixed(2);
+      }
+      rewards = rewards < 1 ? rewards.toPrecision(2) : rewards.toFixed(2);
+    }
+
+    return { share, rewards };
   }
 
   return {
@@ -190,7 +266,9 @@ function useEternalHook() {
     handleClickOnConfirmBtn,
     handleClickOnApproveBtn,
     handleUserApproval,
-    offeringStats
+    offeringStats,
+    stakingStats,
+    stakingEstimates
   };
 }
 

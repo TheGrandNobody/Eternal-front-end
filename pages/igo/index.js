@@ -52,6 +52,7 @@ function index() {
             handleConversionToETRNL={handleConversionToETRNL}
             handlePercents={handlePercents}
             offeringStats={offeringStats}
+            account={account}
           />
         </div>
         <Footer />

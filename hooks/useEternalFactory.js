@@ -20,12 +20,18 @@ function useFactoryFunction() {
 
   const initiateLiquidGage = async () => {
     let initiateGage;
-    if (gageAsset == 'AVAX') {
-      const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
-      console.log(options);
-      initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), options);
-    } else {
-      initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'));
+    try {
+      if (gageAsset == 'AVAX') {
+        const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
+        console.log(options);
+        initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), options);
+      } else {
+        initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'));
+      }
+    }
+    catch {
+      toast.error('Insufficient funds.', { toastId: 1});
+      return;
     }
     const interval = setInterval(async () => {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);

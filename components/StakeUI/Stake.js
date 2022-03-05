@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Tooltip from "../ToolTip/Tooltip";
 import Grid from "@mui/material/Grid";
@@ -7,6 +7,8 @@ import Switch from "@mui/material/Switch";
 import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 import { Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+
 
 const StakeSwitch = styled(Switch)(() => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -96,10 +98,32 @@ function StakeUI({
   handleClickOnApproveBtn,
   handleClickOnConfirmBtn,
   handleOnAmountSelect,
+  stakingStats,
+  stakingEstimates,
+  account
 }) {
-  const [amount, setAmount] = useState(0);
   const [period, setPeriod] = useState(false);
-  const [stake, setStake] = useState("Stake");
+  const [stake, setStake] = useState('Stake');
+  const [amount, setAmount] = useState(0);
+  const [totalStake, setTotalStake] = useState(0);
+  const [shareTreasury, setTreasuryShare] = useState(0);
+  const [totalRewards, setTotalRewards] = useState(0);
+  const [share, setShare] = useState(0);
+  const [rewards, setRewards] = useState(0);
+
+  const { approval } = useSelector(state => state.eternal);
+
+  useEffect( async () => {
+    const { totalUserStake,
+            treasuryShare,
+            totalRewards } = await stakingStats();
+    const { share, rewards } = await stakingEstimates(treasuryShare, totalUserStake, stake == 'Stake');
+    setShare(share);
+    setRewards(rewards);
+    setTotalStake(totalUserStake.toFixed(2));
+    setTreasuryShare((treasuryShare * 100).toPrecision(2));
+    setTotalRewards(totalRewards);
+  }, [account, amount, stake]);
 
   const handleKeyPress = (event) => {
     if ((period && !/[0-9]/.test(event.key)) || !/[0-9\.]/.test(event.key)) {
@@ -110,7 +134,7 @@ function StakeUI({
   const handleChange = (event) => {
     setPeriod(/\./.test(event.target.value));
     setAmount(event.target.value);
-    handleOnAmountSelect(amount);
+    handleOnAmountSelect(event.target.value);
   };
 
   return (
@@ -128,7 +152,7 @@ function StakeUI({
                   }
                 ></Tooltip>
               </div>
-              <p className="text-center">10 ETRNL</p>
+              <p className="text-center">{`${totalStake} ETRNL`}</p>
               <div className="d-flex align-center justify-content-center">
                 <h2>Total Treasury Share</h2>
                 <Tooltip
@@ -137,7 +161,7 @@ function StakeUI({
                   }
                 ></Tooltip>
               </div>
-              <p className="text-center">1%</p>
+              <p className="text-center">{`${shareTreasury}%`}</p>
               <div className="d-flex align-center justify-content-center">
                 <h2>Total Rewards</h2>
                 <Tooltip
@@ -146,7 +170,7 @@ function StakeUI({
                   }
                 ></Tooltip>
               </div>
-              <p className="text-center">500 ETRNL</p>
+              <p className="text-center">{`${totalRewards} ETRNL`}</p>
             </div>
           </SmallBackground>
         </Grid>
@@ -200,7 +224,7 @@ function StakeUI({
                 pattern="^[0-9]*[.,]?[0-9]*$"
                 placeholder="0.0"
                 minLength="1"
-                maxLength="79"
+                maxLength="18"
                 spellCheck="false"
                 onKeyPress={handleKeyPress}
                 onChange={handleChange}
@@ -223,7 +247,7 @@ function StakeUI({
                           }
                         ></Tooltip>
                       </div>
-                      <p className="text-center">10%</p>
+                      <p className="text-center">{share == 0 ? '' : `${share}%`}</p>
                     </>
                   ) : (
                     <>
@@ -235,7 +259,7 @@ function StakeUI({
                           }
                         ></Tooltip>
                       </div>
-                      <p className="text-center">0.1%</p>
+                      <p className="text-center">{share == 0 ? '' : `${share}%`}</p>
                     </>
                   )}
                 </div>
@@ -243,14 +267,14 @@ function StakeUI({
                   {stake === "Stake" ? (
                     <>
                       <div className="d-flex align-center justify-content-center">
-                        <h2>Estimated APY</h2>
+                        <h2>Estimated Rewards</h2>
                         <Tooltip
                           text={
-                            "The estimated annual percentage yield that this added treasury share will earn you."
+                            "The estimated amount of ETRNL that this added treasury share will earn you in one year."
                           }
                         ></Tooltip>
                       </div>
-                      <p className="text-center">1%</p>
+                      <p className="text-center">{rewards == 0 ? '' : `${rewards} ETRNL`}</p>
                     </>
                   ) : (
                     <>
@@ -262,22 +286,57 @@ function StakeUI({
                           }
                         ></Tooltip>
                       </div>
-                      <p className="text-center">50 ETRNL</p>
+                      <p className="text-center">{rewards + amount == 0 ? '' : `${rewards} ETRNL`}</p>
                     </>
                   )}
                 </div>
               </div>
             </div>
-            <div className="text-center py-5">
+            {
+        (amount <= 0) ?
+          <div className="col-sm-12 my-5 text-center">
+            <button className="disabled btn theme-btn">
+              Confirm
+            </button>
+          </div>
+        :
+          ( (approval)  ?
+            ( (stake == 'Stake') ? 
+              <div className="col-sm-12 my-5 text-center">
+                <button
+                  onClick={async () => {
+                    await handleClickOnConfirmBtn(4);
+                  }}
+                  className="btn theme-btn"
+                >
+                  Confirm
+                </button>
+              </div>
+            :
+              <div className="col-sm-12 my-5 text-center">
+                <button
+                  onClick={async () => {
+                    await handleClickOnConfirmBtn(5);
+                  }}
+                  className="btn theme-btn"
+                >
+                  Confirm
+                </button>
+              </div>
+            )
+          :
+            <div className="col-sm-12 my-5 text-center">
               <button
                 onClick={async () => {
-                  await handleClickOnApproveBtn(amount);
+                  await handleClickOnApproveBtn('treasury');
                 }}
                 className="btn theme-btn"
               >
                 Approve
               </button>
             </div>
+          )
+      }
           </SelectBackground>
         </Grid>
       </Grid>

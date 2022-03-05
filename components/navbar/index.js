@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
 import { useDispatch } from "react-redux";
-import { changeGageType, reset } from "../../reducers/main";
+import { reset, changeGageType } from "../../reducers/main";
 
 function Navbar() {
   const [scroll, setScroll] = React.useState(false);
@@ -72,7 +72,6 @@ function Navbar() {
           handleAccount(account);
           break;
         case 2:
-          dispatch(changeGageAsset({ asset: 'ETRNL'}));
           router.push("/stake");
           break;
         case 3:

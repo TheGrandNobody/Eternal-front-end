@@ -147,7 +147,8 @@ function InitialGageOffering({
   handleOnAmountSelect,
   handleConversionToETRNL,
   handlePercents,
-  offeringStats
+  offeringStats,
+  account
 }) {
   const [deposit, setDeposit] = useState("Select");
   const [icon, setIcon] = useState("");
@@ -157,6 +158,7 @@ function InitialGageOffering({
   const [offering, setIGO] = useState("Gage");
   const [totalContribution, setTotalContribution] = useState('');
   const [liquidityDeposited, setLiquidityDeposited] = useState('');
+  const [liquidityGaged, setLiquidityGaged] = useState('');
   const [remainingETRNL, setRemainingETRNL] = useState('');
   const [priceAVAX, setpriceAVAX] = useState('');
   const [priceMIM, setpriceMIM] = useState('');
@@ -172,6 +174,7 @@ function InitialGageOffering({
     const {
       totalContribution, 
       liquidityDeposited,
+      liquidityGaged,
       remainingETRNL,
       priceAVAX,
       priceMIM,
@@ -179,10 +182,11 @@ function InitialGageOffering({
 
     setTotalContribution(totalContribution);
     setLiquidityDeposited(liquidityDeposited);
+    setLiquidityGaged(liquidityGaged);
     setRemainingETRNL(remainingETRNL);
     setpriceAVAX(priceAVAX);
     setpriceMIM(priceMIM);
-  }, []);
+  }, [account]);
 
   useEffect(async () => {
     await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', offering == 'Gage', 0);
@@ -229,7 +233,7 @@ function InitialGageOffering({
                 ></Tooltip>
               </div>
               <p className="text-center" style={{ fontSize: "2vmin" }}>
-                {totalContribution} ETRNL
+                {totalContribution == null ? '' : `${totalContribution} ETRNL`}
               </p>
               <div className="d-flex align-center justify-content-center">
                 <h2>Amount Gaged</h2>
@@ -240,7 +244,7 @@ function InitialGageOffering({
                 ></Tooltip>
               </div>
               <p className="text-center" style={{ fontSize: "2vmin" }}>
-                {totalContribution - liquidityDeposited} ETRNL
+                {liquidityGaged  == null ? '' : `${liquidityGaged} ETRNL`}
               </p>
               <div className="d-flex align-center justify-content-center">
                 <h2>Amount Deposited</h2>
@@ -251,7 +255,7 @@ function InitialGageOffering({
                 ></Tooltip>
               </div>
               <p className="text-center" style={{ fontSize: "2vmin" }}>
-                {liquidityDeposited} ETRNL
+                {liquidityDeposited == null ? '' : `${liquidityDeposited} ETRNL`}
               </p>
             </div>
           </SmallBackground>

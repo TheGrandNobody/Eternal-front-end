@@ -19,12 +19,18 @@ function useOfferingFunction() {
 
   const initiateLoyaltyGage = async () => {
     let initiateGage;
-    if (gageAsset == 'AVAX') {
-      const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
-      console.log(options);
-      initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset), options);
-    } else {
-      initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset));
+    try {
+      if (gageAsset == 'AVAX') {
+        const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
+        console.log(options);
+        initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset), options);
+      } else {
+        initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset));
+      }
+    }
+    catch {
+      toast.error('Insufficient funds.', { toastId: 1});
+      return;
     }
     const interval = setInterval(async () => {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
@@ -65,12 +71,18 @@ function useOfferingFunction() {
 
   const initiateDeposit = async () => {
     let initiateDeposit;
-    if (gageAsset == 'AVAX') {
-      const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
-      console.log(options);
-      initiateDeposit = await offering.provideLiquidity(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset), options);
-    } else {
-      initiateDeposit = await offering.provideLiquidity(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset));
+    try {
+      if (gageAsset == 'AVAX') {
+        const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
+        console.log(options);
+        initiateDeposit = await offering.provideLiquidity(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset), options);
+      } else {
+        initiateDeposit = await offering.provideLiquidity(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset));
+      }
+    }
+    catch {
+      toast.error('Insufficient funds.', { toastId: 1});
+      return;
     }
     let interval = setInterval(async () => {
         let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(initiateDeposit.hash);
