@@ -12,12 +12,8 @@ export const findExistingGage = async (type, receiver, deposit) => {
   return api.post('find-gage', { type, receiver, deposit});
 };
 
-export const getAllGageIDs = async (account) => {
-  return api.get(`getAllGagesAddresses/${account}?page=1&limit=10`);
-};
-
-export const findAndUpdateGageStatus = async (id, status) => {
-  return api.post('findAndUpdateGageStatus', { id: id, status: status });
+export const findAndUpdateGageStatus = async (id, status, winner) => {
+  return api.post('findAndUpdateGageStatus', { id: id, status: status, winner: winner });
 };
 
 export const getGagesAccordingToStatus = async (account, status, limit, currentPage) => {

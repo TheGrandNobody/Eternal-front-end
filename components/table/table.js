@@ -1,50 +1,53 @@
 import React from 'react';
 import TableRow from './components/tableRow';
 import TableRowSkeleton from './components/tableRowSkeleton';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { changeSelectedGage } from '../../reducers/main';
+import { useSelector } from 'react-redux';
 
 function table(props) {
-  const { data, clickableRow } = props;
+  const { data, clickableRow, account, library} = props;
   const dispatch = useDispatch();
+
   const { selectedGage } = useSelector((state) => state.eternal);
 
-  const handleClickOnGage = (gageAddress) => {
-    dispatch(changeSelectedGage({ selectedGage: gageAddress }));
+  const handleClickOnGage = (id) => {
+    dispatch(changeSelectedGage({ selectedGage: id }));
   };
 
   return (
     <div className='grid'>
       <table className='table'>
         <thead>
-          <tr>
+          <tr align="center" valign="center">
             <th scope='col'>Gage Type</th>
             <th scope='col'>Date of Initiation</th>
             <th scope='col'>Deposit</th>
             <th scope='col'>Bonus</th>
             <th scope='col'>Risk</th>
             <th scope='col'>Condition</th>
+            {(!clickableRow) ?  <th scope='col'>Winner</th> : ''}
           </tr>
         </thead>
         <tbody>
           {data.length > 0 ? (
             data?.map((item, index) => (
               <TableRow
-                type={item.gageType}
-                active={item.gageAddress === selectedGage}
+                type={item.type}
+                active={item.id === selectedGage}
                 key={index}
-                index={index + 1}
+                id = {item.id}
                 created_at={item.created_at}
-                amount={item.amount}
-                asset={item.asset}
-                riskPercentage={item.riskPercentage}
-                bonusPercentage={item.bonusPercentage}
-                condition = {item.condition}
-                handleClick={clickableRow ? () => handleClickOnGage(item.gageAddress) : () => ({})}
+                asset={item.deposit}
+                winner={item.winner}
+                closed={clickableRow}
+                handleClick={clickableRow ? () => handleClickOnGage(item.id) : () => ({})}
+                account={account}
+                library={library}
               />
             ))
           ) : (
-            <TableRowSkeleton />
+            <TableRowSkeleton closed={!clickableRow} />
           )}
         </tbody>
       </table>

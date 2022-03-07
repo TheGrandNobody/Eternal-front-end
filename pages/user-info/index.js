@@ -4,13 +4,13 @@ import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
 import Table from '../../components/table/table';
 import { tableTabs } from '../../constant/constants';
-import { getGagesAccordingToStatus, findAndUpdateGageStatus, removeUserAddressToGage } from '../../services/index';
+import { getGagesAccordingToStatus, findAndUpdateGageStatus} from '../../services/index';
 import { useWeb3React } from '@web3-react/core';
 import Link from 'next/link';
 import CustomSelectDropdown from '../../components/CustomSelectDropdown';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeLoadedContracts, changeSelectedGage } from '../../reducers/main';
-import { useAllGagesSolContract } from '../../hooks/useContract';
+import { changeLoadedContracts, changeSelectedGage, reset } from '../../reducers/main';
+import { getAllGages } from '../../hooks/useContract';
 import { getWeb3NoAccount } from '../../utils/web3';
 import { toast } from 'react-toastify';
 import Web3 from 'web3';
@@ -32,17 +32,16 @@ function index() {
   const fetchDataForTable = async (currentStatusTab) => {
     const req = await getGagesAccordingToStatus(account, currentStatusTab, gageCount, currentPage);
     setData(req.data);
-    let contracts = useAllGagesSolContract(library, account, req?.data?.results || []);
-    console.log(contracts);
+    let contracts = await getAllGages(library, account, req?.data?.results || []);
     dispatch(changeLoadedContracts({ loadedContracts: contracts }));
+
+    return req.data?.results.length;
   };
 
   const handleChangeOnTab = (currentTab) => {
-    if (currentTab === 'Closed') {
-      dispatch(changeSelectedGage({ selectedGage: null }));
-    }
+    dispatch(changeSelectedGage({ selectedGage: null }));
     setCurrentTab(currentTab);
-    fetchDataForTable(currentTab);
+    setCurrentPage(1);
   };
 
   const handleOnChangeGageCount = (Event) => {
@@ -59,21 +58,25 @@ function index() {
     setCurrentPage(data?.previous && data?.previous?.page);
   };
 
-  const handleClickOnForfietButton = async () => {
+  const handleExitGage = async () => {
     let contract = loadedContracts[selectedGage];
     const exit = await contract.exit();
     let interval = setInterval(async () => {
-      let reciept = await getWeb3NoAccount().eth.getTransactionReceipt(exit.hash);
-      if (reciept) {
+      let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(exit.hash);
+      if (receipt) {
         clearInterval(interval);
         toast.success('Gage Exited Successfully', { toastId: 3 });
-        let id = Web3.utils.toDecimal(reciept.logs[0].data);
+        let length = data?.results.length;
+        let winnerData= receipt.logs[0].data.slice(66);
+        const winner = getWeb3NoAccount().eth.abi.decodeParameter('bool', winnerData);
         new Promise(function (resolve, reject) {
-          resolve(removeUserAddressToGage(id, account));
-        })
-          .then(() => {
-            fetchDataForTable(currentTab);
-          })
+          resolve(findAndUpdateGageStatus(selectedGage, 'closed', winner));
+        }).then((() => {let endLoop = setInterval(async () => {
+          let newLength = await fetchDataForTable(currentTab);
+          if (length > newLength) {
+            clearInterval(endLoop);
+          }
+        }, 200)})())
           .catch((err) => {
             toast.error('Error while fetching data !', { toastId: 3 });
           });
@@ -100,19 +103,21 @@ function index() {
                 <ul className='nav nav-tabs mb-3' id='ex1' role='tablist'>
                   {tableTabs.map((item, index) => (
                     <li className={`nav-item ${item === currentTab && 'active'}`} role='presentation' key={index}>
-                      <a className={`nav-link bold ${item === currentTab && 'active'}`} onClick={() => handleChangeOnTab(item)}>
+                      <a className={`nav-link ${item === currentTab && 'active'}`} onClick={() => handleChangeOnTab(item)}>
                         {item}
                       </a>
                     </li>
                   ))}
                 </ul>
-
-                <CustomSelectDropdown handleOnChange={handleOnChangeGageCount} />
               </div>
-
+              <CustomSelectDropdown handleOnChange={handleOnChangeGageCount} />
               <div className='tab-content mb-5' id='ex1-content'>
                 <div className='tab-pane fade show active' id='ex1-tabs-1' role='tabpanel' aria-labelledby='ex1-tab-1'>
-                  <Table data={data?.results || []} clickableRow={currentTab !== 'Closed'} />
+                  <Table data={data?.results || []} 
+                  clickableRow={currentTab !== 'Closed'} 
+                  account={account} 
+                  library={library}
+                  />
                   <div className='container text-center my-5 px-0'>
                     {data?.previous && data?.results?.length > 0 && (
                       <button onClick={handleChangeOnPrevPage} style={{ transform: 'rotate(180deg)' }} className='btn next-btn mx-sm-2 mx-1'>
@@ -125,11 +130,11 @@ function index() {
                       </button>
                     )}
                     <Link href='/gage-selection'>
-                      <button className='btn grid-btn mx-sm-2 mx-1'>New Gage</button>
+                      <button onClick={() => dispatch(reset())} className='btn grid-btn mx-sm-2 mx-1'>New Gage</button>
                     </Link>
                     {selectedGage && (
-                      <button onClick={handleClickOnForfietButton} className='btn grid-btn mx-sm-2 mx-1'>
-                        Forfeit
+                      <button onClick={handleExitGage} className='btn grid-btn mx-sm-2 mx-1'>
+                        Close Gage
                       </button>
                     )}
                     {data?.next && data?.results?.length > 0 && (

@@ -276,14 +276,15 @@ a:hover .gage-block {
   color: white !important;
   text-transform: inherit !important;
   font-size: 18px !important;
+  font-weight: 500 !important;
 }
 .gage-tabs li a.active,
 .gage-tabs li a:hover {
   color: #c35c6c !important;
-  font-weight: bold !important;
   background: none !important;
-  /* border-bottom: 2px solid #c35c6c; */
-  /* border: none; */
+}
+.gage-tabs li a.active {
+  font-weight: bold !important;
 }
 .gage-tabs .table {
   border-spacing: 0 10px;
@@ -319,9 +320,13 @@ a:hover .gage-block {
 }
 .gage-tabs .table td .coin-name {
   font-size: 12px;
-  background: #30083b;
+  background: #583961;
   border-radius: 20px;
   padding: 5px 10px;
+}
+.gage-tabs .table tbody tr:hover td .coin-name {
+  background: #280531;
+  transition: 0.5s;
 }
 .gage-tabs .table td .risk-val {
   font-size: 12px;

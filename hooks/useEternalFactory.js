@@ -23,14 +23,15 @@ function useFactoryFunction() {
     try {
       if (gageAsset == 'AVAX') {
         const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
-        console.log(options);
         initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), options);
       } else {
         initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'));
       }
     }
-    catch {
-      toast.error('Insufficient funds.', { toastId: 1});
+    catch (err) {
+      if (err.code == 'INSUFFICIENT_FUNDS') {
+        toast.error('Insufficient funds.', { toastId: 1});
+      }
       return;
     }
     const interval = setInterval(async () => {

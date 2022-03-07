@@ -1,17 +1,9 @@
 import React from 'react';
 
-function tableRowSkeleton() {
+function tableRowSkeleton(closed) {
   return (
     <tr>
-      <td></td>
-      <td></td>
-      <td>No Data Found!</td>
-      <td>
-        <span></span>
-      </td>
-      <td>
-        <span></span>
-      </td>
+      <td align="center" valign="center" colSpan={closed ? "7" : "6"} scope="colgroup">No Data Found!</td>
     </tr>
   );
 }

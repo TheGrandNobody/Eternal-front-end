@@ -149,7 +149,7 @@ function CreateLiquidGage({
     if (deposit != 'Select') {
       (async () => {
         const bonus = await handlePercents(false);
-        handleConversionToETRNL(toNumber(amount) > 0, true, bonus);
+        setTimeout(() => handleConversionToETRNL(toNumber(amount) > 0, true, bonus), 100);
       })();
     }
   }, [deposit]);
