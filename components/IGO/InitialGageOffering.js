@@ -312,8 +312,8 @@ function InitialGageOffering({
                       minLength="1"
                       maxLength="79"
                       spellCheck="false"
-                      onKeyPress={() => handleKeyPress()}
-                      onChange={() => handleChange()}
+                      onKeyPress={(event) => handleKeyPress(event)}
+                      onChange={(event) => handleChange(event)}
                     ></input>
                     <SelectToken onClick={() => setVisibility(!visibility)}>
                       <TokenIcon src={icon}></TokenIcon>
@@ -390,8 +390,8 @@ function InitialGageOffering({
                       minLength="1"
                       maxLength="79"
                       spellCheck="false"
-                      onKeyPress={() => handleKeyPress()}
-                      onChange={() => handleChange()}
+                      onKeyPress={(event) => handleKeyPress(event)}
+                      onChange={(event) => handleChange(event)}
                     ></input>
                     <SelectToken onClick={() => setVisibility(!visibility)}>
                       <TokenIcon src={icon}></TokenIcon>
