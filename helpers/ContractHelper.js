@@ -12,7 +12,7 @@ export const getGage = async (ABI, library, account, id) => {
   return new Contract(address, getABI(ABI), getProviderOrSigner(library, account));
 };
 
-export const getGageFast = (address, ABI, library, account) => {
+export const getContractFast = (address, ABI, library, account) => {
   return new Contract(address, getABI(ABI), getProviderOrSigner(library, account));
 };
 

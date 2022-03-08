@@ -239,7 +239,7 @@ a:hover .gage-block {
 }
 
 .gage-stats {
-  z-index: 25;
+  z-index: 5;
   position: relative;
 }
 
@@ -321,13 +321,21 @@ a:hover .gage-block {
 .gage-tabs .table td .coin-name {
   font-size: 12px;
   background: #583961;
-  border-radius: 20px;
+  border-radius: 6px;
   padding: 5px 10px;
 }
-.gage-tabs .table tbody tr:hover td .coin-name {
+.gage-tabs .table td .gage-name {
+  font-size: 12px;
+  background: #583961;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+.gage-tabs .table tbody tr:hover td .coin-name,
+.gage-tabs .table tbody tr:hover td .gage-name {
   background: #280531;
   transition: 0.5s;
 }
+
 .gage-tabs .table td .risk-val {
   font-size: 12px;
   border-radius: 20px;

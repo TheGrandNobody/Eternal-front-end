@@ -7,7 +7,7 @@ import Switch from "@mui/material/Switch";
 import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 import { Typography, Grid, Box } from "@mui/material";
-import { set, toNumber } from "lodash";
+import { toNumber } from "lodash";
 
 const IGOSwitch = styled(Switch)(() => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -98,7 +98,6 @@ const SelectContainer = styled.div`
 
 const TokenList = styled.ul`
   width: 15%;
-  height: 150%;
   background: #30083b;
   border-radius: 6px;
   margin-left: 65%;
@@ -313,8 +312,8 @@ function InitialGageOffering({
                       minLength="1"
                       maxLength="79"
                       spellCheck="false"
-                      onKeyPress={handleKeyPress}
-                      onChange={handleChange}
+                      onKeyPress={() => handleKeyPress()}
+                      onChange={() => handleChange()}
                     ></input>
                     <SelectToken onClick={() => setVisibility(!visibility)}>
                       <TokenIcon src={icon}></TokenIcon>
@@ -330,7 +329,7 @@ function InitialGageOffering({
                   <TokenList className={!visibility && "hide"}>
                     {optionsToMap.map((item, index) => (
                       <li
-                        className="token-option  d-flex align-items-center justify-content-start"
+                        className="token-option igo-option-padding  d-flex align-items-center justify-content-start"
                         key={index}
                         onClick={() => {
                           setDeposit(item.token);
@@ -391,8 +390,8 @@ function InitialGageOffering({
                       minLength="1"
                       maxLength="79"
                       spellCheck="false"
-                      onKeyPress={handleKeyPress}
-                      onChange={handleChange}
+                      onKeyPress={() => handleKeyPress()}
+                      onChange={() => handleChange()}
                     ></input>
                     <SelectToken onClick={() => setVisibility(!visibility)}>
                       <TokenIcon src={icon}></TokenIcon>

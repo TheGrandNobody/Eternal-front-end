@@ -2,7 +2,7 @@ import React from 'react';
 import TableRow from './components/tableRow';
 import TableRowSkeleton from './components/tableRowSkeleton';
 import { useDispatch } from 'react-redux';
-import { changeSelectedGage } from '../../reducers/main';
+import { changeGageAsset, changeGageType, changeSelectedGage } from '../../reducers/main';
 import { useSelector } from 'react-redux';
 
 function table(props) {
@@ -11,8 +11,9 @@ function table(props) {
 
   const { selectedGage } = useSelector((state) => state.eternal);
 
-  const handleClickOnGage = (id) => {
+  const handleClickOnGage = (id, type) => {
     dispatch(changeSelectedGage({ selectedGage: id }));
+    dispatch(changeGageType({ gageType: type}));
   };
 
   return (
@@ -41,7 +42,7 @@ function table(props) {
                 asset={item.deposit}
                 winner={item.winner}
                 closed={clickableRow}
-                handleClick={clickableRow ? () => handleClickOnGage(item.id) : () => ({})}
+                handleClick={clickableRow ? () => handleClickOnGage(item.id, item.type) : () => ({})}
                 account={account}
                 library={library}
               />
