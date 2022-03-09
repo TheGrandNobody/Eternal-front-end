@@ -232,11 +232,10 @@ function useEternalHook() {
         share = amountShare.sub(amountShare.mul(toBN(toWei(`${treasuryShare * 1000000000000000}`)).muln(1000)).div(toBN(toWei(toWei('1')))));
       }
       if (stake) {
-        const reserveStakedBalances = toBN(await storage.getUint(await treasury.entity(), await treasury.reserveStakedBalances()));
         const treasuryReserves = toBN(await storage.getUint(await treasury.entity(), soliditySha3('reserveBalances', getAddress('treasury'))));
-        const userStakedBalances = toBN(await treasury.convertToStaked((reserveStakedBalances.sub(treasuryReserves)).toString()));
+        const treasuryBalance = toBN(await treasury.convertToStaked(treasuryReserves.toString()));
         const psi = toBN(await storage.getUint(await factory.entity(), await factory.psi()));
-        const availableETRNL = toBN(await token.balanceOf(getAddress('treasury'))).sub(userStakedBalances.add(psi));
+        const availableETRNL = toBN(treasuryBalance.sub(psi));
         const feeRate = toBN(await storage.getUint(await treasury.entity(), await treasury.feeRate())).add(toBN('5000'));
         rewards = toNumber(fromWei(feeRate.mul(availableETRNL.muln(4)).divn(100000).mul(share).div(toBN(toWei('1')))));
       } else {
