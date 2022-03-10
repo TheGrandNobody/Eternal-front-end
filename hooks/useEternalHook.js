@@ -88,14 +88,15 @@ function useEternalHook() {
   }
 
   const initiateGage = async (activity) => {
+    let tx;
     const req = await findExistingGage(gageType, account, asset);
     if (!req.data.length > 0) {
       switch (activity) {
         case 2:
           const gageLimitReached = await factory.gageLimitReached(getAddress(asset), toWei(amount), riskPercentage * 100);
           if (!gageLimitReached) {
-            await initiateLiquidGage();
-            return;
+            tx = await initiateLiquidGage();
+            return tx;
           }
           break;
         case 3:
@@ -106,21 +107,22 @@ function useEternalHook() {
             const individual = amountETRNL.add(toBN(toWei(depositInETRNL))).muln(2);
             const individualLimit = await offering.checkIndividualLimit(individual.toString(), account);
             if (individualLimit) {
-              const tx = await initiateLoyaltyGage();
+              tx = await initiateLoyaltyGage();
               return tx;
             }
             toast.error('This amount exceeds your individual IGO limit.', {toastId: 1});
-            return;
+            return false;
           }
           toast.error('This amount exceeds the global IGO limit', {toastId: 1});
-          return;
+          return false;
         default:
           return;
       }
       toast.error('This amount exceeds the gaging limit.', { toastId: 1 });
-      return;
+      return false;
     }
     toast.error('You are already in a gage (of this type) with this asset.', { toastId: 1 });
+    return false;
   };
 
   const handleClickOnConfirmBtn = async (activity) => {
@@ -135,17 +137,17 @@ function useEternalHook() {
             return tx;
           }
           toast.error('This amount exceeds your individual IGO limit.', { toastId: 1 });
-          return;
+          return false;
         }
         toast.error('This amount exceeds the global IGO limit.', { toastId: 1 });
-        return;
+        return false;
       case 4:
         try {
           tx = await treasury.stake(toWei(amount));
         }
         catch {
           toast.error('Insufficient ETRNL balance.', { toastId: 1 });
-          return;
+          return false;
         }
         return tx;
       case 5:
@@ -154,7 +156,7 @@ function useEternalHook() {
         }
         catch {
           toast.error('Your staking balance is lower than this amount.', { toastId: 1 });
-          return;
+          return false;
         }
         return tx;
       default:

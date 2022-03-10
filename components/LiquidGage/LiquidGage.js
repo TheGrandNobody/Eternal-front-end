@@ -281,13 +281,14 @@ function CreateLiquidGage({
         </RewardsBlock>
       </RewardsContainer>
       <Box className="col-sm-12 my-5 text-center">
-        {(deposit == "Select" || amount <= 0) ?
+        {(deposit == "Select" || amount == '0.0' || amount == '' || amount == '0') ?
           <ConfirmButton disabled={true} text={'Confirm'}></ConfirmButton>
         :
           ( (approval)  ?
             <ConfirmButton 
             handleClick={async () => {
-              await handleClickOnConfirmBtn(2);
+              const result = await handleClickOnConfirmBtn(2);
+              return result
             }} 
             disabled={false} 
             delay={true}

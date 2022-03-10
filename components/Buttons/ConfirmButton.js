@@ -23,7 +23,7 @@ function ConfirmButton({ handleClick, refresh, success, message, delay, disabled
   const onClick = async () => {
     setLoading(true)
     const result = await handleClick();
-    setLoading(delay);
+    setLoading(delay && typeof result != 'boolean');
     if (typeof result == 'object') {
       let interval = setInterval(async () => {
         let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(result.hash);

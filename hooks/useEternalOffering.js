@@ -30,7 +30,7 @@ function useOfferingFunction() {
     }
     catch {
       toast.error('Insufficient funds.', { toastId: 1});
-      return;
+      return false;
     }
     const interval = setInterval(async () => {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
@@ -55,14 +55,14 @@ function useOfferingFunction() {
                   .catch((err) => {
                     toast.error(`Failed to join gage ${err}`, { toastId: 1 });
                     clearTimeout(timer);
-                    return;
+                    return false;
                   });
               }
             })
             .catch((err) => {
               toast.error(`Error while creating gage ${err}`, { toastId: 1 });
               clearTimeout(timer);
-              return;
+              return false;
             });
         }, 1000);
       }
@@ -83,7 +83,7 @@ function useOfferingFunction() {
     }
     catch {
       toast.error('Insufficient funds.', { toastId: 1});
-      return;
+      return false;
     }
     return initiateDeposit;
   };

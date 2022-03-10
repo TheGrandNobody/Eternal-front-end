@@ -32,7 +32,7 @@ function useFactoryFunction() {
       if (err.code == 'INSUFFICIENT_FUNDS') {
         toast.error('Insufficient funds.', { toastId: 1});
       }
-      return;
+      return false;
     }
     const interval = setInterval(async () => {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
@@ -57,14 +57,14 @@ function useFactoryFunction() {
                   .catch((err) => {
                     toast.error(`Failed to join gage ${err}`, { toastId: 1 });
                     clearInterval(timer);
-                    return;
+                    return false;
                   });
               }
             })
             .catch((err) => {
               toast.error(`Error while creating gage ${err}`, { toastId: 1 });
               clearInterval(timer);
-              return;
+              return false;
             });
         }, 1000);
       }
