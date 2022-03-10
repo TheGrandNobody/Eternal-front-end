@@ -1,35 +1,78 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { toast } from 'react-toastify';
+import { getWeb3NoAccount } from '../../utils/web3';
 
-function ExitGage( {handleExitGage, exitable} ) {
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#fff',
+    },
+    secondary: {
+      main: '#11cb5f',
+    },
+  },
+});
+
+function ExitGage( {handleExitGage, success, exitable} ) {
 
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  const handleExit = () => {
+  const handleExit = async () => {
+    setLoading(true);
     if (exitable) {
-      handleExitGage();
+      const tx = await handleExitGage();
+      handleResult(tx);
     } else {
       setOpen(true);
     }
   };
 
-  const handleClose = (exit = false) => {
-    if (exit) {
-      handleExitGage();
-    }
+  const handleClose = async (exit = false) => {
     setOpen(false);
+    if (exit) {
+      const tx = await handleExitGage();
+      handleResult(tx);
+    }
   };
+
+  const handleResult = async (tx) => {
+    let interval = setInterval(async () => {
+      let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(tx.hash);
+      if (receipt) {
+        setLoading(false);
+        success(receipt);
+        toast.success('Gage successfully exited!')
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
 
   return (
     <React.Fragment>
-      <button onClick={() => handleExit()} className='btn grid-btn mx-sm-2 mx-1'>
-        Exit Gage
-      </button>
+      <ThemeProvider theme={theme}>
+        <LoadingButton onClick={handleExit} loading={loading} loadingIndicator={<CircularProgress color='primary' size={16}></CircularProgress>} sx={{ 
+        borderRadius: '60px',
+        height: '39px',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        textTransform: 'inherit',
+        background: '#30083b',
+        width: '134px',
+        padding: 0,
+        ':hover':{
+          bgcolor: '#9c5cac',
+          color: '#fff',
+        },
+        ':disabled':{
+          color: '#fff',
+        },
+        }} className='btn mx-sm-2 mx-1' >{loading ? '' : 'Exit Gage'}
+        </LoadingButton>
+      </ThemeProvider>
       <Dialog
         open={open}
         onClose={() => handleClose()}

@@ -256,8 +256,8 @@ function StakeUI({
                 minLength="1"
                 maxLength="18"
                 spellCheck="false"
-                onKeyPress={handleKeyPress}
-                onChange={handleChange}
+                onKeyPress={(event) => handleKeyPress(event)}
+                onChange={(event) => handleChange(event)}
               ></input>
               <SelectToken>
                 <TokenIcon src="img/etrnl.png"></TokenIcon>
@@ -334,7 +334,7 @@ function StakeUI({
                       return result;
                     }}
                     refresh={refreshStats} 
-                    success={() => {}}
+                    success={}
                     message={'Staking successful!'}
                     disabled={false} 
                     delay={true}
@@ -346,7 +346,7 @@ function StakeUI({
                       return result;
                     }} 
                     refresh={refreshStats} 
-                    success={() => {}}
+                    success={}
                     message={'Sucessfully unstaked tokens!'}
                     disabled={false} 
                     delay={true}
@@ -358,7 +358,6 @@ function StakeUI({
                     const result = await handleClickOnApproveBtn('treasury');
                     return result;
                   }} 
-                  refresh={() => {}} 
                   success={() => dispatch(changeApproval({ approval: true }))}
                   message={'Approval successful!'}
                   disabled={false} 

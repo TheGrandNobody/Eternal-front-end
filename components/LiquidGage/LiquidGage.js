@@ -299,7 +299,6 @@ function CreateLiquidGage({
               const result = await handleClickOnApproveBtn('treasury');
               return result;
             }} 
-            refresh={() => {}} 
             success={() => dispatch(changeApproval({ approval: true }))}
             message={'Approval successful!'}
             disabled={false} 

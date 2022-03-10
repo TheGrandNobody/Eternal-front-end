@@ -16,7 +16,7 @@ const theme = createTheme({
   },
 });
 
-function ConfirmButton({ handleClick, refresh, success, message, delay, disabled, text }) {
+function ConfirmButton({ handleClick, refresh=()=>{}, success=()=>{}, message, delay, disabled, text }) {
 
   const [loading, setLoading] = useState(false);
 

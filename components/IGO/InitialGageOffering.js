@@ -519,7 +519,6 @@ function InitialGageOffering({
                       return result;
                     }} 
                     refresh={refreshStats} 
-                    success={() => {}}
                     message={offering == 'Gage' ? '' : 'Deposit succesful!'}
                     disabled={false} 
                     delay={true}
@@ -530,7 +529,6 @@ function InitialGageOffering({
                       const result = await handleClickOnApproveBtn('offering');
                       return result;
                     }} 
-                    refresh={() => {}} 
                     success={() => dispatch(changeApproval({ approval: true }))}
                     message={'Approval successful!'}
                     disabled={false} 

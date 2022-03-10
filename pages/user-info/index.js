@@ -85,29 +85,26 @@ function index() {
 
   const handleExitGage = async () => {
     let contract = loadedContracts[selectedGage];
-    const exit = await contract.exit();
-    let interval = setInterval(async () => {
-      let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(exit.hash);
-      if (receipt) {
-        clearInterval(interval);
-        toast.success('Gage Exited Successfully', { toastId: 3 });
-        let length = data?.results.length;
-        let winnerData= receipt.logs[0].data.slice(66);
-        const winner = getWeb3NoAccount().eth.abi.decodeParameter('bool', winnerData);
-        new Promise(function (resolve, reject) {
-          resolve(findAndUpdateGageStatus(selectedGage, 'closed', winner));
-        }).then((() => {let endLoop = setInterval(async () => {
-          let newLength = await fetchDataForTable(currentTab);
-          if (length > newLength) {
-            clearInterval(endLoop);
-          }
-        }, 200)})())
-          .catch((err) => {
-            toast.error('Error while fetching data !', { toastId: 3 });
-          });
-      }
-    }, 1000);
+    const tx = await contract.exit();
+    return tx;
   };
+
+  const success = async (tx) => {
+    let length = data?.results.length;
+    let winnerData= tx.logs[0].data.slice(66);
+    const winner = getWeb3NoAccount().eth.abi.decodeParameter('bool', winnerData);
+    new Promise(function (resolve, reject) {
+      resolve(findAndUpdateGageStatus(selectedGage, 'closed', winner));
+    }).then((() => {let endLoop = setInterval(async () => {
+      let newLength = await fetchDataForTable(currentTab);
+      if (length > newLength) {
+        clearInterval(endLoop);
+      }
+    }, 200)})())
+      .catch((err) => {
+        toast.error('Error while fetching data !', { toastId: 3 });
+      });
+  }
 
   return (
     <>
@@ -160,6 +157,7 @@ function index() {
                     {selectedGage && (
                       <ExitGage 
                         handleExitGage={handleExitGage}
+                        success={success}
                         exitable={exitable}
                       />
                     )}
