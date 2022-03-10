@@ -6,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
-import { Typography, Grid, Box } from "@mui/material";
+import { Typography, Grid, Box, CircularProgress, Stack } from "@mui/material";
 import { toNumber } from "lodash";
 import ConfirmButton from "../Buttons/ConfirmButton";
 import { changeApproval } from "../../reducers/main";
@@ -28,8 +28,8 @@ const SelectBackground = styled.div`
   border-radius: 16px;
   justify-content: center;
   position: relative;
-  border-top: 7.5px groove #ece3e1;
-  border-bottom: 7.5px ridge #ece3e1;
+  border-top: 7.5px groove #e6e6fa;
+  border-bottom: 7.5px ridge #e6e6fa;
   margin-bottom: 20px;
 `;
 
@@ -38,8 +38,8 @@ const SmallBackground = styled.div`
   border-radius: 16px;
   justify-content: center;
   position: relative;
-  border-top: 5px groove #ece3e1;
-  border-bottom: 5px ridge #ece3e1;
+  border-top: 5px groove #e6e6fa;
+  border-bottom: 5px ridge #e6e6fa;
 `;
 
 const SelectHeader = styled.p`
@@ -51,7 +51,7 @@ const SelectHeader = styled.p`
 const SmallHeader = styled.p`
   font-size: 4vmin;
   font-weight: 550;
-  border-bottom: 3.5px ridge #d3d3d3;
+  border-bottom: 3.5px ridge #e6e6fa;
   padding-top: 2.5%;
   padding-bottom: 2.5%;
 `;
@@ -173,7 +173,7 @@ function InitialGageOffering({
   const dispatch = useDispatch();
 
   
-  useEffect( () => refreshStats, [account]);
+  useEffect( () => refreshStats(), [account]);
 
   useEffect(async () => {
     await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', offering == 'Gage', 0);
@@ -228,41 +228,59 @@ function InitialGageOffering({
         <Grid item md={3} xs={12}>
           <SmallBackground className="container">
             <SmallHeader className="text-center">Your stats</SmallHeader>
-            <div className="stake-stats">
-              <div className="d-flex align-center justify-content-center">
-                <h2>Total Contribution</h2>
-                <Tooltip
-                  text={
-                    "The total amount of ETRNL used in your MIM/AVAX contributions to gages or simple deposits."
-                  }
-                ></Tooltip>
-              </div>
-              <p className="text-center" style={{ fontSize: "2vmin" }}>
-                {totalContribution == null ? '' : `${totalContribution} ETRNL`}
-              </p>
-              <div className="d-flex align-center justify-content-center">
-                <h2>Amount Gaged</h2>
-                <Tooltip
-                  text={
-                    "The total amount of ETRNL used in your MIM/AVAX contributions with loyalty gages."
-                  }
-                ></Tooltip>
-              </div>
-              <p className="text-center" style={{ fontSize: "2vmin" }}>
-                {liquidityGaged  == null ? '' : `${liquidityGaged} ETRNL`}
-              </p>
-              <div className="d-flex align-center justify-content-center">
-                <h2>Amount Deposited</h2>
-                <Tooltip
-                  text={
-                    "The total amount of ETRNL you have sent to liquidity pairs as a result of depositing MIM or AVAX."
-                  }
-                ></Tooltip>
-              </div>
-              <p className="text-center" style={{ fontSize: "2vmin" }}>
-                {liquidityDeposited == null ? '' : `${liquidityDeposited} ETRNL`}
-              </p>
-            </div>
+            <Stack spacing={1} className="stake-stats">
+              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+                <Box className="d-flex">
+                  <h2>Total Contribution</h2>
+                  <Tooltip
+                    text={
+                      "The total amount of ETRNL used in your MIM/AVAX contributions to gages or simple deposits."
+                    }
+                  ></Tooltip>
+                </Box>
+                {totalContribution == '' ? 
+                  <CircularProgress color='inherit' size={15} />
+                :
+                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                    {`${totalContribution} ETRNL`}
+                  </p>
+                }
+              </Stack>
+              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+                <Box className="d-flex">
+                  <h2>Amount Gaged</h2>
+                  <Tooltip
+                    text={
+                      "The total amount of ETRNL used in your MIM/AVAX contributions with loyalty gages."
+                    }
+                  ></Tooltip>
+                </Box>
+                {liquidityGaged == '' ? 
+                  <CircularProgress color='inherit' size={15} />
+                :
+                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                    {`${liquidityGaged} ETRNL`}
+                  </p>
+                }
+              </Stack>
+              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+                <Box className="d-flex">
+                  <h2>Amount Deposited</h2>
+                  <Tooltip
+                    text={
+                      "The total amount of ETRNL you have sent to liquidity pairs as a result of depositing MIM or AVAX."
+                    }
+                  ></Tooltip>
+                </Box>
+                {liquidityDeposited == '' ? 
+                  <CircularProgress color='inherit' style={{marginBottom: '7.5%'}} size={15} />
+                :
+                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                    {`${liquidityDeposited} ETRNL`}
+                  </p>
+                }
+              </Stack>
+            </Stack>
           </SmallBackground>
         </Grid>
         <Grid item md={6} xs={12}>
@@ -525,19 +543,27 @@ function InitialGageOffering({
         <Grid item md={3} xs={12}>
           <SmallBackground className="text-center container">
             <SmallHeader style={{ fontSize: "3.5vmin" }}>IGO Info</SmallHeader>
-            <p
-              style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
-            >
-              1 ETRNL = {priceAVAX} AVAX
-            </p>
-            <p
-              style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
-            >
-              1 ETRNL = {priceMIM} MIM
-            </p>
-            <p style={{ fontSize: "1.25vmin", fontWeight: 550 }}>
-              {remainingETRNL} ETRNL left before gaging bonus decreases
-            </p>
+            {remainingETRNL == '' || priceAVAX == '' || priceMIM == '' ?
+              <Box sx={{ color: '#d8bfd8' }}>
+                <CircularProgress color='inherit' style={{ marginBottom: "5%"}} className="align-center" size={30}/>
+              </Box>
+            :
+              <Stack>
+                <p
+                  style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
+                >
+                  1 ETRNL = {priceAVAX} AVAX
+                </p>
+                <p
+                  style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
+                >
+                  1 ETRNL = {priceMIM} MIM
+                </p>
+                <p style={{ fontSize: "1.25vmin", fontWeight: 550 }}>
+                {remainingETRNL} ETRNL left before gaging bonus decreases
+                </p>
+              </Stack>
+            }
           </SmallBackground>
         </Grid>
       </Grid>

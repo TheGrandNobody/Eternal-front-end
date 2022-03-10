@@ -6,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
-import { Typography } from "@mui/material";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import ConfirmButton from "../Buttons/ConfirmButton";
 import { Box } from "@mui/system";
@@ -33,8 +33,8 @@ const SelectBackground = styled.div`
   margin-bottom: 30px;
   justify-content: center;
   position: relative;
-  border-top: 7.5px groove #ece3e1;
-  border-bottom: 7.5px ridge #ece3e1;
+  border-top: 7.5px groove #e6e6fa;
+  border-bottom: 7.5px ridge #e6e6fa;
 `;
 
 const SmallBackground = styled.div`
@@ -43,14 +43,14 @@ const SmallBackground = styled.div`
   width: 100%;
   justify-content: center;
   position: relative;
-  border-top: 5px groove #ece3e1;
-  border-bottom: 5px ridge #ece3e1;
+  border-top: 5px groove #e6e6fa;
+  border-bottom: 5px ridge #e6e6fa;
 `;
 
 const SmallHeader = styled.p`
   font-size: 4vmin;
   font-weight: 550;
-  border-bottom: 3.5px ridge #ece3e1;
+  border-bottom: 3.5px ridge #e6e6fa;
   padding-top: 2.5%;
   padding-bottom: 2.5%;
 `;
@@ -108,9 +108,9 @@ function StakeUI({
   const [period, setPeriod] = useState(false);
   const [stake, setStake] = useState('Stake');
   const [amount, setAmount] = useState(0);
-  const [totalStake, setTotalStake] = useState(0);
-  const [shareTreasury, setTreasuryShare] = useState(0);
-  const [totalRewards, setTotalRewards] = useState(0);
+  const [totalStake, setTotalStake] = useState('');
+  const [shareTreasury, setTreasuryShare] = useState('');
+  const [totalRewards, setTotalRewards] = useState('');
   const [share, setShare] = useState(0);
   const [rewards, setRewards] = useState(0);
   const dispatch = useDispatch();
@@ -149,35 +149,59 @@ function StakeUI({
         <Grid item md={4} xs={12}>
           <SmallBackground className="container">
             <SmallHeader className="text-center">Your stats</SmallHeader>
-            <div className="stake-stats">
-              <div className="d-flex align-center justify-content-center">
-                <h2>Total Stake</h2>
-                <Tooltip
-                  text={
-                    "The total amount of ETRNL you are currently actively staking."
-                  }
-                ></Tooltip>
-              </div>
-              <p className="text-center">{`${totalStake} ETRNL`}</p>
-              <div className="d-flex align-center justify-content-center">
-                <h2>Total Treasury Share</h2>
-                <Tooltip
-                  text={
-                    "The total percentage of all Eternal treasury revenue you earn."
-                  }
-                ></Tooltip>
-              </div>
-              <p className="text-center">{`${shareTreasury}%`}</p>
-              <div className="d-flex align-center justify-content-center">
-                <h2>Total Rewards</h2>
-                <Tooltip
-                  text={
-                    "The total amount of staking rewards available for withdrawal."
-                  }
-                ></Tooltip>
-              </div>
-              <p className="text-center">{`${totalRewards} ETRNL`}</p>
-            </div>
+            <Stack spacing={1} className="stake-stats">
+              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+                <Box className="d-flex">
+                  <h2>Total stake</h2>
+                  <Tooltip
+                    text={
+                      "The total amount of ETRNL you are currently actively staking."
+                    }
+                  ></Tooltip>
+                </Box>
+                {totalStake == '' ? 
+                  <CircularProgress color='inherit' size={15} />
+                :
+                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                    {`${totalStake} ETRNL`}
+                  </p>
+                }
+              </Stack>
+              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+                <Box className="d-flex">
+                  <h2>Total Treasury Share</h2>
+                  <Tooltip
+                    text={
+                      "The total percentage of all Eternal treasury revenue you earn."
+                    }
+                  ></Tooltip>
+                </Box>
+                {shareTreasury == '' ? 
+                  <CircularProgress color='inherit' size={15} />
+                :
+                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                    {`${shareTreasury}%`}
+                  </p>
+                }
+              </Stack>
+              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+                <Box className="d-flex">
+                  <h2>Total Rewards</h2>
+                  <Tooltip
+                    text={
+                      "The total amount of staking rewards available for withdrawal."
+                    }
+                  ></Tooltip>
+                </Box>
+                {totalRewards == '' ? 
+                  <CircularProgress color='inherit' style={{marginBottom: '7.5%'}} size={15} />
+                :
+                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                    {`${totalRewards} ETRNL`}
+                  </p>
+                }
+              </Stack>
+            </Stack>
           </SmallBackground>
         </Grid>
         <Grid item md={6} xs={12}>

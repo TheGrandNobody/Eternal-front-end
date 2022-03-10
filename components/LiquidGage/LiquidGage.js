@@ -16,8 +16,8 @@ const SelectBackground = styled.div`
   margin: 0 auto;
   width: 100%;
   max-width: 698px;
-  border-top: 7.5px groove #ece3e1;
-  border-bottom: 7.5px ridge #ece3e1;
+  border-top: 7.5px groove #e6e6fa;
+  border-bottom: 7.5px ridge #e6e6fa;
   margin-bottom: 30px;
   @media screen and (min-width: 2160px) {
     max-width: 1344px;

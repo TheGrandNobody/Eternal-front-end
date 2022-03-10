@@ -5,6 +5,7 @@ import { toBN, fromWei, toDecimal } from 'web3-utils';
 import { getContractFast } from '../../../helpers/ContractHelper';
 import { useSelector } from 'react-redux';
 import { toNumber } from 'lodash';
+import { CircularProgress } from '@mui/material';
 
 function tableRow(props) {
   const { type, created_at, asset, id, active, winner, closed, handleClick, account, library} = props;
@@ -18,6 +19,10 @@ function tableRow(props) {
 
   useEffect(() => {
     (async () => {
+      setAmount('');
+      setBonus('');
+      setRisk('');
+      setPercent('');
       await handleStats(id);
     })();
   }, [loadedContracts[id]]);
@@ -46,12 +51,40 @@ function tableRow(props) {
       </td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>{moment(created_at).format('DD-MM-yyyy')}</td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
-        <span>{amount}</span> <span style={{ background: active ? '#280531' : ''}} className='bold coin-name'>{asset}</span>
+      {amount == '' ?
+          <CircularProgress size={14} />
+        :
+          <>
+          <span>{amount}</span> <span style={{ background: active ? '#280531' : ''}} className='bold coin-name'>{asset}</span>
+          </>
+      }
       </td>
-      <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>{bonus}%</td>
-      <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>{risk}%</td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
-        <span>{toNumber(percent).toFixed(2)}</span> <span style={{ background: active ? '#280531' : ''}} className='bold coin-name'>ETRNL</span>
+      {bonus == '' ?
+          <CircularProgress size={14} />
+        :
+          <>
+          {bonus}%
+          </>
+      }
+      </td>
+      <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
+      {risk == '' ?
+          <CircularProgress size={14}></CircularProgress>
+        :
+          <>
+          {risk}%
+          </>
+      }
+      </td>
+      <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
+        {percent == '' ?
+          <CircularProgress size={14} />
+        :
+        <>
+          <span>{toNumber(percent).toFixed(2)}</span> <span style={{ background: active ? '#280531' : ''}} className='bold coin-name'>ETRNL</span>
+        </>
+        }
       </td>
       {(!closed) ? <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>{winner ? 'You' : 'Treasury'}</td> : ''}
     </tr>
