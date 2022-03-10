@@ -334,7 +334,6 @@ function StakeUI({
                       return result;
                     }}
                     refresh={refreshStats} 
-                    success={}
                     message={'Staking successful!'}
                     disabled={false} 
                     delay={true}
@@ -346,7 +345,6 @@ function StakeUI({
                       return result;
                     }} 
                     refresh={refreshStats} 
-                    success={}
                     message={'Sucessfully unstaked tokens!'}
                     disabled={false} 
                     delay={true}

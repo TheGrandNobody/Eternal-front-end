@@ -5,7 +5,7 @@ import { toBN, fromWei, toDecimal } from 'web3-utils';
 import { getContractFast } from '../../../helpers/ContractHelper';
 import { useSelector } from 'react-redux';
 import { toNumber } from 'lodash';
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 function tableRow(props) {
   const { type, created_at, asset, id, active, winner, closed, handleClick, account, library} = props;
@@ -51,35 +51,43 @@ function tableRow(props) {
       </td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>{moment(created_at).format('DD-MM-yyyy')}</td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
-      {amount == '' ?
-          <CircularProgress size={14} />
+        {amount == '' ?
+          <Box sx={{ color: '#e6e6fa'}}>
+            <CircularProgress color='inherit' size={14} />
+          </Box>
         :
           <>
           <span>{amount}</span> <span style={{ background: active ? '#280531' : ''}} className='bold coin-name'>{asset}</span>
           </>
-      }
+        }
       </td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
-      {bonus == '' ?
-          <CircularProgress size={14} />
+        {bonus == '' ?
+          <Box sx={{ color: '#e6e6fa'}}>
+            <CircularProgress color='inherit' size={14} />
+          </Box>
         :
           <>
           {bonus}%
           </>
-      }
+        }
       </td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
-      {risk == '' ?
-          <CircularProgress size={14}></CircularProgress>
+        {risk == '' ?
+          <Box sx={{ color: '#e6e6fa'}}>
+            <CircularProgress color='inherit' size={14} />
+          </Box>
         :
           <>
           {risk}%
           </>
-      }
+        }
       </td>
       <td style={{ background: active ? '#9c5cac' : '', cursor: 'pointer' }}>
         {percent == '' ?
-          <CircularProgress size={14} />
+          <Box sx={{ color: '#e6e6fa'}}>
+            <CircularProgress color='inherit' size={14} />
+          </Box>
         :
         <>
           <span>{toNumber(percent).toFixed(2)}</span> <span style={{ background: active ? '#280531' : ''}} className='bold coin-name'>ETRNL</span>
