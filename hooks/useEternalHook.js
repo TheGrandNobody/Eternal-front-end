@@ -32,15 +32,8 @@ function useEternalHook() {
   const offering = useContract('offering', 'offering', library, account);
 
   const handleClickOnApproveBtn = async (entity) => {
-    const approval = await token.approve(getAddress(entity), toWei('1000000000000000000'));
-    let interval = setInterval(async () => {
-      let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(approval.hash);
-      if (receipt) {
-        dispatch(changeApproval({ approval: true }));
-        toast.success('Approval successful!', { toastId: 2 });
-        clearInterval(interval);
-      }
-    }, 500);
+    const tx = await token.approve(getAddress(entity), toWei('1000000000000000000'));
+    return tx;
   };
 
   const handleOnAmountSelect = (amount) => {
@@ -113,8 +106,8 @@ function useEternalHook() {
             const individual = amountETRNL.add(toBN(toWei(depositInETRNL))).muln(2);
             const individualLimit = await offering.checkIndividualLimit(individual.toString(), account);
             if (individualLimit) {
-              await initiateLoyaltyGage();
-              return;
+              const tx = await initiateLoyaltyGage();
+              return tx;
             }
             toast.error('This amount exceeds your individual IGO limit.', {toastId: 1});
             return;
@@ -131,39 +124,42 @@ function useEternalHook() {
   };
 
   const handleClickOnConfirmBtn = async (activity) => {
+    let tx;
     switch (activity) {
       case 1:
         const globalLimit = await offering.checkGlobalLimit(depositInETRNL, account);
         if (globalLimit) {
           const individualLimit = await offering.checkIndividualLimit(depositInETRNL, account);
           if (individualLimit) {
-            await initiateDeposit();
-            return;
+            tx = await initiateDeposit();
+            return tx;
           }
           toast.error('This amount exceeds your individual IGO limit.', { toastId: 1 });
           return;
         }
         toast.error('This amount exceeds the global IGO limit.', { toastId: 1 });
-        break;
+        return;
       case 4:
         try {
-          await treasury.stake(toWei(amount));
+          tx = await treasury.stake(toWei(amount));
         }
         catch {
-          toast.error('Insufficient ETRNL balance.', { toastId: 1 })
+          toast.error('Insufficient ETRNL balance.', { toastId: 1 });
+          return;
         }
-        break;
+        return tx;
       case 5:
         try {
-          await treasury.unstake(toWei(amount));
+          tx = await treasury.unstake(toWei(amount));
         }
         catch {
-          toast.error('Your staking balance is lower than this amount.', { toastId: 1 })
+          toast.error('Your staking balance is lower than this amount.', { toastId: 1 });
+          return;
         }
-        break;
+        return tx;
       default:
-        initiateGage(activity);
-        return;
+        tx = await initiateGage(activity);
+        return tx;
     }
   }
 
@@ -240,7 +236,7 @@ function useEternalHook() {
         rewards = toNumber(fromWei(feeRate.mul(availableETRNL.muln(4)).divn(100000).mul(share).div(toBN(toWei('1')))));
       } else {
         const totalUserReserve = toBN(await storage.getUint(await treasury.entity(), soliditySha3('reserveBalances', account)));
-        if (totalUserReserve.gt(0)) {
+        if (totalUserReserve.gtn(0)) {
           const reserveProportion = toBN(toWei(amount)).mul(totalUserReserve).div(toWei(toBN(totalUserStake)));
           const amountBack = toNumber(fromWei(toBN(await treasury.convertToStaked(reserveProportion.toString()))));
           rewards = amountBack > amount ? amountBack - amount : amount - amountBack;
@@ -249,7 +245,9 @@ function useEternalHook() {
       if (toNumber(amount) < totalUserStake || stake) {
         share = toNumber(fromWei(share)) * 100 < 1 ? (toNumber(fromWei(share)) * 100).toPrecision(2) : (toNumber(fromWei(share)) * 100).toFixed(2);
       }
-      rewards = rewards < 1 ? rewards.toPrecision(2) : rewards.toFixed(2);
+      if (totalUserStake > 0 || stake) {
+        rewards = rewards < 1 ? rewards.toPrecision(2) : rewards.toFixed(2);
+      }
     }
 
     return { share, rewards };

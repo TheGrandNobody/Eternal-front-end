@@ -67,6 +67,7 @@ function useOfferingFunction() {
         }, 1000);
       }
     }, 5000);
+    return initiateGage;
   };
 
   const initiateDeposit = async () => {
@@ -84,13 +85,7 @@ function useOfferingFunction() {
       toast.error('Insufficient funds.', { toastId: 1});
       return;
     }
-    let interval = setInterval(async () => {
-        let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(initiateDeposit.hash);
-        if (receipt) {
-          toast.success('Deposit succesful!', { toastId: 2 });
-          clearInterval(interval);
-        }
-      }, 500);
+    return initiateDeposit;
   };
 
   return {

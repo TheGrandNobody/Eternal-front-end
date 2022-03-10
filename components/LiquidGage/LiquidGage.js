@@ -1,7 +1,10 @@
+import { Box } from "@mui/system";
 import { toNumber } from "lodash";
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { changeApproval } from "../../reducers/main";
+import ConfirmButton from "../Buttons/ConfirmButton";
 import Tooltip from "../ToolTip/Tooltip";
 
 const SelectBackground = styled.div`
@@ -135,6 +138,7 @@ function CreateLiquidGage({
   const [amount, setAmount] = useState('0.0');
   const [period, setPeriod] = useState(false);
 
+  const dispatch = useDispatch();
   const { approval,
           gageRiskPercentage, 
           gageBonusPercentage,
@@ -276,38 +280,33 @@ function CreateLiquidGage({
           </SelectToken>
         </RewardsBlock>
       </RewardsContainer>
-      {
-        (deposit == "Select" || amount <= 0) ?
-          <div className="col-sm-12 my-5 text-center">
-            <button className="disabled btn theme-btn">
-              Confirm
-            </button>
-          </div>
+      <Box className="col-sm-12 my-5 text-center">
+        {(deposit == "Select" || amount <= 0) ?
+          <ConfirmButton disabled={true} text={'Confirm'}></ConfirmButton>
         :
           ( (approval)  ?
-            <div className="col-sm-12 my-5 text-center">
-              <button
-                onClick={async () => {
-                  await handleClickOnConfirmBtn(2);
-                }}
-                className="btn theme-btn"
-              >
-                Confirm
-              </button>
-            </div>
+            <ConfirmButton 
+            handleClick={async () => {
+              await handleClickOnConfirmBtn(2);
+            }} 
+            disabled={false} 
+            delay={true}
+            text={'Confirm'}></ConfirmButton>
           :
-            <div className="col-sm-12 my-5 text-center">
-              <button
-                onClick={async () => {
-                  await handleClickOnApproveBtn('treasury');
-                }}
-                className="btn theme-btn"
-              >
-                Approve
-              </button>
-            </div>
+            <ConfirmButton 
+            handleClick={async () => {
+              const result = await handleClickOnApproveBtn('treasury');
+              return result;
+            }} 
+            refresh={() => {}} 
+            success={() => dispatch(changeApproval({ approval: true }))}
+            message={'Approval successful!'}
+            disabled={false} 
+            delay={true}
+            text={'Approve'}></ConfirmButton>
           )
-      }
+        }
+      </Box>
     </SelectBackground>
   );
 }

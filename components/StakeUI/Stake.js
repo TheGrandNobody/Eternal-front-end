@@ -7,7 +7,10 @@ import Switch from "@mui/material/Switch";
 import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 import { Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ConfirmButton from "../Buttons/ConfirmButton";
+import { Box } from "@mui/system";
+import { changeApproval } from "../../reducers/main";
 
 
 const StakeSwitch = styled(Switch)(() => ({
@@ -110,10 +113,13 @@ function StakeUI({
   const [totalRewards, setTotalRewards] = useState(0);
   const [share, setShare] = useState(0);
   const [rewards, setRewards] = useState(0);
+  const dispatch = useDispatch();
 
   const { approval } = useSelector(state => state.eternal);
 
-  useEffect( async () => {
+  useEffect( () => refreshStats(), [account, amount, stake]);
+
+  const refreshStats = async () => {
     const { totalUserStake,
             treasuryShare,
             totalRewards } = await stakingStats();
@@ -123,7 +129,7 @@ function StakeUI({
     setTotalStake(totalUserStake.toFixed(2));
     setTreasuryShare((treasuryShare * 100).toPrecision(2));
     setTotalRewards(totalRewards);
-  }, [account, amount, stake]);
+  };
 
   const handleKeyPress = (event) => {
     if ((period && !/[0-9]/.test(event.key)) || !/[0-9\.]/.test(event.key)) {
@@ -286,57 +292,57 @@ function StakeUI({
                           }
                         ></Tooltip>
                       </div>
-                      <p className="text-center">{rewards + amount == 0 ? '' : `${rewards} ETRNL`}</p>
+                      <p className="text-center">{rewards + amount == 0 || (rewards == '0.0' && shareTreasury =='0.0') ? '' : `${rewards} ETRNL`}</p>
                     </>
                   )}
                 </div>
               </div>
             </div>
-            {
-        (amount <= 0) ?
-          <div className="col-sm-12 my-5 text-center">
-            <button className="disabled btn theme-btn">
-              Confirm
-            </button>
-          </div>
-        :
-          ( (approval)  ?
-            ( (stake == 'Stake') ? 
-              <div className="col-sm-12 my-5 text-center">
-                <button
-                  onClick={async () => {
-                    await handleClickOnConfirmBtn(4);
-                  }}
-                  className="btn theme-btn"
-                >
-                  Confirm
-                </button>
-              </div>
+          <Box className='col-sm-12 my-5 text-center'>
+            {(amount <= 0) ?
+              <ConfirmButton disabled={true} text={'Confirm'}></ConfirmButton>
             :
-              <div className="col-sm-12 my-5 text-center">
-                <button
-                  onClick={async () => {
-                    await handleClickOnConfirmBtn(5);
-                  }}
-                  className="btn theme-btn"
-                >
-                  Confirm
-                </button>
-              </div>
-            )
-          :
-            <div className="col-sm-12 my-5 text-center">
-              <button
-                onClick={async () => {
-                  await handleClickOnApproveBtn('treasury');
-                }}
-                className="btn theme-btn"
-              >
-                Approve
-              </button>
-            </div>
-          )
-      }
+              ( (approval)  ?
+                ( (stake == 'Stake') ? 
+                  <ConfirmButton 
+                    handleClick={async () => {
+                      const result = await handleClickOnConfirmBtn(4);
+                      return result;
+                    }}
+                    refresh={refreshStats} 
+                    success={() => {}}
+                    message={'Staking successful!'}
+                    disabled={false} 
+                    delay={true}
+                    text={'Confirm'}></ConfirmButton>
+                :
+                  <ConfirmButton 
+                    handleClick={async () => {
+                      const result = await handleClickOnConfirmBtn(5);
+                      return result;
+                    }} 
+                    refresh={refreshStats} 
+                    success={() => {}}
+                    message={'Sucessfully unstaked tokens!'}
+                    disabled={false} 
+                    delay={true}
+                    text={'Confirm'}></ConfirmButton>
+                )
+              :
+                <ConfirmButton 
+                  handleClick={async () => {
+                    const result = await handleClickOnApproveBtn('treasury');
+                    return result;
+                  }} 
+                  refresh={() => {}} 
+                  success={() => dispatch(changeApproval({ approval: true }))}
+                  message={'Approval successful!'}
+                  disabled={false} 
+                  delay={true}
+                  text={'Approve'}></ConfirmButton>
+              )
+            }
+          </Box>
           </SelectBackground>
         </Grid>
       </Grid>

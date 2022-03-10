@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Tooltip from "../ToolTip/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -8,6 +8,8 @@ import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 import { Typography, Grid, Box } from "@mui/material";
 import { toNumber } from "lodash";
+import ConfirmButton from "../Buttons/ConfirmButton";
+import { changeApproval } from "../../reducers/main";
 
 const IGOSwitch = styled(Switch)(() => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -167,25 +169,11 @@ function InitialGageOffering({
           gageBonusPercentage,
           gageCondition, 
           depositInETRNL } = useSelector((state) => state.eternal);
+  
+  const dispatch = useDispatch();
 
   
-  useEffect( async () => {
-    const {
-      totalContribution, 
-      liquidityDeposited,
-      liquidityGaged,
-      remainingETRNL,
-      priceAVAX,
-      priceMIM,
-    } = await offeringStats();
-
-    setTotalContribution(totalContribution);
-    setLiquidityDeposited(liquidityDeposited);
-    setLiquidityGaged(liquidityGaged);
-    setRemainingETRNL(remainingETRNL);
-    setpriceAVAX(priceAVAX);
-    setpriceMIM(priceMIM);
-  }, [account]);
+  useEffect( () => refreshStats, [account]);
 
   useEffect(async () => {
     await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', offering == 'Gage', 0);
@@ -203,6 +191,24 @@ function InitialGageOffering({
       }
     }
   }, [deposit]);
+
+  const refreshStats = async () => {
+    const {
+      totalContribution, 
+      liquidityDeposited,
+      liquidityGaged,
+      remainingETRNL,
+      priceAVAX,
+      priceMIM,
+    } = await offeringStats();
+
+    setTotalContribution(totalContribution);
+    setLiquidityDeposited(liquidityDeposited);
+    setLiquidityGaged(liquidityGaged);
+    setRemainingETRNL(remainingETRNL);
+    setpriceAVAX(priceAVAX);
+    setpriceMIM(priceMIM);
+  }
 
   const handleChange = (event) => {
     setPeriod(/\./.test(event.target.value));
@@ -260,9 +266,7 @@ function InitialGageOffering({
           </SmallBackground>
         </Grid>
         <Grid item md={6} xs={12}>
-          <SelectBackground
-            className="center-sec"
-          >
+          <SelectBackground className="center-sec">
             <FormControlLabel
               className="position-relative"
               style={{ left: "85%", top: "1.75%" }}
@@ -488,28 +492,32 @@ function InitialGageOffering({
             )}
             <Box className="text-center" sx={{ pb: 3 }}>
               {(deposit == "Select" || amount <= 0) ?
-                  <button className="disabled btn theme-btn">
-                    Confirm
-                  </button>
+                  <ConfirmButton disabled={true} text={'Confirm'}></ConfirmButton>
                 :
                   ( (approval)  ?
-                    <button
-                      onClick={async () => {
-                        await handleClickOnConfirmBtn(offering == 'Gage' ? 3 : 1);
-                      }}
-                      className="btn theme-btn"
-                    >
-                      Confirm
-                    </button>
+                  <ConfirmButton 
+                    handleClick={async () => {
+                      const result = await handleClickOnConfirmBtn(offering == 'Gage' ? 3 : 1);
+                      return result;
+                    }} 
+                    refresh={refreshStats} 
+                    success={() => {}}
+                    message={offering == 'Gage' ? '' : 'Deposit succesful!'}
+                    disabled={false} 
+                    delay={true}
+                    text={'Confirm'}></ConfirmButton>
                   :
-                    <button
-                      onClick={async () => {
-                        await handleClickOnApproveBtn('offering');
-                      }}
-                      className="btn theme-btn"
-                    >
-                      Approve
-                    </button>
+                    <ConfirmButton 
+                    handleClick={async () => {
+                      const result = await handleClickOnApproveBtn('offering');
+                      return result;
+                    }} 
+                    refresh={() => {}} 
+                    success={() => dispatch(changeApproval({ approval: true }))}
+                    message={'Approval successful!'}
+                    disabled={false} 
+                    delay={true}
+                    text={'Approve'}></ConfirmButton>
                   )}
             </Box>
           </SelectBackground>

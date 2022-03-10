@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
 import Table from '../../components/table/table';
-import ExitGage from '../../components/ExitGage/ExitGage'
+import ExitGage from '../../components/Buttons/ExitGage'
 import CustomSelectDropdown from '../../components/CustomSelectDropdown';
 import { tableTabs } from '../../constant/constants';
 import { getGagesAccordingToStatus, findAndUpdateGageStatus} from '../../services/index';

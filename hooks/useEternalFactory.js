@@ -45,7 +45,7 @@ function useFactoryFunction() {
           })
             .then((res1) => {
               if (res1 !== '0x0000000000000000000000000000000000000000') {
-                clearTimeout(timer);
+                clearInterval(timer);
                 new Promise(function (resolve, reject) {
                   resolve(createGage(id, gageType, account, gageAsset));
                 })
@@ -56,14 +56,14 @@ function useFactoryFunction() {
                   })
                   .catch((err) => {
                     toast.error(`Failed to join gage ${err}`, { toastId: 1 });
-                    clearTimeout(timer);
+                    clearInterval(timer);
                     return;
                   });
               }
             })
             .catch((err) => {
               toast.error(`Error while creating gage ${err}`, { toastId: 1 });
-              clearTimeout(timer);
+              clearInterval(timer);
               return;
             });
         }, 1000);
