@@ -137,6 +137,7 @@ function CreateLiquidGage({
   const [visibility, setVisibility] = useState(false);
   const [amount, setAmount] = useState('0.0');
   const [period, setPeriod] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const dispatch = useDispatch();
   const { approval,
@@ -147,13 +148,16 @@ function CreateLiquidGage({
 
   useEffect(async () => {
     await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', true, 0);
-  }, [amount]);
+    console.log(loaded);
+    console.log(amount);
+  }, [amount, loaded]);
 
   useEffect(() => {
     if (deposit != 'Select') {
       (async () => {
         const bonus = await handlePercents(false);
-        setTimeout(() => handleConversionToETRNL(toNumber(amount) > 0, true, bonus), 100);
+        await handleConversionToETRNL(toNumber(amount) > 0, bonus);
+        setLoaded(true);
       })();
     }
   }, [deposit]);

@@ -5,7 +5,6 @@ import { changeGageDepositAmount, changeGageRiskPercentage, changeGageBonusPerce
 import { useContract} from './useContract';
 import { useWeb3React } from '@web3-react/core';
 import { toast } from 'react-toastify';
-import { getWeb3NoAccount } from '../utils/web3';
 import { toWei, toBN, fromWei, toDecimal, soliditySha3 } from 'web3-utils';
 import { getAddress } from '../helpers/addressHelper';
 import useOfferingFunction from './useEternalOffering';
