@@ -30,6 +30,7 @@ const DropDown = styled.li`
 `;
 
 function DropDownComponent({ optionsToMap, name = ''}) {
+
   return (
     <DropDown className='nav-item dropdown mx-4'>
       <DropDownBtn className={'nav-link dropdown-toggle'}>{name}</DropDownBtn>

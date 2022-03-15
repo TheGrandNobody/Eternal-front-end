@@ -3,7 +3,6 @@ import HEAD from 'next/head';
 import Navbar from '../navbar';
 import useEternalHook from '../../hooks/useEternalHook';
 import Footer from '../Footer/Footer';
-import { useWeb3React } from '@web3-react/core';
 import { changeApproval } from '../../reducers/main';
 import { useDispatch } from 'react-redux';
 import { tokenOptionData } from '../../constant/data';
@@ -19,16 +18,18 @@ function index() {
     handlePercents,
     handleClickOnConfirmBtn,
     handleClickOnApproveBtn,
-    handleUserApproval
+    handleUserApproval,
+    account
   } = useEternalHook();
 
   const dispatch = useDispatch();
-  const { account } = useWeb3React();
 
   useEffect(() => {
     (async () => {
-      const approved = await handleUserApproval('treasury');
-      dispatch(changeApproval({ approval: approved}));
+      if (account) {
+        const approved = await handleUserApproval('treasury');
+        dispatch(changeApproval({ approval: approved}));
+      }
     })();
   }, [account, asset, amount]);
 
@@ -49,7 +50,8 @@ function index() {
             handleOnAssetSelect={handleOnAssetSelect}
             handleOnAmountSelect={handleOnAmountSelect}
             handleConversionToETRNL={handleConversionToETRNL}
-            handlePercents={handlePercents} />
+            handlePercents={handlePercents} 
+            />
           </div>
         </div>
         <Footer />

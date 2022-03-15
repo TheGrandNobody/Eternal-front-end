@@ -58,7 +58,7 @@ function ConfirmButton({ handleClick, refresh=()=>{}, success=()=>{}, message, d
             ':disabled':{
               color: '#fff',
             },
-            }} className='btn' >{loading ? '' : text}</LoadingButton>
+            }} className='btn theme-btn' >{loading ? '' : text}</LoadingButton>
     </ThemeProvider>
   );
 }

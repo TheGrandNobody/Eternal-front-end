@@ -1,17 +1,23 @@
 import useFactoryFunction from './useEternalFactory';
 import { findExistingGage} from '../services';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeGageDepositAmount, changeGageRiskPercentage, changeGageBonusPercentage, changeApproval, changeGageCondition, changeGageAsset, changeDepositInETRNL } from '../reducers/main';
+import { changeGageDepositAmount, changeGageRiskPercentage, changeGageBonusPercentage, changeGageCondition, changeGageAsset, changeDepositInETRNL } from '../reducers/main';
 import { useContract} from './useContract';
-import { useWeb3React } from '@web3-react/core';
+import useStore from '../store/useStore';
 import { toast } from 'react-toastify';
 import { toWei, toBN, fromWei, toDecimal, soliditySha3 } from 'web3-utils';
 import { getAddress } from '../helpers/addressHelper';
 import useOfferingFunction from './useEternalOffering';
 import { toNumber } from 'lodash';
+import { ethers } from 'ethers';
+import Web3 from 'web3';
 
 function useEternalHook() {
-  const { account, library } = useWeb3React();
+  let hooks = useStore(state => state.hooks);
+  let { useAccount, useProvider } = hooks;
+  const account = useAccount();
+  const library = useProvider();
+  const goodLibrary = library ? library : new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
   const {
     gageType,
     gageAsset: asset,
@@ -24,11 +30,11 @@ function useEternalHook() {
   const { initiateLiquidGage } = useFactoryFunction();
   const { initiateLoyaltyGage, 
           initiateDeposit } = useOfferingFunction();
-  const token = useContract(asset, 'ERC20', library, account);
-  const factory = useContract('factory', 'factory', library, account);
-  const storage = useContract('storage', 'storage', library, account);
-  const treasury = useContract('treasury', 'treasury', library, account);
-  const offering = useContract('offering', 'offering', library, account);
+  const token = useContract(asset, 'ERC20', library ? library : goodLibrary, account);
+  const factory = useContract('factory', 'factory', library ? library : goodLibrary, account);
+  const storage = useContract('storage', 'storage', library ? library : goodLibrary, account);
+  const treasury = useContract('treasury', 'treasury', library ? library : goodLibrary, account);
+  const offering = useContract('offering', 'offering', library ? library : goodLibrary, account);
 
   const handleClickOnApproveBtn = async (entity) => {
     const tx = await token.approve(getAddress(entity), toWei('1000000000000000000'));
@@ -266,7 +272,9 @@ function useEternalHook() {
     handleUserApproval,
     offeringStats,
     stakingStats,
-    stakingEstimates
+    stakingEstimates,
+    account,
+    goodLibrary
   };
 }
 

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ConfirmButton from "../Buttons/ConfirmButton";
 import { Box } from "@mui/system";
 import { changeApproval } from "../../reducers/main";
+import useStore from "../../store/useStore";
 
 
 const StakeSwitch = styled(Switch)(() => ({
@@ -114,10 +115,16 @@ function StakeUI({
   const [share, setShare] = useState(0);
   const [rewards, setRewards] = useState(0);
   const dispatch = useDispatch();
+  const { useIsActive } = useStore(state => state.hooks);
+  const active = useIsActive();
 
   const { approval } = useSelector(state => state.eternal);
 
-  useEffect( () => refreshStats(), [account, amount, stake]);
+  useEffect( () => {
+    if (account && active) {
+      refreshStats();
+    }
+  }, [account, amount, stake]);
 
   const refreshStats = async () => {
     const { totalUserStake,
@@ -353,7 +360,13 @@ function StakeUI({
               :
                 <ConfirmButton 
                   handleClick={async () => {
-                    const result = await handleClickOnApproveBtn('treasury');
+                    let result;
+                    try {
+                      result = await handleClickOnApproveBtn('treasury');
+                    }
+                    catch {
+                      return false;
+                    }
                     return result;
                   }} 
                   success={() => dispatch(changeApproval({ approval: true }))}

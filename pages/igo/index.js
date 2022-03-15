@@ -5,13 +5,10 @@ import Footer from '../../components/Footer/Footer';
 import InitialGageOffering from '../../components/IGO/InitialGageOffering';
 import { tokenOptionData } from '../../constant/data';
 import useEternalHook from '../../hooks/useEternalHook';
-import { useWeb3React } from '@web3-react/core';
 import { useDispatch } from 'react-redux';
 import { changeApproval } from '../../reducers/main';
 
 function index() {
-
-  const { account } = useWeb3React();
   const {
     amount,
     asset,
@@ -22,15 +19,19 @@ function index() {
     handleClickOnConfirmBtn,
     handleClickOnApproveBtn,
     handleUserApproval,
-    offeringStats
+    offeringStats, 
+    account, 
+    goodLibrary
   } = useEternalHook();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
-      const approved = await handleUserApproval('offering');
-      dispatch(changeApproval({ approval: approved }));
+      if (account) {
+        const approved = await handleUserApproval('offering');
+        dispatch(changeApproval({ approval: approved }));
+      }
     })();
   }, [account, asset, amount]);
 
@@ -53,6 +54,7 @@ function index() {
             handlePercents={handlePercents}
             offeringStats={offeringStats}
             account={account}
+            library={goodLibrary}
           />
         </div>
         <Footer />

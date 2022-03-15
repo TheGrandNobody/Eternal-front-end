@@ -149,7 +149,8 @@ function InitialGageOffering({
   handleConversionToETRNL,
   handlePercents,
   offeringStats,
-  account
+  account,
+  library
 }) {
   const [deposit, setDeposit] = useState("Select");
   const [icon, setIcon] = useState("");
@@ -173,14 +174,20 @@ function InitialGageOffering({
   const dispatch = useDispatch();
 
   
-  useEffect( () => refreshStats(), [account]);
+  useEffect( () => {
+    if (library && account) {
+      refreshStats();
+    }
+  }, [account, library]);
 
   useEffect(async () => {
-    await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', offering == 'Gage', 0);
+    if (library) {
+      await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', offering == 'Gage', 0);
+    }
   }, [amount, offering]);
 
   useEffect(() => {
-    if (deposit != 'Select') {
+    if (deposit != 'Select' && library) {
       if (offering == 'Gage') {
         (async () => {
           const bonus = await handlePercents(true);
@@ -526,7 +533,13 @@ function InitialGageOffering({
                   :
                     <ConfirmButton 
                     handleClick={async () => {
-                      const result = await handleClickOnApproveBtn('offering');
+                      let result;
+                      try {
+                        result = await handleClickOnApproveBtn('offering');
+                      }
+                      catch {
+                        return false;
+                      }
                       return result;
                     }} 
                     success={() => dispatch(changeApproval({ approval: true }))}

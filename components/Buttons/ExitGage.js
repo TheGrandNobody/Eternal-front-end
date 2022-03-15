@@ -36,10 +36,16 @@ function ExitGage( {handleExitGage, success, exitable} ) {
     if (exit) {
       const tx = await handleExitGage();
       handleResult(tx);
+    } else {
+      setLoading(false);
     }
   };
 
   const handleResult = async (tx) => {
+    if (!tx) {
+      setLoading(false);
+      return;
+    }
     let interval = setInterval(async () => {
       let receipt = await getWeb3NoAccount().eth.getTransactionReceipt(tx.hash);
       if (receipt) {
@@ -70,7 +76,7 @@ function ExitGage( {handleExitGage, success, exitable} ) {
         ':disabled':{
           color: '#fff',
         },
-        }} className='btn mx-sm-2 mx-1' >{loading ? '' : 'Exit Gage'}
+        }} className='btn grid-btn mx-sm-2 mx-1' >{loading ? '' : 'Exit Gage'}
         </LoadingButton>
       </ThemeProvider>
       <Dialog

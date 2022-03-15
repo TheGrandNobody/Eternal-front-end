@@ -130,7 +130,7 @@ function CreateLiquidGage({
   handleOnAssetSelect,
   handleOnAmountSelect,
   handleConversionToETRNL,
-  handlePercents,
+  handlePercents
 }) {
   const [deposit, setDeposit] = useState('Select');
   const [icon, setIcon] = useState('');
@@ -148,8 +148,6 @@ function CreateLiquidGage({
 
   useEffect(async () => {
     await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', true, 0);
-    console.log(loaded);
-    console.log(amount);
   }, [amount, loaded]);
 
   useEffect(() => {
@@ -300,7 +298,13 @@ function CreateLiquidGage({
           :
             <ConfirmButton 
             handleClick={async () => {
-              const result = await handleClickOnApproveBtn('treasury');
+              let result;
+              try {
+                result = await handleClickOnApproveBtn('treasury');
+              }
+              catch {
+                return false;
+              }
               return result;
             }} 
             success={() => dispatch(changeApproval({ approval: true }))}

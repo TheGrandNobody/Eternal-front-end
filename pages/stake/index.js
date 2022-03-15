@@ -6,11 +6,9 @@ import StakeUI from '../../components/StakeUI/Stake';
 import useEternalHook from '../../hooks/useEternalHook';
 import { useDispatch } from 'react-redux';
 import { changeApproval, changeGageAsset } from '../../reducers/main';
-import { useWeb3React } from '@web3-react/core';
 
 function index() {
 
-  const { account } = useWeb3React();
   const {
     amount,
     handleOnAmountSelect,
@@ -18,20 +16,23 @@ function index() {
     handleClickOnApproveBtn,
     handleUserApproval,
     stakingStats,
-    stakingEstimates
+    stakingEstimates,
+    account
   } = useEternalHook();
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
-      const approved = await handleUserApproval('treasury');
-      dispatch(changeApproval({ approval: approved }));
+      if (account) {
+        const approved = await handleUserApproval('treasury');
+        dispatch(changeApproval({ approval: approved }));
+      }
     })();
   }, [account, amount]);
 
   useEffect(() => {
     dispatch(changeGageAsset({ asset: 'ETRNL' }));
-  });
+  }, []);
 
   return (
     <>

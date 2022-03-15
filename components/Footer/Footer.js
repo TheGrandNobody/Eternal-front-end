@@ -1,6 +1,4 @@
 import React from "react";
-import { useWeb3React } from "@web3-react/core";
-import useAuth from "../../hooks/useAuth";
 import { useRouter } from "next/router";
 import { getUserData } from "../../services";
 import DropDownComponent from "../DropDown/DropDown";
@@ -8,10 +6,13 @@ import { socialDropDownData, infoDropDownData } from "../../constant/data";
 import { Hidden } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { reset, changeGageType } from '../../reducers/main';
+import useStore from "../../store/useStore";
 
 function Footer() {
-  const { account, active } = useWeb3React();
-  const { login } = useAuth();
+  const hooks = useStore(state => state.hooks);
+  const { useAccount, useIsActive } = hooks;
+  const account = useAccount();
+  const active = useIsActive();
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -40,9 +41,6 @@ function Footer() {
   };
 
   const handleClickOnEarn = (number = 0) => {
-    if (!active) {
-      login("Injected");
-    }
     if (account && active) {
       dispatch(reset());
       switch (number) {
@@ -161,7 +159,7 @@ function Footer() {
             </p>
           </div>
           <div className="ms-sm-auto">
-            <a href="" className="ms-3">
+            <a href="https://t.me/eternalfinance" className="ms-3">
               <svg
                 width="32"
                 height="32"
@@ -196,7 +194,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="" className="ms-3">
+            <a href="https://twitter.com/_eternalfinance" className="ms-3">
               <svg
                 width="32"
                 height="32"
@@ -213,7 +211,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="" className="ms-3">
+            <a href="https://www.reddit.com/r/Eternal_Finance/" className="ms-3">
               <svg
                 width="32"
                 height="32"
@@ -248,7 +246,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="" className="ms-3">
+            <a href="https://medium.com/@eternal-finance" className="ms-3">
               <svg
                 width="32"
                 height="32"

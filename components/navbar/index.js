@@ -1,6 +1,6 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
-import { useWeb3React } from "@web3-react/core";
+import { chainSupported } from "../../hooks/useAuth";
 import Drawer from "./Drawer";
 import { getUserData } from "../../services";
 import { useRouter } from "next/router";
@@ -8,11 +8,20 @@ import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
 import { useDispatch } from "react-redux";
 import { reset, changeGageType } from "../../reducers/main";
+import ConnectButton from "../Buttons/ConnectButton";
+import useStore from "../../store/useStore";
+import shallow from 'zustand/shallow'
 
 function Navbar() {
-  const [scroll, setScroll] = React.useState(false);
-  const { account, active } = useWeb3React();
-  const { login, logout } = useAuth();
+  const [scroll, setScroll] = useState(false);
+  const [connect, setConnect] = useState(false);
+  const { setVisible, hooks } = useStore(state => ({
+    setVisible: state.setVisible,
+    hooks: state.hooks,
+    }), shallow);
+  const { useWeb3React } = hooks;
+  const { account, active, connector, chainId } = useWeb3React();
+  const { login  } = useAuth();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -30,13 +39,18 @@ function Navbar() {
         return;
     }
   };
-  React.useEffect(() => {
-    if (!active) {
-      router.push("/");
-    }
-  }, [active]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    (async () => {
+      if (await chainSupported()) {
+        setConnect(true);
+      } else {
+        setConnect(false);
+      }
+    })();
+  }, [chainId]);
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -63,7 +77,9 @@ function Navbar() {
 
   const handleClickOnEarn = (number = 0) => {
     if (!active) {
-      login("Injected");
+      if (connect) {
+        setVisible(true);
+      }
     }
     if (account && active) {
       dispatch(reset());
@@ -95,16 +111,6 @@ function Navbar() {
           <div className="navbar-drawer">
             <Drawer />
           </div>
-          {/* <button
-            className='navbar-toggler'
-            type='button'
-            data-mdb-toggle='collapse'
-            data-mdb-target='#navbarSupportedContent'
-            aria-controls='navbarSupportedContent'
-            aria-expanded='false'
-            aria-label='Toggle navigation'>
-            <i className='fas fa-bars'></i>
-          </button> */}
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div
@@ -186,21 +192,13 @@ function Navbar() {
                 optionsToMap={infoDropDownData}
               />
             </ul>
-            {active ? (
-              <button className="btn theme-btn top-nav-btn" onClick={logout}>
-                {"Connected " +
-                  account.slice(0, 5) +
-                  "..." +
-                  account.slice(account.length - 5, account.length)}
-              </button>
-            ) : (
-              <button
-                className="btn theme-btn top-nav-btn"
-                onClick={() => login("Injected")}
-              >
-                Connect Wallet
-              </button>
-            )}
+            <ConnectButton disabled={!(window.ethereum && window.ethereum.on && connect)} 
+            active={active} 
+            account={account} 
+            connector={connector} 
+            chainId={chainId} 
+            login={login}
+            />
           </div>
         </div>
       </nav>

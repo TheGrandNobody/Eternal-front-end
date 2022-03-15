@@ -1,4 +1,4 @@
-import { injected } from '../connector/connector';
+import { metaMask, metaMaskhooks, walletConnect, walletConnectHooks, walletLink, walletLinkHooks } from '../connector/connector';
 import axios from 'axios';
 import ERC20ABI from './abis/ERC20.json';
 import StorageABI from './abis/Storage.json';
@@ -11,8 +11,21 @@ import TokenABI from './abis/Token.json';
 
 export const api = axios.create({ baseURL: 'https://shrouded-ocean-93690.herokuapp.com/api' });
 
+export const chainInfo = {
+  43114: {
+    chainId: 43114,
+    chainName: 'Avalanche Network',
+    nativeCurrency: 'AVAX',
+    rpcUrls: 'https://api.avax.network/ext/bc/C/rpc',
+    blockExplorerUrls: 'https://snowtrace.io',
+  },
+  4: 4
+};
+
 export const connectorsByName = {
-  Injected: injected,
+  MetaMask : [metaMask, metaMaskhooks],
+  WalletConnect : [walletConnect, walletConnectHooks],
+  WalletLink : [walletLink, walletLinkHooks]
 };
 
 export const addresses = {
@@ -35,7 +48,5 @@ export const abis = {
   'gage' : GageABI,
   'loyalty' : LoyaltyABI
 };
-
-export const connectorLocalStorageKey = 'web3Connection';
 
 export const tableTabs = ['Active', 'Pending', 'Closed'];

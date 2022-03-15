@@ -1,27 +1,27 @@
 import '../styles/globals.css';
-import Web3ReactManager from '../Web3Manager/Web3Manager';
-import { Web3ReactProvider } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
-
-function getLibrary(provider) {
-  const library = new Web3Provider(provider);
-  library.pollingInterval = 8000;
-  return library;
-}
+import Web3ReactManager from '../Web3Manager/Web3Manager';
+import React from 'react';
 
 function MyApp({ Component, pageProps }) {
+  const [hasMounted, setHasMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
   return (
     <Provider store={store}>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <ToastContainer />
-        <Web3ReactManager>
-          <Component {...pageProps} />
-        </Web3ReactManager>
-      </Web3ReactProvider>
+      <ToastContainer />
+      <Web3ReactManager>
+        <Component {...pageProps} />
+      </Web3ReactManager>
     </Provider>
   );
 }

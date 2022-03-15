@@ -8,7 +8,6 @@ import ExitGage from '../../components/Buttons/ExitGage'
 import CustomSelectDropdown from '../../components/CustomSelectDropdown';
 import { tableTabs } from '../../constant/constants';
 import { getGagesAccordingToStatus, findAndUpdateGageStatus} from '../../services/index';
-import { useWeb3React } from '@web3-react/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeLoadedContracts, changeSelectedGage, reset } from '../../reducers/main';
 import { getAllGages } from '../../hooks/useContract';
@@ -16,10 +15,21 @@ import { getWeb3NoAccount } from '../../utils/web3';
 import { toast } from 'react-toastify';
 import { getContract, getContractFast } from '../../helpers/ContractHelper';
 import { toBN } from 'web3-utils';
+import { ethers } from 'ethers';
+import Web3 from 'web3';
+import shallow from 'zustand/shallow';
+import useStore from '../../store/useStore';
 
 
 function index() {
-  const { account, library } = useWeb3React();
+  let { hooks, library } = useStore(state => ({
+    hooks: state.hooks,
+    library: state.library
+  }), shallow);
+  console.log(library);
+  let { useAccount } = hooks;
+  let account = useAccount();
+  library = library ? library : new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
   const [currentTab, setCurrentTab] = useState(tableTabs[0]);
   const [data, setData] = useState();
   const [gageCount, setGageCount] = useState('5');
@@ -85,8 +95,13 @@ function index() {
 
   const handleExitGage = async () => {
     let contract = loadedContracts[selectedGage];
-    const tx = await contract.exit();
-    return tx;
+    try {
+      const tx = await contract.exit();
+      return tx;
+    }
+    catch {
+      return false;
+    }
   };
 
   const success = async (tx) => {

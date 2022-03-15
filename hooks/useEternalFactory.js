@@ -1,19 +1,24 @@
 import { useContract } from './useContract';
-import { useWeb3React } from '@web3-react/core';
 import { createGage } from '../services';
 import { useRouter } from 'next/router';
 import { getWeb3NoAccount } from '../utils/web3';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import Web3 from 'web3';
 import { reset } from '../reducers/main';
 import { getAddress } from '../helpers/addressHelper';
+import useStore from '../store/useStore';
 
 function useFactoryFunction() {
-  const { library, account } = useWeb3React();
+  let hooks = useStore(state => state.hooks);
+  let { useAccount, useProvider } = hooks;
+  const account = useAccount();
+  const library = useProvider();
+  const tempLibrary = new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
   const { gageDepositAmount, gageAsset, gageType} = useSelector((state) => state.eternal);
-  const factory = useContract('factory', 'factory', library, account);
-  const storage = useContract('storage', 'storage', library, account);
+  const factory = useContract('factory', 'factory', library ? library : tempLibrary, account);
+  const storage = useContract('storage', 'storage', library ? library : tempLibrary, account);
 
   const router = useRouter();
   const dispatch = useDispatch();

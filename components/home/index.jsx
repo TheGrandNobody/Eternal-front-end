@@ -1,17 +1,21 @@
-import React from "react";
 import HEAD from "next/head";
 import Navbar from "../navbar";
-import { useWeb3React } from "@web3-react/core";
-import useAuth from "../../hooks/useAuth";
+import { chainSupported } from "../../hooks/useAuth";
 import { useRouter } from "next/router";
 import { getUserData } from "../../services";
 import Footer from "../Footer/Footer";
+import useStore from "../../store/useStore";
+import shallow from "zustand/shallow";
 
 function IndexPage() {
   const router = useRouter();
-
-  const { account, active } = useWeb3React();
-  const { login, logout } = useAuth();
+  const { setVisible, hooks } = useStore(state => ({
+    setVisible: state.setVisible,
+    hooks: state.hooks,
+    }), shallow);
+  const { useAccount, useIsActive } = hooks;
+  const account = useAccount();
+  const active = useIsActive();
 
   const handleAccount = async (account) => {
     const req = await getUserData(account);
@@ -22,9 +26,11 @@ function IndexPage() {
     router.push("/gage-selection");
   };
 
-  const handleClickOnEarn = () => {
+  const handleClickOnEarn = async () => {
     if (!active) {
-      login("Injected");
+      if (await chainSupported()) {
+        setVisible(true);
+      }
     }
     if (account && active) {
       handleAccount(account);

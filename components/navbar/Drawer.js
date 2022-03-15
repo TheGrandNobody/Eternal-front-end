@@ -2,20 +2,25 @@ import { React, useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import { useWeb3React } from '@web3-react/core';
-import useAuth from '../../hooks/useAuth';
 import { useRouter } from 'next/router';
 import { getUserData } from '../../services';
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
 import { useDispatch } from 'react-redux';
 import { reset, changeGageType } from '../../reducers/main';
+import useStore from "../../store/useStore";
+import shallow from 'zustand/shallow';
+import { chainSupported } from '../../hooks/useAuth';
 
 export default function TemporaryDrawer() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { setVisible, hooks } = useStore(state => ({
+    setVisible: state.setVisible,
+    hooks: state.hooks,
+    }), shallow);
+  const { useWeb3React } = hooks;
   const { account, active } = useWeb3React();
-  const { login, logout } = useAuth();
 
   const [state, setState] = useState({
     top: false,
@@ -54,9 +59,11 @@ export default function TemporaryDrawer() {
     router.push('/gage-selection');
   };
 
-  const handleClickOnEarn = (number = 0) => {
+  const handleClickOnEarn = async (number = 0) => {
     if (!active) {
-      login('Injected');
+      if (await chainSupported()) {
+        setVisible(true);
+      }
     }
     if (account && active) {
       dispatch(reset());

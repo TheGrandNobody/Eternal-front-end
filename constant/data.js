@@ -2,7 +2,7 @@ export const socialDropDownData = [
   { title: 'Twitter', link: 'https://twitter.com/_eternalfinance' },
   { title: 'Reddit', link: 'https://www.reddit.com/r/Eternal_Finance/' },
   { title: 'Telegram', link: 'https://t.me/eternalfinance' },
-  { title: 'Medium', link: 'https://medium.com/@eternal.finance' },
+  { title: 'Medium', link: 'https://medium.com/@eternal-finance' },
 ];
 
 export const infoDropDownData = [
