@@ -150,8 +150,10 @@ function useEternalHook() {
         try {
           tx = await treasury.stake(toWei(amount));
         }
-        catch {
-          toast.error('Insufficient ETRNL balance.', { toastId: 1 });
+        catch (err) {
+          if (err.code != 4001) {
+            toast.error('Insufficient ETRNL balance.', { toastId: 1 });
+          }
           return false;
         }
         return tx;
@@ -159,8 +161,10 @@ function useEternalHook() {
         try {
           tx = await treasury.unstake(toWei(amount));
         }
-        catch {
-          toast.error('Your staking balance is lower than this amount.', { toastId: 1 });
+        catch (err) {
+          if (err.code != 4001) {
+            toast.error('Your staking balance is lower than this amount.', { toastId: 1 });
+          }
           return false;
         }
         return tx;
