@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { getUserData } from "../../services";
 import Footer from "../Footer/Footer";
 import useStore from "../../store/useStore";
+import NoobToast from '../Toasts/NoobToast';
 import shallow from "zustand/shallow";
 
 function IndexPage() {
@@ -54,6 +55,11 @@ function IndexPage() {
               Go to platform
             </button>
           </div>
+          { localStorage.getItem('preference') ? 
+            null
+          :
+            <NoobToast></NoobToast>
+          }
         </div>
 
         <Footer />
