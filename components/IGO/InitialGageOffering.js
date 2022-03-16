@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Tooltip from "../ToolTip/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,7 +8,8 @@ import { blueGrey } from "@mui/material/colors";
 import { Typography, Grid, Box, CircularProgress, Stack } from "@mui/material";
 import { toNumber } from "lodash";
 import ConfirmButton from "../Buttons/ConfirmButton";
-import { changeApproval } from "../../reducers/main";
+import useStore from '../../store/useStore';
+import shallow from "zustand/shallow";
 
 const IGOSwitch = styled(Switch)(() => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -165,14 +165,15 @@ function InitialGageOffering({
   const [priceAVAX, setpriceAVAX] = useState('');
   const [priceMIM, setpriceMIM] = useState('');
 
-  const { approval,          
-          gageRiskPercentage, 
-          gageBonusPercentage,
-          gageCondition, 
-          depositInETRNL } = useSelector((state) => state.eternal);
-  
-  const dispatch = useDispatch();
-
+  const { setApproval, approval, risk, bonus, condition, depositInETRNL } = useStore(state => ({
+    setApproval: state.setApproval,
+    reset: state.reset,
+    approval: state.approval,
+    risk: state.risk,
+    bonus: state.bonus,
+    condition: state.condition,
+    depositInETRNL: state.depositInETRNL,
+  }), shallow);
   
   useEffect( () => {
     if (library && account) {
@@ -190,14 +191,14 @@ function InitialGageOffering({
     if (deposit != 'Select' && library) {
       if (offering == 'Gage') {
         (async () => {
-          const bonus = await handlePercents(true);
-          handleConversionToETRNL(toNumber(amount) > 0, true, bonus);
+          const bonusPercentage = await handlePercents(true);
+          handleConversionToETRNL(toNumber(amount) > 0, true, bonusPercentage);
         })();
       } else {
         handleConversionToETRNL(toNumber(amount) > 0, false, 0);
       }
     }
-  }, [deposit]);
+  }, [deposit, library]);
 
   const refreshStats = async () => {
     const {
@@ -463,7 +464,7 @@ function InitialGageOffering({
                         ></Tooltip>
                       </div>
                       <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        {gageBonusPercentage == null ? '' : `${gageBonusPercentage}%`}
+                        {bonus == null ? '' : `${bonus}%`}
                       </p>
                     </div>
                     <div>
@@ -476,7 +477,7 @@ function InitialGageOffering({
                         ></Tooltip>
                       </div>
                       <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        {(gageRiskPercentage == null ? '' : `${gageRiskPercentage - gageBonusPercentage}%`)}
+                        {(risk == null ? '' : `${risk - bonus}%`)}
                       </p>
                     </div>
                     <div>
@@ -489,7 +490,7 @@ function InitialGageOffering({
                         ></Tooltip>
                       </div>
                       <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        {gageCondition == null ? '' : `${gageCondition}%`}
+                        {condition == null ? '' : `${condition}%`}
                       </p>
                     </div>
                   </div>
@@ -542,7 +543,7 @@ function InitialGageOffering({
                       }
                       return result;
                     }} 
-                    success={() => dispatch(changeApproval({ approval: true }))}
+                    success={() => setApproval(true)}
                     message={'Approval successful!'}
                     disabled={false} 
                     delay={true}

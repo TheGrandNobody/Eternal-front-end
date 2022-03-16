@@ -7,11 +7,10 @@ import Switch from "@mui/material/Switch";
 import { alpha } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 import { CircularProgress, Stack, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
 import ConfirmButton from "../Buttons/ConfirmButton";
 import { Box } from "@mui/system";
-import { changeApproval } from "../../reducers/main";
 import useStore from "../../store/useStore";
+import shallow from "zustand/shallow";
 
 
 const StakeSwitch = styled(Switch)(() => ({
@@ -114,11 +113,14 @@ function StakeUI({
   const [totalRewards, setTotalRewards] = useState('');
   const [share, setShare] = useState(0);
   const [rewards, setRewards] = useState(0);
-  const dispatch = useDispatch();
-  const { useIsActive } = useStore(state => state.hooks);
-  const active = useIsActive();
 
-  const { approval } = useSelector(state => state.eternal);
+  const { hooks, approval, setApproval } = useStore(state => ({
+    hooks: state.hooks,
+    approval: state.approval,
+    setApproval: state.setApproval
+  }), shallow);
+  const { useIsActive } = hooks;
+  const active = useIsActive();
 
   useEffect( () => {
     if (account && active) {
@@ -369,7 +371,7 @@ function StakeUI({
                     }
                     return result;
                   }} 
-                  success={() => dispatch(changeApproval({ approval: true }))}
+                  success={() => setApproval(true)}
                   message={'Approval successful!'}
                   disabled={false} 
                   delay={true}

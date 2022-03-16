@@ -4,22 +4,22 @@ import useStore from '../store/useStore';
 import { useRouter } from 'next/router';
 import { getWeb3NoAccount } from '../utils/web3';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import Web3 from 'web3';
-import { reset } from '../reducers/main';
+import shallow from "zustand/shallow";
 import { getAddress } from '../helpers/addressHelper';
 import { ethers } from 'ethers';
 
 function useOfferingFunction() {
-  let hooks = useStore(state => state.hooks);
+  let { hooks, reset } = useStore(state => ({
+    hooks: state.hooks,
+    reset: state.reset
+  }), shallow);
   let { useAccount, useProvider } = hooks;
   const account = useAccount();
   const library = useProvider();
+  const router = useRouter();
   const tempLibrary = new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
   const offering = useContract('offering', 'offering', library ? library : tempLibrary, account);
-
-  const router = useRouter();
-  const dispatch = useDispatch();
 
   const initiateLoyaltyGage = async () => {
     let initiateGage;
@@ -53,7 +53,7 @@ function useOfferingFunction() {
                 })
                   .then((res2) => {
                     toast.success('Gage joined successfully', { toastId: 1 });
-                    dispatch(reset());
+                    reset();
                     router.push('/user-info');
                   })
                   .catch((err) => {

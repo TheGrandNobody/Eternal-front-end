@@ -5,8 +5,7 @@ import Footer from '../../components/Footer/Footer';
 import InitialGageOffering from '../../components/IGO/InitialGageOffering';
 import { tokenOptionData } from '../../constant/data';
 import useEternalHook from '../../hooks/useEternalHook';
-import { useDispatch } from 'react-redux';
-import { changeApproval } from '../../reducers/main';
+import useStore from '../../store/useStore';
 
 function index() {
   const {
@@ -24,13 +23,13 @@ function index() {
     goodLibrary
   } = useEternalHook();
 
-  const dispatch = useDispatch();
+  const setApproval = useStore(state => state.setApproval);
 
   useEffect(() => {
     (async () => {
       if (account) {
         const approved = await handleUserApproval('offering');
-        dispatch(changeApproval({ approval: approved }));
+        setApproval(approved);
       }
     })();
   }, [account, asset, amount]);

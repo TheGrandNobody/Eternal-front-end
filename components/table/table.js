@@ -1,19 +1,21 @@
 import React from 'react';
 import TableRow from './components/tableRow';
 import TableRowSkeleton from './components/tableRowSkeleton';
-import { useDispatch } from 'react-redux';
-import { changeGageAsset, changeGageType, changeSelectedGage } from '../../reducers/main';
-import { useSelector } from 'react-redux';
+import useStore from '../../store/useStore';
+import shallow from "zustand/shallow";
 
 function table(props) {
   const { data, clickableRow, account, library} = props;
-  const dispatch = useDispatch();
-
-  const { selectedGage } = useSelector((state) => state.eternal);
+  
+  const { selectedGage, setSelected, setType } = useStore(state => ({
+    selectedGage: state.selectedGage,
+    setSelected: state.setSelected,
+    setType: state.setType
+  }), shallow);
 
   const handleClickOnGage = (id, type) => {
-    dispatch(changeSelectedGage({ selectedGage: id }));
-    dispatch(changeGageType({ gageType: type}));
+    setSelected(id);
+    setType(type);
   };
 
   return (

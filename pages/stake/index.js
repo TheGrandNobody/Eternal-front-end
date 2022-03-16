@@ -4,8 +4,8 @@ import Navbar from '../../components/navbar';
 import Footer from '../../components/Footer/Footer';
 import StakeUI from '../../components/StakeUI/Stake';
 import useEternalHook from '../../hooks/useEternalHook';
-import { useDispatch } from 'react-redux';
-import { changeApproval, changeGageAsset } from '../../reducers/main';
+import useStore from '../../store/useStore';
+import shallow from 'zustand/shallow';
 
 function index() {
 
@@ -19,19 +19,23 @@ function index() {
     stakingEstimates,
     account
   } = useEternalHook();
-  const dispatch = useDispatch();
+
+  const { setApproval, setAsset } = useStore(state => ({
+    setApproval: state.setApproval,
+    setAsset: state.setAsset
+  }), shallow)
 
   useEffect(() => {
     (async () => {
       if (account) {
         const approved = await handleUserApproval('treasury');
-        dispatch(changeApproval({ approval: approved }));
+        setApproval(approved);
       }
     })();
   }, [account, amount]);
 
   useEffect(() => {
-    dispatch(changeGageAsset({ asset: 'ETRNL' }));
+    setAsset('ETRNL');
   }, []);
 
   return (

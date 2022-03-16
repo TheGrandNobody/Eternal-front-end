@@ -1,11 +1,11 @@
 import { Box } from "@mui/system";
 import { toNumber } from "lodash";
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { changeApproval } from "../../reducers/main";
 import ConfirmButton from "../Buttons/ConfirmButton";
 import Tooltip from "../ToolTip/Tooltip";
+import useStore from '../../store/useStore';
+import shallow from "zustand/shallow";
 
 const SelectBackground = styled.div`
   background-color: #bbabe34d;
@@ -130,7 +130,8 @@ function CreateLiquidGage({
   handleOnAssetSelect,
   handleOnAmountSelect,
   handleConversionToETRNL,
-  handlePercents
+  handlePercents,
+  library
 }) {
   const [deposit, setDeposit] = useState('Select');
   const [icon, setIcon] = useState('');
@@ -139,26 +140,28 @@ function CreateLiquidGage({
   const [period, setPeriod] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const dispatch = useDispatch();
-  const { approval,
-          gageRiskPercentage, 
-          gageBonusPercentage,
-          gageCondition, 
-          depositInETRNL } = useSelector((state) => state.eternal);
+  const { setApproval, approval, risk, bonus, condition, depositInETRNL } = useStore(state => ({
+    setApproval: state.setApproval,
+    approval: state.approval,
+    risk: state.risk,
+    bonus: state.bonus,
+    condition: state.condition,
+    depositInETRNL: state.depositInETRNL,
+  }), shallow);
 
   useEffect(async () => {
     await handleConversionToETRNL(toNumber(amount) > 0 && deposit != 'Select', true, 0);
   }, [amount, loaded]);
 
   useEffect(() => {
-    if (deposit != 'Select') {
+    if (deposit != 'Select' && library) {
       (async () => {
-        const bonus = await handlePercents(false);
-        await handleConversionToETRNL(toNumber(amount) > 0, bonus);
+        const bonusPercentage = await handlePercents(false);
+        await handleConversionToETRNL(toNumber(amount) > 0, true, bonusPercentage);
         setLoaded(true);
       })();
     }
-  }, [deposit]);
+  }, [deposit, library]);
 
   const handleKeyPress = (event) => {
     if ((period && !/[0-9]/.test(event.key)) || !/[0-9\.]/.test(event.key)) {
@@ -239,7 +242,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">{gageBonusPercentage == null ? '' : `${gageBonusPercentage}%`}</p>
+            <p className="text-center">{bonus == null ? '' : `${bonus}%`}</p>
           </div>
           <div>
             <div className="d-flex align-center justify-content-center">
@@ -250,7 +253,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">{(gageRiskPercentage == null ? '' : `${gageRiskPercentage - gageBonusPercentage}%`)}</p>
+            <p className="text-center">{(risk == null ? '' : `${risk - bonus}%`)}</p>
           </div>
           <div>
             <div className="d-flex align-center justify-content-center">
@@ -261,7 +264,7 @@ function CreateLiquidGage({
                 }
               ></Tooltip>
             </div>
-            <p className="text-center">{gageCondition == null ? '' : `${gageCondition}%`}</p>
+            <p className="text-center">{condition == null ? '' : `${condition}%`}</p>
           </div>
         </div>
       </StatsContainer>
@@ -307,7 +310,7 @@ function CreateLiquidGage({
               }
               return result;
             }} 
-            success={() => dispatch(changeApproval({ approval: true }))}
+            success={() =>  setApproval(true)}
             message={'Approval successful!'}
             disabled={false} 
             delay={true}

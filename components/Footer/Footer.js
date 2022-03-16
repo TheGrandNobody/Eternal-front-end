@@ -4,17 +4,19 @@ import { getUserData } from "../../services";
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
 import { Hidden } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { reset, changeGageType } from '../../reducers/main';
 import useStore from "../../store/useStore";
+import shallow from "zustand/shallow";
 
 function Footer() {
-  const hooks = useStore(state => state.hooks);
+  const { hooks, reset, setType } = useStore(state => ({
+    hooks: state.hooks,
+    reset: state.reset,
+    setType: state.setType
+  }), shallow);
   const { useAccount, useIsActive } = hooks;
   const account = useAccount();
   const active = useIsActive();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const handleActiveNavMenu = (number = 0) => {
     switch (number) {
@@ -42,7 +44,7 @@ function Footer() {
 
   const handleClickOnEarn = (number = 0) => {
     if (account && active) {
-      dispatch(reset());
+      reset();
       switch (number) {
         case 0:
           router.push("/");
@@ -54,7 +56,7 @@ function Footer() {
           router.push("/stake");
           break;
         case 3:
-          dispatch(changeGageType({ gageType: 'Loyalty' }));
+          setType('Loyalty' );
           router.push("/igo");
           break;
         default:

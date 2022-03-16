@@ -3,34 +3,37 @@ import { createGage } from '../services';
 import { useRouter } from 'next/router';
 import { getWeb3NoAccount } from '../utils/web3';
 import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
 import { ethers } from 'ethers';
 import Web3 from 'web3';
-import { reset } from '../reducers/main';
 import { getAddress } from '../helpers/addressHelper';
 import useStore from '../store/useStore';
+import shallow from "zustand/shallow";
 
 function useFactoryFunction() {
-  let hooks = useStore(state => state.hooks);
+  let { hooks, amount, asset, type, reset } = useStore(state => ({
+    hooks: state.hooks,
+    amount: state.amount,
+    asset: state.asset,
+    type: state.type, 
+    reset: state.reset
+  }), shallow);
   let { useAccount, useProvider } = hooks;
   const account = useAccount();
   const library = useProvider();
   const tempLibrary = new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
-  const { gageDepositAmount, gageAsset, gageType} = useSelector((state) => state.eternal);
   const factory = useContract('factory', 'factory', library ? library : tempLibrary, account);
   const storage = useContract('storage', 'storage', library ? library : tempLibrary, account);
 
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const initiateLiquidGage = async () => {
     let initiateGage;
     try {
-      if (gageAsset == 'AVAX') {
-        const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
-        initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), options);
+      if (asset == 'AVAX') {
+        const options = {value: Web3.utils.toWei(`${amount}`, 'ether')};
+        initiateGage = await factory.initiateEternalLiquidGage(getAddress(asset), Web3.utils.toWei(`${amount}`, 'ether'), options);
       } else {
-        initiateGage = await factory.initiateEternalLiquidGage(getAddress(gageAsset), Web3.utils.toWei(`${gageDepositAmount}`, 'ether'));
+        initiateGage = await factory.initiateEternalLiquidGage(getAddress(asset), Web3.utils.toWei(`${amount}`, 'ether'));
       }
     }
     catch (err) {
@@ -52,11 +55,11 @@ function useFactoryFunction() {
               if (res1 !== '0x0000000000000000000000000000000000000000') {
                 clearInterval(timer);
                 new Promise(function (resolve, reject) {
-                  resolve(createGage(id, gageType, account, gageAsset));
+                  resolve(createGage(id, type, account, asset));
                 })
                   .then((res2) => {
                     toast.success('Gage joined successfully', { toastId: 1 });
-                    dispatch(reset());
+                    reset();
                     router.push('/user-info');
                   })
                   .catch((err) => {

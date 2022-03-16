@@ -3,10 +3,9 @@ import HEAD from 'next/head';
 import Navbar from '../navbar';
 import useEternalHook from '../../hooks/useEternalHook';
 import Footer from '../Footer/Footer';
-import { changeApproval } from '../../reducers/main';
-import { useDispatch } from 'react-redux';
 import { tokenOptionData } from '../../constant/data';
 import CreateLiquidGage from '../LiquidGage/LiquidGage';
+import useStore from '../../store/useStore';
 
 function index() {
   const {
@@ -19,16 +18,17 @@ function index() {
     handleClickOnConfirmBtn,
     handleClickOnApproveBtn,
     handleUserApproval,
-    account
+    account,
+    goodLibrary
   } = useEternalHook();
 
-  const dispatch = useDispatch();
+  const setApproval = useStore(state => state.setApproval);
 
   useEffect(() => {
     (async () => {
       if (account) {
         const approved = await handleUserApproval('treasury');
-        dispatch(changeApproval({ approval: approved}));
+        setApproval(approved);
       }
     })();
   }, [account, asset, amount]);
@@ -51,6 +51,7 @@ function index() {
             handleOnAmountSelect={handleOnAmountSelect}
             handleConversionToETRNL={handleConversionToETRNL}
             handlePercents={handlePercents} 
+            library={goodLibrary}
             />
           </div>
         </div>

@@ -6,18 +6,17 @@ import { useRouter } from 'next/router';
 import { getUserData } from '../../services';
 import DropDownComponent from '../DropDown/DropDown';
 import { socialDropDownData, infoDropDownData } from '../../constant/data';
-import { useDispatch } from 'react-redux';
-import { reset, changeGageType } from '../../reducers/main';
 import useStore from "../../store/useStore";
 import shallow from 'zustand/shallow';
 import { chainSupported } from '../../hooks/useAuth';
 
 export default function TemporaryDrawer() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const { setVisible, hooks } = useStore(state => ({
+  const { setVisible, hooks, reset, setType } = useStore(state => ({
     setVisible: state.setVisible,
     hooks: state.hooks,
+    reset: state.reset,
+    setType: state.setType
     }), shallow);
   const { useWeb3React } = hooks;
   const { account, active } = useWeb3React();
@@ -66,7 +65,7 @@ export default function TemporaryDrawer() {
       }
     }
     if (account && active) {
-      dispatch(reset());
+      reset();
       switch (number) {
       case 0:
         router.push('/');
@@ -78,7 +77,7 @@ export default function TemporaryDrawer() {
         router.push('/stake');
         break;
       case 3:
-        dispatch(changeGageType({ gageType: 'Loyalty' }));
+        setType('Loyalty');
         router.push('/igo');
         break;
       default:

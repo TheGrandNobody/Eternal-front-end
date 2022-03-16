@@ -3,9 +3,9 @@ import moment from 'moment';
 import { getAddress } from '../../../helpers/addressHelper';
 import { toBN, fromWei, toDecimal } from 'web3-utils';
 import { getContractFast } from '../../../helpers/ContractHelper';
-import { useSelector } from 'react-redux';
 import { toNumber } from 'lodash';
 import { Box, CircularProgress } from '@mui/material';
+import useStore from '../../../store/useStore';
 
 function tableRow(props) {
   const { type, created_at, asset, id, active, winner, closed, handleClick, account, library} = props;
@@ -13,9 +13,7 @@ function tableRow(props) {
   const [bonus, setBonus] = useState('');
   const [risk, setRisk] = useState('');
   const [percent, setPercent] = useState('');
-
-  const { loadedContracts } = useSelector((state) => state.eternal);
-
+  const loadedContracts = useStore(state => state.loadedContracts);
 
   useEffect(() => {
     (async () => {

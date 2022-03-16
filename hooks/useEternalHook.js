@@ -1,9 +1,8 @@
 import useFactoryFunction from './useEternalFactory';
 import { findExistingGage} from '../services';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeGageDepositAmount, changeGageRiskPercentage, changeGageBonusPercentage, changeGageCondition, changeGageAsset, changeDepositInETRNL } from '../reducers/main';
 import { useContract} from './useContract';
 import useStore from '../store/useStore';
+import shallow from "zustand/shallow";
 import { toast } from 'react-toastify';
 import { toWei, toBN, fromWei, toDecimal, soliditySha3 } from 'web3-utils';
 import { getAddress } from '../helpers/addressHelper';
@@ -13,20 +12,20 @@ import { ethers } from 'ethers';
 import Web3 from 'web3';
 
 function useEternalHook() {
-  let hooks = useStore(state => state.hooks);
+  let { hooks, type, asset, amount, risk, bonus, depositInETRNL,
+        setAsset, setAmount, setRisk, setBonus, setCondition, setDepositInETRNL } = useStore(state => ({
+    hooks: state.hooks,
+    setCondition: state.setCondition,
+    asset: state.asset, setAsset: state.setAsset,
+    amount: state.amount, setAmount: state.setAmount,
+    risk: state.risk, setRisk: state.setRisk,
+    bonus: state.bonus, setBonus: state.setBonus,
+    depositInETRNL: state.depositInETRNL, setDepositInETRNL: state.setDepositInETRNL,
+  }), shallow);
   let { useAccount, useProvider } = hooks;
   const account = useAccount();
   const library = useProvider();
-  const goodLibrary = library ? library : new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
-  const {
-    gageType,
-    gageAsset: asset,
-    gageDepositAmount: amount,
-    gageRiskPercentage: riskPercentage,
-    gageBonusPercentage: bonusPercentage,
-    depositInETRNL
-  } = useSelector((state) => state.eternal);
-  const dispatch = useDispatch();
+  let goodLibrary = library ? library : new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
   const { initiateLiquidGage } = useFactoryFunction();
   const { initiateLoyaltyGage, 
           initiateDeposit } = useOfferingFunction();
@@ -42,42 +41,42 @@ function useEternalHook() {
   };
 
   const handleOnAmountSelect = (amount) => {
-    dispatch(changeGageDepositAmount({ depositAmount: amount }));
+    setAmount(amount);
   };
 
-  const handleConversionToETRNL = async (inETRNL, gage, bonus) => {
+  const handleConversionToETRNL = async (inETRNL, gage, bonusPercentage) => {
     if (inETRNL) {
       let rewards;
       if (gage) {
         const amountETRNL = await treasury.computeMinAmounts(getAddress(asset), getAddress('ETRNL'), toWei(amount), 0);
-        if (bonus == 0) {
-          rewards = toBN(amountETRNL[2]).muln(100).divn(bonusPercentage * 100);
-        } else {
+        if (bonusPercentage == 0) {
           rewards = toBN(amountETRNL[2]).muln(100).divn(bonus * 100);
+        } else {
+          rewards = toBN(amountETRNL[2]).muln(100).divn(bonusPercentage * 100);
         }
       } else {
         rewards = await treasury.computeMinAmounts(getAddress(asset), getAddress('ETRNL'), toWei(amount), 0);
         rewards = toBN(rewards[2]);
       }
-      dispatch(changeDepositInETRNL({ depositInETRNL: fromWei(rewards) }));
+      setDepositInETRNL(fromWei(rewards));
     } else {
-      dispatch(changeDepositInETRNL({ depositInETRNL: '0.0' }));
+      setDepositInETRNL('0.0');
     }
   };
 
-  const handleOnAssetSelect = (asset) => {
-    dispatch(changeGageAsset({ asset: asset }))
+  const handleOnAssetSelect = (deposit) => {
+    setAsset(deposit);
   };
 
   const handlePercents = async (igo) => {
-    const condition = await factory.percentCondition();
-    dispatch(changeGageCondition({ condition: toDecimal(condition) / 10 ** 11 }));
-    const risk = igo ? await offering.viewRisk() : await storage.getUint(await factory.entity(), soliditySha3('risk', getAddress(asset)));
-    dispatch(changeGageRiskPercentage({ riskPercentage: toDecimal(risk) / 100 }));
+    const percent = await factory.percentCondition();
+    setCondition(toDecimal(percent) / 10 ** 11);
+    const riskPercentage = igo ? await offering.viewRisk() : await storage.getUint(await factory.entity(), soliditySha3('risk', getAddress(asset)));
+    setRisk(toDecimal(riskPercentage) / 100);
     const riskConstant = await storage.getUint(await factory.entity(), await factory.riskConstant());
-    dispatch(changeGageBonusPercentage({ bonusPercentage: ((toDecimal(risk) - toDecimal(riskConstant)) / 100) }));
+    setBonus(((toDecimal(riskPercentage) - toDecimal(riskConstant)) / 100));
 
-    return ((toDecimal(risk) - toDecimal(riskConstant)) / 100);
+    return ((toDecimal(riskPercentage) - toDecimal(riskConstant)) / 100);
   };
 
   const handleUserApproval = async (entity) => {
@@ -94,18 +93,18 @@ function useEternalHook() {
 
   const initiateGage = async (activity) => {
     let tx;
-    const req = await findExistingGage(gageType, account, asset);
+    const req = await findExistingGage(type, account, asset);
     if (!req.data.length > 0) {
       switch (activity) {
         case 2:
-          const gageLimitReached = await factory.gageLimitReached(getAddress(asset), toWei(amount), riskPercentage * 100);
+          const gageLimitReached = await factory.gageLimitReached(getAddress(asset), toWei(amount), risk * 100);
           if (!gageLimitReached) {
             tx = await initiateLiquidGage();
             return tx;
           }
           break;
         case 3:
-          const amountETRNL = toBN(toWei(depositInETRNL)).muln(10000).divn(bonusPercentage * 100);
+          const amountETRNL = toBN(toWei(depositInETRNL)).muln(10000).divn(bonus * 100);
           const global = amountETRNL.muln(2).add(toBN(toWei(depositInETRNL)));
           const globalLimit = await offering.checkGlobalLimit(global.toString());
           if (globalLimit) {

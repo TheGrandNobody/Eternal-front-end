@@ -8,8 +8,6 @@ import ExitGage from '../../components/Buttons/ExitGage'
 import CustomSelectDropdown from '../../components/CustomSelectDropdown';
 import { tableTabs } from '../../constant/constants';
 import { getGagesAccordingToStatus, findAndUpdateGageStatus} from '../../services/index';
-import { useSelector, useDispatch } from 'react-redux';
-import { changeLoadedContracts, changeSelectedGage, reset } from '../../reducers/main';
 import { getAllGages } from '../../hooks/useContract';
 import { getWeb3NoAccount } from '../../utils/web3';
 import { toast } from 'react-toastify';
@@ -22,21 +20,25 @@ import useStore from '../../store/useStore';
 
 
 function index() {
-  let { hooks, library } = useStore(state => ({
+  const { hooks, selectedGage, loadedContracts, type, setSelected, setContracts, reset } = useStore(state => ({
     hooks: state.hooks,
-    library: state.library
+    selectedGage: state.selectedGage,
+    loadedContracts: state.loadedContracts,
+    type: state.type,
+    setSelected: state.setSelected,
+    setContracts: state.setContracts,
+    setType: state.setType,
+    reset: state.reset
   }), shallow);
-  console.log(library);
-  let { useAccount } = hooks;
-  let account = useAccount();
-  library = library ? library : new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
+  const { useAccount, useProvider } = hooks;
+  const account = useAccount();
+  const library = useProvider();
+  let goodLibrary = library ? library : new ethers.providers.Web3Provider(new Web3(window.ethereum).currentProvider);
   const [currentTab, setCurrentTab] = useState(tableTabs[0]);
   const [data, setData] = useState();
   const [gageCount, setGageCount] = useState('5');
   const [currentPage, setCurrentPage] = useState(1);
   const [exitable, setExitable] = useState(false);
-  const dispatch = useDispatch();
-  const { selectedGage, loadedContracts, gageType } = useSelector((state) => state.eternal);
 
   useEffect(() => {
     fetchDataForTable(currentTab);
@@ -58,14 +60,14 @@ function index() {
   const fetchDataForTable = async (currentStatusTab) => {
     const req = await getGagesAccordingToStatus(account, currentStatusTab, gageCount, currentPage);
     setData(req.data);
-    let contracts = await getAllGages(library, account, req?.data?.results || []);
-    dispatch(changeLoadedContracts({ loadedContracts: contracts }));
+    let contracts = await getAllGages(goodLibrary, account, req?.data?.results || []);
+    setContracts(contracts);
 
     return req.data?.results.length;
   };
 
   const handleChangeOnTab = (currentTab) => {
-    dispatch(changeSelectedGage({ selectedGage: null }));
+    setSelected(null);
     setCurrentTab(currentTab);
     setCurrentPage(1);
   };
@@ -85,8 +87,8 @@ function index() {
   };
   
   const checkForLoss = async () => {
-    const token = getContract('ETRNL', 'ERC20', library, account);
-    const gage = (gageType == 'Liquid' || gageType == 'Loyalty') ? getContractFast(loadedContracts[selectedGage].address, 'loyalty', library, account) : loadedContracts[selectedGage];
+    const token = getContract('ETRNL', 'ERC20', goodLibrary, account);
+    const gage = (type == 'Liquid' || type == 'Loyalty') ? getContractFast(loadedContracts[selectedGage].address, 'loyalty', goodLibrary, account) : loadedContracts[selectedGage];
     const condition = toBN(await gage.viewTarget());
     const supply = toBN(await token.totalSupply());
 
@@ -153,7 +155,7 @@ function index() {
                   <Table data={data?.results || []} 
                   clickableRow={currentTab !== 'Closed'} 
                   account={account} 
-                  library={library}
+                  library={goodLibrary}
                   />
                   <div className='container text-center my-5 px-0'>
                     {data?.previous && data?.results?.length > 0 && (
@@ -167,7 +169,7 @@ function index() {
                       </button>
                     )}
                     <Link href='/gage-selection'>
-                      <button onClick={() => dispatch(reset())} className='btn grid-btn mx-sm-2 mx-1'>New Gage</button>
+                      <button onClick={() => reset()} className='btn grid-btn mx-sm-2 mx-1'>New Gage</button>
                     </Link>
                     {selectedGage && (
                       <ExitGage 

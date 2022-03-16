@@ -6,8 +6,6 @@ import { getUserData } from "../../services";
 import { useRouter } from "next/router";
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
-import { useDispatch } from "react-redux";
-import { reset, changeGageType } from "../../reducers/main";
 import ConnectButton from "../Buttons/ConnectButton";
 import useStore from "../../store/useStore";
 import shallow from 'zustand/shallow'
@@ -15,14 +13,15 @@ import shallow from 'zustand/shallow'
 function Navbar() {
   const [scroll, setScroll] = useState(false);
   const [connect, setConnect] = useState(false);
-  const { setVisible, hooks } = useStore(state => ({
+  const { setVisible, hooks, reset, setType } = useStore(state => ({
     setVisible: state.setVisible,
     hooks: state.hooks,
+    reset: state.reset,
+    setType: state.setType
     }), shallow);
   const { useWeb3React } = hooks;
   const { account, active, connector, chainId } = useWeb3React();
   const { login  } = useAuth();
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const handleActiveNavMenu = (number = 0) => {
@@ -82,7 +81,7 @@ function Navbar() {
       }
     }
     if (account && active) {
-      dispatch(reset());
+      reset();
       switch (number) {
         case 1:
           handleAccount(account);
@@ -91,7 +90,7 @@ function Navbar() {
           router.push("/stake");
           break;
         case 3:
-          dispatch(changeGageType({ gageType: 'Loyalty' }));
+          setType('Loyalty');
           router.push("/igo");
           break;
         default:

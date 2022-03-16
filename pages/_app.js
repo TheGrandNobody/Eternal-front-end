@@ -1,8 +1,6 @@
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { Provider } from 'react-redux';
-import { store } from '../store/store';
 import Web3ReactManager from '../Web3Manager/Web3Manager';
 import React from 'react';
 
@@ -17,12 +15,12 @@ function MyApp({ Component, pageProps }) {
     return null;
   }
   return (
-    <Provider store={store}>
+    <>
       <ToastContainer />
       <Web3ReactManager>
         <Component {...pageProps} />
       </Web3ReactManager>
-    </Provider>
+    </>
   );
 }
 

@@ -2,12 +2,11 @@ import React from 'react';
 import HEAD from 'next/head';
 import Navbar from '../navbar';
 import Footer from '../Footer/Footer';
-import { useDispatch} from 'react-redux';
-import { changeGageType } from '../../reducers/main';
 import Tooltip from '../ToolTip/Tooltip';
+import useStore from '../../store/useStore';
 
 function index() {
-  const dispatch = useDispatch();
+  const setType = useStore(state => state.setType);
   return (
     <>
       <HEAD>
@@ -26,7 +25,7 @@ function index() {
               <div className='col-sm-4 mb-4 mb-sm-0'>
                 <div
                   onClick={() => {
-                    dispatch(changeGageType({ gageType: 'Liquid' }));
+                    setType('Liquid');
                   }}>
                   <a className='text-center'>
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
