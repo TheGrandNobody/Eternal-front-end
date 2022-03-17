@@ -216,8 +216,8 @@ function StakeUI({
         <Grid item md={6} xs={12}>
           <SelectBackground className="container">
             <FormControlLabel
-              className="position-relative"
-              style={{ left: "85%", top: "1.75%" }}
+              className="position-absolute"
+              style={{ right: "1%", top: "1%" }}
               sx={{ width: "5%", height: "5%", minHeight: 2, minWidth: 2 }}
               control={
                 <StakeSwitch
