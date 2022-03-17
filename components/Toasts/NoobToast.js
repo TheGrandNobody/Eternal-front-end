@@ -7,7 +7,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} {...props} />;
 });
 
-export default function NoobToast() {
+export default function NoobToast({ duration }) {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = (event, reason) => {
@@ -18,10 +18,10 @@ export default function NoobToast() {
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={null} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}}>
+    <Snackbar open={open} autoHideDuration={duration} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}}>
       <Alert action={
-        <Button href='https://docs.eternal.money/' color="inherit" size="small">
-          Go to the docs
+        <Button variant={'text'} href='https://docs.eternal.money/' color="info" size="small">
+          Bring me to the docs
         </Button>
       } onClose={handleClose} severity="info" sx={{ width: '100%' }}>
         New to Eternal? Read the docs first!

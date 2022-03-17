@@ -157,6 +157,7 @@ h2 {
   border-radius: 16px;
   opacity: 1;
   min-height: 293px;
+  transition: opacity 0.3s;
 }
 a:hover .gage-block {
   opacity: 0.75;
@@ -495,6 +496,23 @@ a:hover .gage-block {
   -ms-animation: fadeIn linear 1s;
 }
 
+.fade-in-toast {
+  animation: fadeIn linear 5s;
+  -webkit-animation: fadeIn linear 5s;
+  -moz-animation: fadeIn linear 5s;
+  -o-animation: fadeIn linear 5s;
+  -ms-animation: fadeIn linear 5s;
+}
+
+.fade-out-toast {
+  animation: fadeOut linear 5s;
+  -webkit-animation: fadeOut linear 5s;
+  -moz-animation: fadeOut linear 5s;
+  -o-animation: fadeOut linear 5s;
+  -ms-animation: fadeOut linear 5s;
+}
+
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -537,6 +555,51 @@ a:hover .gage-block {
   }
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-o-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 .MuiButtonBase-root .fas.fa-bars {

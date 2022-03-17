@@ -41,7 +41,7 @@ function Download() {
                 </div>
               </div>
 
-              <div className='col-sm-4 inactive mb-4 mb-sm-0'>
+              <div className='col-sm-4 mb-4 mb-sm-0'>
                 <div onClick={() => handleDownload('whitepaper-eternal.pdf')}>
                   <a className='text-center'>
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>

@@ -1,10 +1,10 @@
 import { WalletConnect } from '@web3-react/walletconnect';
 import { useEffect } from 'react';
-import { toast } from 'react-toastify';
 import Web3 from 'web3';
 import { chainInfo, connectorsByName } from '../constant/constants';
 import useStore from '../store/useStore';
 import shallow from 'zustand/shallow';
+import { toast } from 'react-hot-toast'
 
 const handleActive = (active) => {
   if (active[0]) {
@@ -25,24 +25,24 @@ const handleLogin = async (id, chainId, error, actives) => {
   try {
     if (connectorsByName[id][0] instanceof WalletConnect) {
       await connectorsByName[id][0].activate(chainId).catch(() => {
-        toast.error('Something went wrong. Try again.', { toastId: 1})
+        toast.error('Something went wrong. Try again.')
         return Promise.reject()
       });
     } else {
       await connectorsByName[id][0].activate(chainInfo[chainId]).catch(() => {
-        toast.error('Something went wrong. Try again.', { toastId: 1})
+        toast.error('Something went wrong. Try again.')
         return Promise.reject()
       });
     }
     if (error) {
       if (error.constructor.name != 'ChainIdNotAllowedError') {
-        toast.error('Login canceled. Try again?', { toastId: 1});
+        toast.error('Login canceled. Try again?');
         return Promise.reject();
       }
     }
   }
   catch {
-    toast.error('Something went wrong. Try again.', { toastId: 1});
+    toast.error('Something went wrong. Try again.');
     return Promise.reject(error)
   }
   return Promise.resolve(true);
@@ -91,7 +91,7 @@ export function loginEarly() {
               toast.error('Invalid chain: switch to Avalanche!')
               await handleLogin(id, 43114, error, active);
             } else {
-              toast.error('This app requires a valid wallet. Please install MetaMask or another wallet supported by this website', { toastId: 1 });
+              toast.error('This app requires a valid wallet. Please install MetaMask or another wallet supported by this website');
             }
           }
         }

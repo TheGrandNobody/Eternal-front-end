@@ -125,7 +125,8 @@ function UserPanel({ onClose, setOpen, setVisible, open, current, visible, accou
         </DialogTitle>
         <DialogContent>
           <Paper style={{background: 'radial-gradient(100% 225% at 100% 0%, #FAFF00 0%, #000000 100%), linear-gradient(235deg, #DB00FF 0%, #000000 100%), linear-gradient(45deg, #241E92 0%, #241E92 40%, #5432D3 40%, #5432D3 50%, #7B6CF6 50%, #7B6CF6 70%, #E5A5FF 70%, #E5A5FF 100%), linear-gradient(180deg, #01024E 0%, #01024E 43%, #543864 43%, #543864 62%, #8B4367 62%, #8B4367 80%, #FF6464 80%, #FF6464 100%)',
-                         backgroundBlendMode: 'overlay, hard-light, overlay, normal'}} sx={{ pt: 4, pb: 2, pl: 2, pr: 2, borderRadius: 3}}>
+                         backgroundBlendMode: 'overlay, hard-light, overlay, normal'}} sx={{ pt: 2, pb: 4, pl: 2, pr: 2, borderRadius: 3}}>
+            <Typography sx={{pb: 2, color: '#e6e6fa'}} fontSize={10} fontWeight={'bold'}>{account}</Typography>
             <Grid container spacing={2} >
               <Grid item xs={4}>
                 <Avatar sx={{ color: '#30083b', bgcolor: '#fff'}}>
@@ -142,7 +143,6 @@ function UserPanel({ onClose, setOpen, setVisible, open, current, visible, accou
                 </Grid>
               </Grid>
             </Grid>
-            <Typography sx={{pt: 2, color: '#e6e6fa'}} fontSize={10} fontWeight={'bold'}>{account}</Typography>
           </Paper>
         </DialogContent>
         <DialogActions>

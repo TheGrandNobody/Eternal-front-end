@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { getUserData } from "../../services";
 import Footer from "../Footer/Footer";
 import useStore from "../../store/useStore";
-import NoobToast from '../Toasts/NoobToast';
 import shallow from "zustand/shallow";
+import NoobToast from '../Toasts/NoobToast';
 
 function IndexPage() {
   const router = useRouter();
@@ -55,11 +55,7 @@ function IndexPage() {
               Go to platform
             </button>
           </div>
-          { localStorage.getItem('preference') ? 
-            null
-          :
-            <NoobToast></NoobToast>
-          }
+          <NoobToast duration={localStorage.getItem('preference') ? 5000 : null}></NoobToast>
         </div>
 
         <Footer />
