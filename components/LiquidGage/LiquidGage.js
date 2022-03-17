@@ -1,4 +1,3 @@
-import { Box } from "@mui/system";
 import { toNumber } from "lodash";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
@@ -6,15 +5,13 @@ import ConfirmButton from "../Buttons/ConfirmButton";
 import Tooltip from "../ToolTip/Tooltip";
 import useStore from '../../store/useStore';
 import shallow from "zustand/shallow";
+import { Grid } from "@mui/material";
 
 const SelectBackground = styled.div`
   background-color: #bbabe34d;
   border-radius: 16px;
-  height: 90%;
   justify-content: center;
-  margin-bottom: 110%;
   margin: 0 auto;
-  width: 100%;
   max-width: 698px;
   border-top: 7.5px groove #e6e6fa;
   border-bottom: 7.5px ridge #e6e6fa;
@@ -30,16 +27,8 @@ const SelectHeader = styled.p`
   font-weight: 550;
 `;
 
-const SelectContainer = styled.div`
-  width: 65%;
-  height: 10%;
-  margin: 0 auto;
-  margin-bottom: 11%;
-`;
-
 const InputContainer = styled.div`
-  width: 84.5%;
-  height: 110%;
+  height: 60%;
   background: hsl(287, 76%, 13%);
   border: 5px solid hsl(287, 90%, 13%);
   box-sizing: border-box;
@@ -47,6 +36,7 @@ const InputContainer = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: space-around;
+  width: 65%;
 `;
 
 const SelectToken = styled.div`
@@ -75,13 +65,13 @@ const TokenName = styled.header`
 `;
 
 const TokenList = styled.ul`
-  width: 20%;
-  height: 125%;
+  width: 15%;
+  margin-left: 67.5%;
+  margin-top: -7.5%;
+  top: 70%;
   background: #30083b;
   border-radius: 6px;
-  margin-left: 65%;
   padding-left: 0;
-  margin-top: 2%;
   z-index: 100;
   position: relative;
 `;
@@ -95,19 +85,10 @@ const Chevron = styled.img`
   transition: transform 0.4s;
 `;
 
-const StatsContainer = styled.div`
-  margin-bottom: 7%;
-`;
-
-const RewardsContainer = styled.div`
-  height: 15%;
-  margin-bottom: 6.75%;
-`;
-
 const RewardsBlock = styled.div`
+  height: 125%;
   margin: 0 auto;
-  width: 55%;
-  height: 72.5%;
+  width: 65%;
   background: hsl(287, 76%, 13%);
   border: 5px solid hsl(287, 90%, 13%);
   border-radius: 16px;
@@ -177,147 +158,151 @@ function CreateLiquidGage({
 
   return (
     <SelectBackground>
-      <div
-        className="d-flex align-items-center justify-content-center"
-        style={{ marginTop: "3%" }}
-      >
-        <SelectHeader>Select a deposit</SelectHeader>
-        <Tooltip
-          text={
-            "The deposit is the asset you add to the gage to provide liquidity to an ETRNL pair. You can withdraw it whenever you want."
-          }
-        ></Tooltip>
-      </div>
-      <SelectContainer>
-        <InputContainer className="input-container">
-          <input
-            type="text"
-            inputMode="decimal"
-            title="Token Amount"
-            autoComplete="off"
-            autoCorrect="off"
-            pattern="^[0-9]*[.,]?[0-9]*$"
-            placeholder="0.0"
-            minLength="1"
-            maxLength="79"
-            spellCheck="false"
-            onKeyPress={(event) => handleKeyPress(event)}
-            onChange={(event) => handleChange(event)}
-          ></input>
-          <SelectToken onClick={() => setVisibility(!visibility)}>
-            <TokenIcon src={icon}></TokenIcon>
-            <TokenName className={visibility && "hover"}>{deposit}</TokenName>
-            <Chevron
-              className={visibility && "rotate"}
-              src="img/down.png"
-            ></Chevron>
-          </SelectToken>
-        </InputContainer>
-        <TokenList className={!visibility && "hide"}>
-          {optionsToMap.map((item, index) => (
-            <li
-              className="token-option option-padding d-flex align-items-center justify-content-start"
-              key={index}
-              onClick={() => {
-                setIcon(item.icon);
-                handleOnAssetSelect(item.token);
-                setDeposit(item.token);
-                setVisibility(!visibility);
-              }}
-            >
-              <img className="vertical-center" src={item.icon}></img>
-              <header>{item.token}</header>
-            </li>
-          ))}
-        </TokenList>
-      </SelectContainer>
-      <StatsContainer className="gage-stats">
-        <div className="d-flex align-items-center justify-content-around">
-          <div>
-            <div className="d-flex align-center justify-content-center">
-              <h2>Bonus (%)</h2>
+      <Grid container direction={'column'} justifyContent={'space-around'} rowSpacing={8}>
+        <Grid container item xs={12}>
+          <Grid className="d-flex align-items-center justify-content-center" item xs={12}>
+              <SelectHeader>Select a deposit</SelectHeader>
               <Tooltip
                 text={
-                  "The percentage of Eternal's liquidity rewards and deposit you gain on top of your deposit/rewards if the gage closes in your favor."
+                  "The deposit is the asset you add to the gage to provide liquidity to an ETRNL pair. You can withdraw it whenever you want."
                 }
               ></Tooltip>
-            </div>
-            <p className="text-center">{bonus == null ? '' : `${bonus}%`}</p>
-          </div>
-          <div>
-            <div className="d-flex align-center justify-content-center">
-              <h2>Risk (%)</h2>
-              <Tooltip
-                text={
-                  "The net loss you would incur if the gage closed in favor of Eternal."
-                }
-              ></Tooltip>
-            </div>
-            <p className="text-center">{(risk == null ? '' : `${risk - bonus}%`)}</p>
-          </div>
-          <div>
-            <div className="d-flex align-center justify-content-center">
-              <h2>Condition</h2>
-              <Tooltip
-                text={
-                  "The percent by which the ETRNL supply must decrease before the gage closes in your favor."
-                }
-              ></Tooltip>
-            </div>
-            <p className="text-center">{condition == null ? '' : `${condition}%`}</p>
-          </div>
-        </div>
-      </StatsContainer>
-      <RewardsContainer>
-        <div className="d-flex align-center justify-content-center">
-          <h2>Instant Reward</h2>
-          <Tooltip
-            text={
-              "The amount of ETRNL you instantly receive upon entering the gage."
-            }
-          ></Tooltip>
-        </div>
-        <RewardsBlock>
-          <Amount>{amount == "0" || amount == "" ? "0.0" : depositInETRNL}</Amount>
-          <SelectToken style={{ cursor: "auto" }}>
-            <TokenIcon src="img/etrnl.png"></TokenIcon>
-            <TokenName>ETRNL</TokenName>
-          </SelectToken>
-        </RewardsBlock>
-      </RewardsContainer>
-      <Box className="col-sm-12 my-5 text-center">
-        {(deposit == "Select" || amount == '0.0' || amount == '' || amount == '0') ?
-          <ConfirmButton disabled={true} text={'Confirm'}></ConfirmButton>
-        :
-          ( (approval)  ?
-            <ConfirmButton 
-            handleClick={async () => {
-              const result = await handleClickOnConfirmBtn(2);
-              return result
-            }} 
-            disabled={false} 
-            delay={true}
-            text={'Confirm'}></ConfirmButton>
-          :
-            <ConfirmButton 
-            handleClick={async () => {
-              let result;
-              try {
-                result = await handleClickOnApproveBtn('treasury');
+          </Grid>
+          <Grid item xs={12}>
+            <InputContainer className="input-container">
+              <input
+                type="text"
+                inputMode="decimal"
+                title="Token Amount"
+                autoComplete="off"
+                autoCorrect="off"
+                pattern="^[0-9]*[.,]?[0-9]*$"
+                placeholder="0.0"
+                minLength="1"
+                maxLength="79"
+                spellCheck="false"
+                onKeyPress={(event) => handleKeyPress(event)}
+                onChange={(event) => handleChange(event)}
+              ></input>
+              <SelectToken onClick={() => setVisibility(!visibility)}>
+                <TokenIcon src={icon}></TokenIcon>
+                <TokenName className={visibility && "hover"}>{deposit}</TokenName>
+                <Chevron
+                  className={visibility && "rotate"}
+                  src="img/down.png"
+                ></Chevron>
+              </SelectToken>
+            </InputContainer>
+            <TokenList className={!visibility && "hide"}>
+              {optionsToMap.map((item, index) => (
+                <li
+                  className="token-option option-padding d-flex align-items-center justify-content-start"
+                  key={index}
+                  onClick={() => {
+                    setIcon(item.icon);
+                    handleOnAssetSelect(item.token);
+                    setDeposit(item.token);
+                    setVisibility(!visibility);
+                  }}
+                >
+                  <img className="vertical-center" src={item.icon}></img>
+                  <header>{item.token}</header>
+                </li>
+              ))}
+            </TokenList>
+          </Grid>
+        </Grid>
+        <Grid xs={12} item container direction={'row'} alignItems={"center"} justifyContent={"space-around"} className="gage-stats">
+            <Grid item xs={4}>
+              <div className="d-flex align-center justify-content-center">
+                <h2>Bonus (%)</h2>
+                <Tooltip
+                  text={
+                    "The percentage of Eternal's liquidity rewards and deposit you gain on top of your deposit/rewards if the gage closes in your favor."
+                  }
+                ></Tooltip>
+              </div>
+              <p className="text-center">{bonus == null ? '' : `${bonus}%`}</p>
+            </Grid>
+            <Grid item xs={4}>
+              <div className="d-flex align-center justify-content-center">
+                <h2>Risk (%)</h2>
+                <Tooltip
+                  text={
+                    "The net loss you would incur if the gage closed in favor of Eternal."
+                  }
+                ></Tooltip>
+              </div>
+              <p className="text-center">{(risk == null ? '' : `${risk - bonus}%`)}</p>
+            </Grid>
+            <Grid item xs={4}>
+              <div className="d-flex align-center justify-content-center">
+                <h2>Condition</h2>
+                <Tooltip
+                  text={
+                    "The percent by which the ETRNL supply must decrease before the gage closes in your favor."
+                  }
+                ></Tooltip>
+              </div>
+              <p className="text-center">{condition == null ? '' : `${condition}%`}</p>
+            </Grid>
+        </Grid>
+        <Grid container item xs={12}>
+          <Grid item xs={12} className="d-flex align-center justify-content-center">
+            <h2>Instant Reward</h2>
+            <Tooltip
+              text={
+                "The amount of ETRNL you instantly receive upon entering the gage."
               }
-              catch {
-                return false;
+            ></Tooltip>
+          </Grid>
+          <Grid container item xs={12} rowSpacing={5} justifyContent={"space-around"}>
+            <Grid item xs={12}>
+              <RewardsBlock>
+                <Amount>{amount == "0" || amount == "" ? "0.0" : depositInETRNL}</Amount>
+                <SelectToken style={{ cursor: "auto" }}>
+                  <TokenIcon src="img/etrnl.png"></TokenIcon>
+                  <TokenName>ETRNL</TokenName>
+                </SelectToken>
+              </RewardsBlock>
+            </Grid>
+            <Grid item xs={12} className={"text-center"}>
+              {(deposit == "Select" || amount == '0.0' || amount == '' || amount == '0') ?
+                <ConfirmButton disabled={true} text={'Confirm'}></ConfirmButton>
+                :
+                ((approval) ?
+                  <ConfirmButton
+                    handleClick={async () => {
+                      const result = await handleClickOnConfirmBtn(2);
+                      return result
+                    }}
+                    disabled={false}
+                    delay={true}
+                    text={'Confirm'}></ConfirmButton>
+                  :
+                  <ConfirmButton
+                    handleClick={async () => {
+                      let result;
+                      try {
+                        result = await handleClickOnApproveBtn('treasury');
+                      }
+                      catch {
+                        return false;
+                      }
+                      return result;
+                    }}
+                    success={() => setApproval(true)}
+                    message={'Approval successful!'}
+                    disabled={false}
+                    delay={true}
+                    text={'Approve'}></ConfirmButton>
+                )
               }
-              return result;
-            }} 
-            success={() =>  setApproval(true)}
-            message={'Approval successful!'}
-            disabled={false} 
-            delay={true}
-            text={'Approve'}></ConfirmButton>
-          )
-        }
-      </Box>
+            </Grid>
+            <Grid item xs={12}></Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </SelectBackground>
   );
 }

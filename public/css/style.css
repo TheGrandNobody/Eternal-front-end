@@ -177,7 +177,6 @@ a:hover .gage-block {
 
 .select-bg {
   margin-top: 10%;
-  /* height: 82.5vmin; */
   width: 82.5vw;
 }
 
@@ -240,7 +239,6 @@ a:hover .gage-block {
 
 .gage-stats {
   z-index: 5;
-  position: relative;
 }
 
 .gage-stats p,
@@ -670,10 +668,6 @@ a:hover .gage-block {
 @media (max-width: 992px) {
   .navbar-drawer {
     display: block;
-  }
-  .select-bg {
-    padding-top: 40px;
-    padding-bottom: 20px;
   }
 }
 @media (min-width: 1920px) {

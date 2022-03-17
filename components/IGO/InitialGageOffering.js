@@ -104,9 +104,9 @@ const TokenList = styled.ul`
   border-radius: 6px;
   margin-left: 65%;
   padding-left: 0;
-  margin-top: -3.5%;
   z-index: 100;
-  position: relative;
+  position: absolute;
+  top: 30%;
 `;
 
 const Chevron = styled.img`
@@ -294,8 +294,8 @@ function InitialGageOffering({
         <Grid item md={6} xs={12}>
           <SelectBackground className="center-sec">
             <FormControlLabel
-              className="position-relative"
-              style={{ left: "85%", top: "1.75%" }}
+              className="position-absolute"
+              style={{ right: "1%", top: "1%" }}
               sx={{ width: "5%", height: "5%", minHeight: 2, minWidth: 2 }}
               control={
                 <IGOSwitch
@@ -318,63 +318,66 @@ function InitialGageOffering({
             />
             {offering === "Deposit" ? (
               <>
-                <div className="d-flex align-items-center justify-content-center">
-                  <SelectHeader>Select a deposit</SelectHeader>
-                  <Tooltip
-                    text={
-                      "Deposit MIM or AVAX and get ETRNL in return. The deposit will be automatically added to its corresponding ETRNL liquidity pair's reserves."
-                    }
-                  ></Tooltip>
-                </div>
-                <SelectContainer style={{ marginBottom: "9%" }}>
-                  <InputContainer
-                    className="input-container"
-                    style={{ height: "125%" }}
-                  >
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      title="Token Amount"
-                      autoComplete="off"
-                      autoCorrect="off"
-                      pattern="^[0-9]*[.,]?[0-9]*$"
-                      placeholder="0.0"
-                      minLength="1"
-                      maxLength="79"
-                      spellCheck="false"
-                      onKeyPress={(event) => handleKeyPress(event)}
-                      onChange={(event) => handleChange(event)}
-                    ></input>
-                    <SelectToken onClick={() => setVisibility(!visibility)}>
-                      <TokenIcon src={icon}></TokenIcon>
-                      <TokenName className={visibility && "hover"}>
-                        {deposit}
-                      </TokenName>
-                      <Chevron
-                        className={visibility && "rotate"}
-                        src="img/down.png"
-                      ></Chevron>
-                    </SelectToken>
-                  </InputContainer>
-                  <TokenList className={!visibility && "hide"}>
-                    {optionsToMap.map((item, index) => (
-                      <li
-                        className="token-option igo-option-padding  d-flex align-items-center justify-content-start"
-                        key={index}
-                        onClick={() => {
-                          setDeposit(item.token);
-                          setIcon(item.icon);
-                          setVisibility(!visibility);
-                          handleOnAssetSelect(item.token);
-                        }}
-                      >
-                        <img className="vertical-center" src={item.icon}></img>
-                        <header>{item.token}</header>
-                      </li>
-                    ))}
-                  </TokenList>
-                </SelectContainer>
-                <RewardsContainer style={{ marginBottom: "10%" }}>
+              <Stack spacing={16} sx={{marginBottom: '4.5%'}}>
+                <Box>
+                  <div className="d-flex align-items-center justify-content-center">
+                    <SelectHeader>Select a deposit</SelectHeader>
+                    <Tooltip
+                      text={
+                        "Deposit MIM or AVAX and get ETRNL in return. The deposit will be automatically added to its corresponding ETRNL liquidity pair's reserves."
+                      }
+                    ></Tooltip>
+                  </div>
+                  <SelectContainer>
+                    <InputContainer
+                      className="input-container"
+                      style={{ height: "125%" }}
+                    >
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        title="Token Amount"
+                        autoComplete="off"
+                        autoCorrect="off"
+                        pattern="^[0-9]*[.,]?[0-9]*$"
+                        placeholder="0.0"
+                        minLength="1"
+                        maxLength="79"
+                        spellCheck="false"
+                        onKeyPress={(event) => handleKeyPress(event)}
+                        onChange={(event) => handleChange(event)}
+                      ></input>
+                      <SelectToken onClick={() => setVisibility(!visibility)}>
+                        <TokenIcon src={icon}></TokenIcon>
+                        <TokenName className={visibility && "hover"}>
+                          {deposit}
+                        </TokenName>
+                        <Chevron
+                          className={visibility && "rotate"}
+                          src="img/down.png"
+                        ></Chevron>
+                      </SelectToken>
+                    </InputContainer>
+                    <TokenList className={!visibility && "hide"}>
+                      {optionsToMap.map((item, index) => (
+                        <li
+                          className="token-option igo-option-padding  d-flex align-items-center justify-content-start"
+                          key={index}
+                          onClick={() => {
+                            setDeposit(item.token);
+                            setIcon(item.icon);
+                            setVisibility(!visibility);
+                            handleOnAssetSelect(item.token);
+                          }}
+                        >
+                          <img className="vertical-center" src={item.icon}></img>
+                          <header>{item.token}</header>
+                        </li>
+                      ))}
+                    </TokenList>
+                  </SelectContainer>
+                </Box>
+                <RewardsContainer>
                   <div className="d-flex align-center justify-content-center">
                     <h2 style={{ fontSize: "3vmin" }}>You get</h2>
                     <Tooltip
@@ -383,7 +386,7 @@ function InitialGageOffering({
                       }
                     ></Tooltip>
                   </div>
-                  <RewardsBlock style={{ height: "82.5%" }}>
+                  <RewardsBlock>
                     <Amount>
                       {amount == "0" || amount == "" ? "0.0" : depositInETRNL}
                     </Amount>
@@ -393,127 +396,134 @@ function InitialGageOffering({
                     </SelectToken>
                   </RewardsBlock>
                 </RewardsContainer>
+              </Stack>
               </>
             ) : (
               <>
-                <div className="d-flex align-items-center justify-content-center">
-                  <SelectHeader>Select a deposit</SelectHeader>
-                  <Tooltip
-                    text={
-                      "The deposit is the asset you provide to the loyalty gage. You can withdraw it whenever you want."
-                    }
-                  ></Tooltip>
-                </div>
-                <SelectContainer style={{ marginBottom: "4.5%" }}>
-                  <InputContainer
-                    className="input-container"
-                    style={{ height: "102.5%" }}
-                  >
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      title="Token Amount"
-                      autoComplete="off"
-                      autoCorrect="off"
-                      pattern="^[0-9]*[.,]?[0-9]*$"
-                      placeholder="0.0"
-                      minLength="1"
-                      maxLength="79"
-                      spellCheck="false"
-                      onKeyPress={(event) => handleKeyPress(event)}
-                      onChange={(event) => handleChange(event)}
-                    ></input>
-                    <SelectToken onClick={() => setVisibility(!visibility)}>
-                      <TokenIcon src={icon}></TokenIcon>
-                      <TokenName className={visibility && "hover"}>
-                        {deposit}
-                      </TokenName>
-                      <Chevron
-                        className={visibility && "rotate"}
-                        src="img/down.png"
-                      ></Chevron>
-                    </SelectToken>
-                  </InputContainer>
-                  <TokenList className={!visibility && "hide"}>
-                    {optionsToMap.map((item, index) => (
-                      <li
-                        className="token-option igo-option-padding d-flex align-items-center justify-content-start"
-                        key={index}
-                        onClick={() => {
-                          setDeposit(item.token);
-                          setIcon(item.icon);
-                          setVisibility(!visibility);
-                          handleOnAssetSelect(item.token);
-                        }}
-                      >
-                        <img className="vertical-center" src={item.icon}></img>
-                        <header>{item.token}</header>
-                      </li>
-                    ))}
-                  </TokenList>
-                </SelectContainer>
-                <div className="gage-stats" style={{ marginBottom: "4.5%" }}>
-                  <div className="d-flex align-items-center justify-content-around">
-                    <div>
-                      <div className="d-flex align-center justify-content-center">
-                        <h2>Bonus (%)</h2>
+                <Stack spacing={5} sx={{marginBottom: "4.5%"}}>
+                  <Stack spacing={5}>
+                    <Box>
+                      <div className="d-flex align-items-center justify-content-center">
+                        <SelectHeader>Select a deposit</SelectHeader>
                         <Tooltip
                           text={
-                            "The additional percentage of your deposit you gain if the gage closes in your favor."
+                            "The deposit is the asset you provide to the loyalty gage. You can withdraw it whenever you want."
                           }
                         ></Tooltip>
                       </div>
-                      <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        {bonus == null ? '' : `${bonus}%`}
-                      </p>
-                    </div>
-                    <div>
-                      <div className="d-flex align-center justify-content-center">
-                        <h2>Risk (%)</h2>
-                        <Tooltip
-                          text={
-                            "The net loss you would incur if the gage closed in favor of Eternal."
-                          }
-                        ></Tooltip>
+                      <SelectContainer>
+                        <InputContainer
+                          className="input-container"
+                          style={{ height: "102.5%" }}
+                        >
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            title="Token Amount"
+                            autoComplete="off"
+                            autoCorrect="off"
+                            pattern="^[0-9]*[.,]?[0-9]*$"
+                            placeholder="0.0"
+                            minLength="1"
+                            maxLength="79"
+                            spellCheck="false"
+                            onKeyPress={(event) => handleKeyPress(event)}
+                            onChange={(event) => handleChange(event)}
+                          ></input>
+                          <SelectToken onClick={() => setVisibility(!visibility)}>
+                            <TokenIcon src={icon}></TokenIcon>
+                            <TokenName className={visibility && "hover"}>
+                              {deposit}
+                            </TokenName>
+                            <Chevron
+                              className={visibility && "rotate"}
+                              src="img/down.png"
+                            ></Chevron>
+                          </SelectToken>
+                        </InputContainer>
+                        <TokenList className={!visibility && "hide"}>
+                          {optionsToMap.map((item, index) => (
+                            <li
+                              className="token-option igo-option-padding d-flex align-items-center justify-content-start"
+                              key={index}
+                              onClick={() => {
+                                setDeposit(item.token);
+                                setIcon(item.icon);
+                                setVisibility(!visibility);
+                                handleOnAssetSelect(item.token);
+                              }}
+                            >
+                              <img className="vertical-center" src={item.icon}></img>
+                              <header>{item.token}</header>
+                            </li>
+                          ))}
+                        </TokenList>
+                      </SelectContainer>
+                    </Box>
+                    <div className="gage-stats">
+                      <div className="d-flex align-items-center justify-content-around">
+                        <div>
+                          <div className="d-flex align-center justify-content-center">
+                            <h2>Bonus (%)</h2>
+                            <Tooltip
+                              text={
+                                "The additional percentage of your deposit you gain if the gage closes in your favor."
+                              }
+                            ></Tooltip>
+                          </div>
+                          <p className="text-center" style={{ fontSize: "2vmin" }}>
+                            {bonus == null ? '' : `${bonus}%`}
+                          </p>
+                        </div>
+                        <div>
+                          <div className="d-flex align-center justify-content-center">
+                              <h2>Risk (%)</h2>
+                              <Tooltip
+                                text={
+                                  "The net loss you would incur if the gage closed in favor of Eternal."
+                                }
+                              ></Tooltip>
+                          </div>
+                          <p className="text-center" style={{ fontSize: "2vmin" }}>
+                            {(risk == null ? '' : `${risk - bonus}%`)}
+                          </p>
+                        </div>
+                        <div>
+                          <div className="d-flex align-center justify-content-center">
+                            <h2>Condition</h2>
+                            <Tooltip
+                              text={
+                                "The percentage by which the ETRNL supply must decrease before the gage closes in your favor."
+                              }
+                            ></Tooltip>
+                          </div>
+                          <p className="text-center" style={{ fontSize: "2vmin" }}>
+                            {condition == null ? '' : `${condition}%`}
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        {(risk == null ? '' : `${risk - bonus}%`)}
-                      </p>
                     </div>
-                    <div>
-                      <div className="d-flex align-center justify-content-center">
-                        <h2>Condition</h2>
-                        <Tooltip
-                          text={
-                            "The percentage by which the ETRNL supply must decrease before the gage closes in your favor."
-                          }
-                        ></Tooltip>
-                      </div>
-                      <p className="text-center" style={{ fontSize: "2vmin" }}>
-                        {condition == null ? '' : `${condition}%`}
-                      </p>
+                  </Stack>
+                  <RewardsContainer>
+                    <div className="d-flex align-center justify-content-center">
+                      <h2 style={{ fontSize: "3vmin" }}>Instant Reward</h2>
+                      <Tooltip
+                        text={
+                          "The amount of ETRNL you instantly receive upon entering the loyalty gage."
+                        }
+                      ></Tooltip>
                     </div>
-                  </div>
-                </div>
-                <RewardsContainer style={{ marginBottom: "4.5%" }}>
-                  <div className="d-flex align-center justify-content-center">
-                    <h2 style={{ fontSize: "3vmin" }}>Instant Reward</h2>
-                    <Tooltip
-                      text={
-                        "The amount of ETRNL you instantly receive upon entering the loyalty gage."
-                      }
-                    ></Tooltip>
-                  </div>
-                  <RewardsBlock style={{ height: "67.5%" }}>
-                    <Amount>
-                      {amount == "0" || amount == "" ? "0.0" : depositInETRNL}
-                    </Amount>
-                    <SelectToken style={{ cursor: "auto" }}>
-                      <TokenIcon src="img/etrnl.png"></TokenIcon>
-                      <TokenName>ETRNL</TokenName>
-                    </SelectToken>
-                  </RewardsBlock>
-                </RewardsContainer>
+                    <RewardsBlock>
+                      <Amount>
+                        {amount == "0" || amount == "" ? "0.0" : depositInETRNL}
+                      </Amount>
+                      <SelectToken style={{ cursor: "auto" }}>
+                        <TokenIcon style={{width: '50.4%'}} src="img/etrnl.png"></TokenIcon>
+                        <TokenName>ETRNL</TokenName>
+                      </SelectToken>
+                    </RewardsBlock>
+                  </RewardsContainer>
+                </Stack>
               </>
             )}
             <Box className="text-center" sx={{ pb: 3 }}>

@@ -29,19 +29,24 @@ function TooltipComponent({ text }) {
           width: "calc(2.5vmin + 5px)",
           borderRadius: "50%",
           [theme.breakpoints.down("sm")]: {
-            minWidth: "20px"
+            minWidth: "25px",
+            minHeight: "25px"
           },
           [theme.breakpoints.only("sm")]: {
-            minWidth: "20px"
+            minWidth: "25px",
+            minHeight: "25px"
           },
           [theme.breakpoints.only("md")]: {
-            minWidth: "20px"
+            minWidth: "20px",
+            minHeight: "20px"
           },
           [theme.breakpoints.only("lg")]: {
-            minWidth: "20px"
+            minWidth: "20px",
+            minHeight: "20px"
           },
           [theme.breakpoints.up("xl")]: {
-            minWidth: "25px"
+            minWidth: "25px",
+            minHeight: "25px"
           }
         }}
       >
