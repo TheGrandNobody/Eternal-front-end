@@ -45,14 +45,14 @@ function index() {
               <div className='col-sm-4 mb-4 mb-sm-0'>
                 <a className='text-center'>
                   <div className='gage-block inactive d-flex align-items-center justify-content-center flex-column'>
-                    <h2>Coming in</h2>
-                    <h1>Q1</h1>
+                    <h2>Coming to Eternal</h2>
+                    <h1>Soon</h1>
                   </div>
                   <div className='d-flex align-center justify-content-center mt-4'>
-                    <h2 className='color-white'>Loyalty Gage</h2>
+                    <h2 className='color-white'>Yield Gage</h2>
                     <Tooltip
                       text={
-                        'A loyalty gage provides instantaneous profit to the investor, and long-term healthy investors to the firm. The conditions depend on what both parties have agreed upon.'
+                        'Contender for the highest earning potential of all DeFi! A yield gage is a liquid gage whose deposit is sent to a yield farming strategy.'
                       }>
                     </Tooltip>
                   </div>
@@ -61,14 +61,14 @@ function index() {
               <div className='col-sm-4 mb-4 mb-sm-0'>
                 <a className='text-center'>
                   <div className='gage-block inactive d-flex align-items-center justify-content-center flex-column'>
-                    <h2>Coming in</h2>
-                    <h1>Q2</h1>
+                    <h2>Coming to Eternal</h2>
+                    <h1>Soon</h1>
                   </div>
                   <div className='d-flex align-center justify-content-center mt-4'>
-                    <h2 className='color-white'>Yield Gage</h2>
+                    <h2 className='color-white'>Loyalty Gage</h2>
                     <Tooltip
                       text={
-                        'Contender for the highest earning potential of all DeFi! A yield gage is a liquid gage whose deposit is sent to a yield farming strategy.'
+                        'A loyalty gage provides instantaneous profit to the investor, and long-term healthy investors to the firm. The conditions depend on what both parties have agreed upon.'
                       }>
                     </Tooltip>
                   </div>
