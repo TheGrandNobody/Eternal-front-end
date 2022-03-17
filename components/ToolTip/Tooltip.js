@@ -14,6 +14,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 function TooltipComponent({ text }) {
+
   const theme = useTheme();
   return (
     <HtmlTooltip
@@ -23,14 +24,25 @@ function TooltipComponent({ text }) {
     >
       <Button
         sx={{
-          minWidth: "1px",
-          height: "4.5vmin",
-          width: "4.5vmin",
+          maxWidth: "25px",
+          height: "calc(2.5vmin + 5px)",
+          width: "calc(2.5vmin + 5px)",
           borderRadius: "50%",
-          [theme.breakpoints.down("md")]: {
-            height: "28px",
-            width: "28px",
+          [theme.breakpoints.down("sm")]: {
+            minWidth: "20px"
           },
+          [theme.breakpoints.only("sm")]: {
+            minWidth: "20px"
+          },
+          [theme.breakpoints.only("md")]: {
+            minWidth: "20px"
+          },
+          [theme.breakpoints.only("lg")]: {
+            minWidth: "20px"
+          },
+          [theme.breakpoints.up("xl")]: {
+            minWidth: "25px"
+          }
         }}
       >
         <svg
