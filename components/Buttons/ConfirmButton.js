@@ -2,7 +2,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { getWeb3NoAccount } from '../../utils/web3';
 
 const theme = createTheme({

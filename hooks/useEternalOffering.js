@@ -3,7 +3,7 @@ import { createGage } from '../services';
 import useStore from '../store/useStore';
 import { useRouter } from 'next/router';
 import { getWeb3NoAccount } from '../utils/web3';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import Web3 from 'web3';
 import shallow from "zustand/shallow";
 import { getAddress } from '../helpers/addressHelper';

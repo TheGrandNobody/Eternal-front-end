@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import { chainInfo, connectorsByName } from '../constant/constants';
 import useStore from '../store/useStore';
 import shallow from 'zustand/shallow';
-import { toast } from 'react-hot-toast'
+import { toast } from 'react-hot-toast';
 
 const handleActive = (active) => {
   if (active[0]) {

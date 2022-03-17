@@ -10,7 +10,7 @@ import { tableTabs } from '../../constant/constants';
 import { getGagesAccordingToStatus, findAndUpdateGageStatus} from '../../services/index';
 import { getAllGages } from '../../hooks/useContract';
 import { getWeb3NoAccount } from '../../utils/web3';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { getContract, getContractFast } from '../../helpers/ContractHelper';
 import { toBN } from 'web3-utils';
 import { ethers } from 'ethers';

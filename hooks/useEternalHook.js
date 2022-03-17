@@ -3,7 +3,7 @@ import { findExistingGage} from '../services';
 import { useContract} from './useContract';
 import useStore from '../store/useStore';
 import shallow from "zustand/shallow";
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { toWei, toBN, fromWei, toDecimal, soliditySha3 } from 'web3-utils';
 import { getAddress } from '../helpers/addressHelper';
 import useOfferingFunction from './useEternalOffering';

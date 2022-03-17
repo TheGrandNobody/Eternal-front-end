@@ -2,7 +2,7 @@ import { useContract } from './useContract';
 import { createGage } from '../services';
 import { useRouter } from 'next/router';
 import { getWeb3NoAccount } from '../utils/web3';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { ethers } from 'ethers';
 import Web3 from 'web3';
 import { getAddress } from '../helpers/addressHelper';

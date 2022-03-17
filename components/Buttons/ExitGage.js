@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { getWeb3NoAccount } from '../../utils/web3';
 
 const theme = createTheme({
