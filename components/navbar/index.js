@@ -9,6 +9,7 @@ import { socialDropDownData, infoDropDownData } from "../../constant/data";
 import ConnectButton from "../Buttons/ConnectButton";
 import useStore from "../../store/useStore";
 import shallow from 'zustand/shallow'
+import { Link } from "@mui/material";
 
 function Navbar() {
   const [scroll, setScroll] = useState(false);
@@ -112,13 +113,19 @@ function Navbar() {
           </div>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <div
+            <Link
               className="navbar-brand"
               style={{ cursor: "pointer" }}
               onClick={() => router.push("/")}
+              sx={{
+                transition: 'all 0.4s',
+                ':hover': {
+                  opacity: '0.65'
+                }
+              }}
             >
               <img src="img/logo.svg" height="15" alt="" loading="lazy" />
-            </div>
+            </Link>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item mx-4">
                 {active ? (

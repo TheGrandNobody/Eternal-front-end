@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { getUserData } from "../../services";
 import DropDownComponent from "../DropDown/DropDown";
 import { socialDropDownData, infoDropDownData } from "../../constant/data";
-import { Hidden } from "@mui/material";
+import { Hidden, Link } from "@mui/material";
 import useStore from "../../store/useStore";
 import shallow from "zustand/shallow";
 
@@ -67,9 +67,14 @@ function Footer() {
   return (
     <footer>
       <div className="container footer-main d-flex align-items-center justify-content-center py-5 flex-column">
-        <a className="mt-5" onClick={() => handleClickOnEarn(0)}>
+        <Link sx={{
+            transition: 'all 0.4s',
+            ':hover': {
+              opacity: '0.65'
+            }
+          }} className="mt-5" onClick={() => handleClickOnEarn(0)}>
           <img src="img/footer-logo.svg" />
-        </a>
+        </Link>
         <Hidden smDown>
           <ul className="navbar-nav m-auto d-flex mt-5 mb-0 flex-row">
             <li className="nav-item mx-4">
