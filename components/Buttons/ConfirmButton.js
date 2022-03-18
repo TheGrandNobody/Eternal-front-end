@@ -52,6 +52,7 @@ function ConfirmButton({ handleClick, refresh=()=>{}, success=()=>{}, message, d
             minWidth: '200px',
             width: larger ? '35%' : '25%',
             padding: 0,
+            transition: 'all 0.4s',
             ':hover':{
               bgcolor: '#fff',
               color: '#c35c6c',

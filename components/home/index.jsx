@@ -7,6 +7,7 @@ import Footer from "../Footer/Footer";
 import useStore from "../../store/useStore";
 import shallow from "zustand/shallow";
 import NoobToast from '../Toasts/NoobToast';
+import HomeButton from "../Buttons/HomeButton";
 
 function IndexPage() {
   const router = useRouter();
@@ -48,16 +49,10 @@ function IndexPage() {
           <Navbar />
           <div className="container banner-content text-center">
             <h1 className="color-white bold mb-5">Less Risk, More Reward.</h1>
-            <button
-              className="btn theme-btn"
-              onClick={() => handleClickOnEarn()}
-            >
-              Go to platform
-            </button>
+            <HomeButton text={'Go to platform'} handleClick={() => handleClickOnEarn()}></HomeButton>
           </div>
           <NoobToast duration={localStorage.getItem('preference') ? 5000 : null}></NoobToast>
         </div>
-
         <Footer />
       </body>
     </>
