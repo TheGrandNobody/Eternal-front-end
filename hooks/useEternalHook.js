@@ -58,7 +58,9 @@ function useEternalHook() {
         rewards = await treasury.computeMinAmounts(getAddress(asset), getAddress('ETRNL'), toWei(amount), 0);
         rewards = toBN(rewards[2]);
       }
-      setDepositInETRNL(fromWei(rewards));
+      rewards = toNumber(fromWei(rewards));
+      rewards = rewards < 1 ? rewards.toPrecision(2) : rewards.toFixed(2)
+      setDepositInETRNL(rewards);
     } else {
       setDepositInETRNL('0.0');
     }
