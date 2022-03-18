@@ -242,23 +242,26 @@ function ConnectButton({ active, account, chainId, login, disabled }) {
   return (
     <>
       <Button disabled={disabled} onClick={() => handleClick()} sx={{
-        borderRadius: '60px',
+        borderRadius: active ? '16px' :'60px',
         height: '39px',
         fontSize: '14px',
         fontWeight: 'bold',
         textTransform: 'inherit',
-        background: '#c35c6c',
+        backgroundBlendMode: active ? 'overlay, color, overlay, difference, color-dodge, difference, normal' : 'overlay, hard-light, normal',
+        background: active ? 'linear-gradient(120deg, #FF0000 0%, #2400FF 100%), linear-gradient(120deg, #FA00FF 0%, #208200 100%), linear-gradient(130deg, #00F0FF 0%, #000000 100%), radial-gradient(110% 140% at 15% 90%, #ffffff 0%, #1700A4 100%), radial-gradient(100% 100% at 50% 0%, #AD00FF 0%, #00FFE0 100%), radial-gradient(100% 100% at 50% 0%, #00FFE0 0%, #7300A9 80%), linear-gradient(30deg, #7ca304 0%, #2200AA 100%)' 
+        : 'radial-gradient(100% 225% at 100% 0%, #FF0000 0%, #000000 100%), linear-gradient(236deg, #00C2FF 0%, #000000 100%), linear-gradient(135deg, #CDFFEB 0%, #CDFFEB 36%, #009F9D 36%, #009F9D 60%, #07456F 60%, #07456F 67%, #0F0A3C 67%, #0F0A3C 100%)',
         width: '200px',
         padding: 0,
         color: '#fff',
+        transition: 'all 0.5s',
         ':hover': {
-          bgcolor: '#fff',
-          color: '#c35c6c'
+          opacity: 0.65,
+          color: '#fff',
         },
         ':disabled': {
           color: '#fff'
         }
-      }} className='btn theme-btn top-nav-btn'>
+      }} className='btn top-nav-btn'>
         {active ? 
         account.slice(0, 6) + '...' + account.slice(account.length - 5, account.length) 
         :
