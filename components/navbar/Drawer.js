@@ -141,7 +141,12 @@ export default function TemporaryDrawer() {
     <div>
       {['left'].map((anchor) => (
         <Fragment key={anchor}>
-          <IconButton onClick={toggleDrawer(anchor, true)}><i className='fas fa-bars'></i></IconButton>
+          <IconButton sx={{
+            transition: 'all 0.4s',
+            ':hover': {
+              opacity: '0.65'
+            }
+          }} onClick={toggleDrawer(anchor, true)}><i className='fas fa-bars'></i></IconButton>
           <Drawer
           sx={{".MuiPaper-root":{bgcolor: 'hsl(287, 76%, 13%)'}}}
             anchor={anchor}
