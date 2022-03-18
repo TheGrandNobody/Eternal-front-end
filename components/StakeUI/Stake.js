@@ -28,42 +28,71 @@ const StakeSwitch = styled(Switch)(() => ({
 const SelectBackground = styled.div`
   background-color: #bbabe34d;
   border-radius: 16px;
-  width: 100%;
   margin: 0 auto;
-  margin-bottom: 30px;
+  margin-bottom: 120px;
   justify-content: center;
   position: relative;
   border-top: 7.5px groove #e6e6fa;
   border-bottom: 7.5px ridge #e6e6fa;
+  @media (max-width: 2160px) {
+    min-width: 400px;
+    min-height: 350px;
+  }
 `;
 
 const SmallBackground = styled.div`
   background-color: #bbabe34d;
   border-radius: 16px;
-  width: 100%;
   justify-content: center;
   position: relative;
   border-top: 5px groove #e6e6fa;
   border-bottom: 5px ridge #e6e6fa;
+  @media (max-width: 2160px) {
+    max-width: 350px;
+    min-width: 240px;
+    max-height: 350px;
+  }
 `;
 
 const SmallHeader = styled.p`
-  font-size: 4vmin;
   font-weight: 550;
   border-bottom: 3.5px ridge #e6e6fa;
   padding-top: 2.5%;
   padding-bottom: 2.5%;
+  font-size: 12px;
+  @media (min-width: 360px) {
+    font-size: clamp(1.75rem, 3vmin, 3rem);
+  }
+`;
+
+const StatText = styled.p`
+  color: #fff;
+  font-weight: 550;
+  font-size: 6px;
+  @media (min-width: 360px) {
+    font-size: clamp(0.8rem, 2vmin, 1.75rem);
+  }
+`;
+
+const StatTitle = styled.h2`
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 8px;
+  @media (min-width: 360px) {
+    font-size: clamp(1rem, 2.25vmin, 2rem);
+  }
 `;
 
 const SelectHeader = styled.p`
   padding-top: 3.75%;
   font-weight: 550;
-  font-size: 3.5vmin;
+  @media (min-width: 360px) {
+    font-size: clamp(2rem, 3.5vmin, 3rem);
+  }
 `;
 
 const InputContainer = styled.div`
   width: 60%;
-  height: 12.5%;
+  height: 15%;
   background: hsl(287, 76%, 13%);
   border: 5px solid hsl(287, 90%, 13%);
   box-sizing: border-box;
@@ -72,6 +101,7 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: space-around;
   margin-bottom: 11%;
+  min-height: 40px;
 `;
 
 const SelectToken = styled.div`
@@ -94,6 +124,9 @@ const TokenName = styled.header`
   right: 15%;
   &:hover {
     color: #bbabe3;
+  }
+  @media (min-width: 360px) {
+    font-size: clamp(1rem, 2vmin, 2rem);
   }
 `;
 
@@ -159,9 +192,9 @@ function StakeUI({
           <SmallBackground className="container">
             <SmallHeader className="text-center">Your stats</SmallHeader>
             <Stack spacing={1} className="stake-stats">
-              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+              <Stack className="align-center">
                 <Box className="d-flex">
-                  <h2>Total stake</h2>
+                  <StatTitle>Total stake</StatTitle>
                   <Tooltip
                     text={
                       "The total amount of ETRNL you are currently actively staking."
@@ -171,14 +204,14 @@ function StakeUI({
                 {totalStake == '' ? 
                   <CircularProgress color='inherit' size={15} />
                 :
-                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                  <StatText className="text-center">
                     {`${totalStake} ETRNL`}
-                  </p>
+                  </StatText>
                 }
               </Stack>
-              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+              <Stack className="align-center">
                 <Box className="d-flex">
-                  <h2>Total Treasury Share</h2>
+                  <StatTitle>Total Treasury Share</StatTitle>
                   <Tooltip
                     text={
                       "The total percentage of all Eternal treasury revenue you earn."
@@ -188,14 +221,14 @@ function StakeUI({
                 {shareTreasury == '' ? 
                   <CircularProgress color='inherit' size={15} />
                 :
-                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                  <StatText className="text-center" >
                     {`${shareTreasury}%`}
-                  </p>
+                  </StatText>
                 }
               </Stack>
-              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+              <Stack className="align-center">
                 <Box className="d-flex">
-                  <h2>Total Rewards</h2>
+                  <StatTitle>Total Rewards</StatTitle>
                   <Tooltip
                     text={
                       "The total amount of staking rewards available for withdrawal."
@@ -205,9 +238,9 @@ function StakeUI({
                 {totalRewards == '' ? 
                   <CircularProgress color='inherit' style={{marginBottom: '7.5%'}} size={15} />
                 :
-                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                  <StatText className="text-center">
                     {`${totalRewards} ETRNL`}
-                  </p>
+                  </StatText>
                 }
               </Stack>
             </Stack>
@@ -273,7 +306,7 @@ function StakeUI({
                 <TokenName>ETRNL</TokenName>
               </SelectToken>
             </InputContainer>
-            <div className="gage-stats">
+            <div className="stake-stats">
               <div className="d-flex align-items-center justify-content-around">
                 <div>
                   {stake === "Stake" ? (

@@ -16,19 +16,23 @@ const SelectBackground = styled.div`
   border-top: 7.5px groove #e6e6fa;
   border-bottom: 7.5px ridge #e6e6fa;
   margin-bottom: 30px;
-  @media screen and (min-width: 2160px) {
+  @media (min-width: 2160px) {
     max-width: 1344px;
   }
 `;
 
 const SelectHeader = styled.p`
   padding-top: 2.5%;
-  font-size: 3.5vmin;
   font-weight: 550;
+  font-size: 16px;
+  @media (min-width: 360px) {
+    font-size: clamp(2rem, 3vmin, 3.5rem);
+  }
 `;
 
 const InputContainer = styled.div`
   height: 60%;
+  min-height: 45px;
   background: hsl(287, 76%, 13%);
   border: 5px solid hsl(287, 90%, 13%);
   box-sizing: border-box;
@@ -52,7 +56,7 @@ const SelectToken = styled.div`
 `;
 
 const TokenIcon = styled.img`
-  width: 47.5%;
+  width: 42.5%;
   position: relative;
   right: 30%;
 `;
@@ -62,18 +66,25 @@ const TokenName = styled.header`
   font-weight: 525;
   right: 15%;
   transition: color 0.25s;
+  font-size: 16px;
+  @media (min-width: 360px) {
+    font-size: clamp(0.75rem, 2vmin, 2rem);
+  }
 `;
 
 const TokenList = styled.ul`
   width: 15%;
   margin-left: 67.5%;
   margin-top: -7.5%;
-  top: 70%;
+  top: 80%;
   background: #30083b;
   border-radius: 6px;
   padding-left: 0;
   z-index: 100;
   position: relative;
+  @media (max-width: 768px) {
+    top: 55%;
+  }
 `;
 
 const Chevron = styled.img`
@@ -95,13 +106,26 @@ const RewardsBlock = styled.div`
   align-items: center;
   justify-content: space-around;
   display: flex;
+  min-height: 40px;
+`;
+
+const RewardsText = styled.h2`
+  @media (max-width: 2160px) {
+    font-size: clamp(1.75rem, 2.25vmin, 2.5rem);
+  }
+  @media (min-width: 2160px) {
+    font-size: clamp(2.5rem, 2.25vmin, 3.25rem);
+  }
 `;
 
 const Amount = styled.div`
   overflow: hidden;
   width: 60%;
   text-overflow: ellipsis;
-  font-size: 2.5vmin;
+  font-size: 16px;
+  @media (min-width: 360px) {
+    font-size: clamp(0.5rem, 2.5vmin, 2.5rem);
+  }
 `;
 
 function CreateLiquidGage({
@@ -249,7 +273,7 @@ function CreateLiquidGage({
         </Grid>
         <Grid container item xs={12}>
           <Grid item xs={12} className="d-flex align-center justify-content-center">
-            <h2>Instant Reward</h2>
+            <RewardsText>Instant Reward</RewardsText>
             <Tooltip
               text={
                 "The amount of ETRNL you instantly receive upon entering the gage."
@@ -268,7 +292,7 @@ function CreateLiquidGage({
             </Grid>
             <Grid item xs={12} className={"text-center"}>
               {(deposit == "Select" || amount == '0.0' || amount == '' || amount == '0') ?
-                <ConfirmButton disabled={true} text={'Confirm'}></ConfirmButton>
+                <ConfirmButton larger disabled={true} text={'Confirm'}></ConfirmButton>
                 :
                 ((approval) ?
                   <ConfirmButton
@@ -276,6 +300,7 @@ function CreateLiquidGage({
                       const result = await handleClickOnConfirmBtn(2);
                       return result
                     }}
+                    larger
                     disabled={false}
                     delay={true}
                     text={'Confirm'}></ConfirmButton>
@@ -293,6 +318,7 @@ function CreateLiquidGage({
                     }}
                     success={() => setApproval(true)}
                     message={'Approval successful!'}
+                    larger
                     disabled={false}
                     delay={true}
                     text={'Approve'}></ConfirmButton>

@@ -31,6 +31,12 @@ const SelectBackground = styled.div`
   border-top: 7.5px groove #e6e6fa;
   border-bottom: 7.5px ridge #e6e6fa;
   margin-bottom: 20px;
+  @media (min-width: 1200px) and (max-width: 2160px) {
+    min-width: 450px;
+  }
+  @media (min-width: 800px) and (max-width: 1200px) {
+    min-width: 350px;
+  }
 `;
 
 const SmallBackground = styled.div`
@@ -40,20 +46,81 @@ const SmallBackground = styled.div`
   position: relative;
   border-top: 5px groove #e6e6fa;
   border-bottom: 5px ridge #e6e6fa;
+  @media (min-width: 800px) and (max-width: 1200px) {
+    min-width: 250px;
+  }
+  @media (max-width: 800px) {
+    max-width: 300px
+  }
+`;
+
+const SmallLongBackground = styled.div`
+  background-color: #bbabe34d;
+  border-radius: 16px;
+  justify-content: center;
+  position: relative;
+  border-top: 5px groove #e6e6fa;
+  border-bottom: 5px ridge #e6e6fa;
+  @media (min-width: 900px) and (max-width: 1000px) {
+    min-width: 250px;
+    right: 55%;
+  }
+  @media (max-width: 900px) {
+    max-width: 350px
+  }
 `;
 
 const SelectHeader = styled.p`
-  font-size: 3.5vmin;
   font-weight: 550;
   padding-top: 3.75%;
+  font-size: 12px;
+  @media (min-width: 360px) {
+    font-size: clamp(2rem, 3.5vmin, 3rem);
+  }
 `;
 
 const SmallHeader = styled.p`
-  font-size: 4vmin;
   font-weight: 550;
   border-bottom: 3.5px ridge #e6e6fa;
   padding-top: 2.5%;
   padding-bottom: 2.5%;
+  font-size: 10px;
+  @media (min-width: 360px) {
+    font-size: clamp(1.5rem, 3vmin, 2.5rem);
+  }
+`;
+
+const StatText = styled.p`
+  color: #fff;
+  font-weight: 550;
+  font-size: 6px;
+  @media (min-width: 360px) {
+    font-size: clamp(0.8rem, 2vmin, 1.75rem);
+  }
+`;
+
+const StatTitle = styled.h2`
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 8px;
+  @media (min-width: 360px) {
+    font-size: clamp(1rem, 2.25vmin, 2rem);
+  }
+`;
+
+const RateText = styled.p`
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 8px;
+  @media (min-width: 360px) {
+    font-size: clamp(0.75rem, 2vmin, 1.75rem);
+  }
+`;
+
+const CountdownText = styled.p`
+  font-weight: 550;
+  font-size: 6px;
+  @media (min-width: 360px) {
+    font-size: clamp(0.5rem, 1.25vmin, 1.5rem);
+  }
 `;
 
 const InputContainer = styled.div`
@@ -66,6 +133,7 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: space-around;
   margin-bottom: 5%;
+  min-height: 40px;
 `;
 
 const SelectToken = styled.div`
@@ -91,6 +159,9 @@ const TokenName = styled.header`
   font-weight: 535;
   right: 15%;
   transition: color 0.25s;
+  @media (min-width: 360px) {
+    font-size: clamp(1rem, 2vmin, 2rem);
+  }
 `;
 
 const SelectContainer = styled.div`
@@ -131,13 +202,26 @@ const RewardsBlock = styled.div`
   align-items: center;
   justify-content: space-around;
   display: flex;
+  min-height: 40px;
 `;
 
 const Amount = styled.div`
   overflow: hidden;
   width: 60%;
   text-overflow: ellipsis;
-  font-size: 2.5vmin;
+  font-size: 12px;
+  @media (min-width: 360px) {
+  font-size: clamp(1rem, 2.5vmin, 2.5rem);
+  }
+`;
+
+const RewardsText = styled.h2`
+  @media (max-width: 2160px) {
+    font-size: clamp(1.75rem, 2.25vmin, 2.5rem);
+  }
+  @media (min-width: 2160px) {
+    font-size: clamp(2.5rem, 2.5vmin, 3.25rem);
+  }
 `;
 
 function InitialGageOffering({
@@ -234,12 +318,12 @@ function InitialGageOffering({
     <div className="container select-bg d-flex justify-content-center">
       <Grid container spacing={4}>
         <Grid item md={3} xs={12}>
-          <SmallBackground className="container">
+          <SmallLongBackground className="container">
             <SmallHeader className="text-center">Your stats</SmallHeader>
-            <Stack spacing={1} className="stake-stats">
-              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+            <Stack spacing={1}>
+              <Stack className="align-center">
                 <Box className="d-flex">
-                  <h2>Total Contribution</h2>
+                  <StatTitle>Total Contribution</StatTitle>
                   <Tooltip
                     text={
                       "The total amount of ETRNL used in your MIM/AVAX contributions to gages or simple deposits."
@@ -249,14 +333,14 @@ function InitialGageOffering({
                 {totalContribution == '' ? 
                   <CircularProgress color='inherit' size={15} />
                 :
-                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                  <StatText className="text-center">
                     {`${totalContribution} ETRNL`}
-                  </p>
+                  </StatText>
                 }
               </Stack>
-              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+              <Stack className="align-center">
                 <Box className="d-flex">
-                  <h2>Amount Gaged</h2>
+                  <StatTitle>Amount Gaged</StatTitle>
                   <Tooltip
                     text={
                       "The total amount of ETRNL used in your MIM/AVAX contributions with loyalty gages."
@@ -266,14 +350,14 @@ function InitialGageOffering({
                 {liquidityGaged == '' ? 
                   <CircularProgress color='inherit' size={15} />
                 :
-                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                  <StatText className="text-center">
                     {`${liquidityGaged} ETRNL`}
-                  </p>
+                  </StatText>
                 }
               </Stack>
-              <Stack sx={{ color: '#d8bfd8'}} className="align-center">
+              <Stack className="align-center">
                 <Box className="d-flex">
-                  <h2>Amount Deposited</h2>
+                  <StatTitle>Amount Deposited</StatTitle>
                   <Tooltip
                     text={
                       "The total amount of ETRNL you have sent to liquidity pairs as a result of depositing MIM or AVAX."
@@ -283,13 +367,13 @@ function InitialGageOffering({
                 {liquidityDeposited == '' ? 
                   <CircularProgress color='inherit' style={{marginBottom: '7.5%'}} size={15} />
                 :
-                  <p className="text-center" style={{ fontSize: "2vmin" }}>
+                  <StatText className="text-center">
                     {`${liquidityDeposited} ETRNL`}
-                  </p>
+                  </StatText>
                 }
               </Stack>
             </Stack>
-          </SmallBackground>
+          </SmallLongBackground>
         </Grid>
         <Grid item md={6} xs={12}>
           <SelectBackground className="center-sec">
@@ -379,7 +463,7 @@ function InitialGageOffering({
                 </Box>
                 <RewardsContainer>
                   <div className="d-flex align-center justify-content-center">
-                    <h2 style={{ fontSize: "3vmin" }}>You get</h2>
+                    <RewardsText>You get</RewardsText>
                     <Tooltip
                       text={
                         "The amount of ETRNL you receive in return for your deposit."
@@ -460,7 +544,7 @@ function InitialGageOffering({
                         </TokenList>
                       </SelectContainer>
                     </Box>
-                    <div className="gage-stats">
+                    <div className="stake-stats">
                       <div className="d-flex align-items-center justify-content-around">
                         <div>
                           <div className="d-flex align-center justify-content-center">
@@ -471,7 +555,7 @@ function InitialGageOffering({
                               }
                             ></Tooltip>
                           </div>
-                          <p className="text-center" style={{ fontSize: "2vmin" }}>
+                          <p className="text-center">
                             {bonus == null ? '' : `${bonus}%`}
                           </p>
                         </div>
@@ -484,7 +568,7 @@ function InitialGageOffering({
                                 }
                               ></Tooltip>
                           </div>
-                          <p className="text-center" style={{ fontSize: "2vmin" }}>
+                          <p className="text-center">
                             {(risk == null ? '' : `${risk - bonus}%`)}
                           </p>
                         </div>
@@ -497,7 +581,7 @@ function InitialGageOffering({
                               }
                             ></Tooltip>
                           </div>
-                          <p className="text-center" style={{ fontSize: "2vmin" }}>
+                          <p className="text-center">
                             {condition == null ? '' : `${condition}%`}
                           </p>
                         </div>
@@ -506,7 +590,7 @@ function InitialGageOffering({
                   </Stack>
                   <RewardsContainer>
                     <div className="d-flex align-center justify-content-center">
-                      <h2 style={{ fontSize: "3vmin" }}>Instant Reward</h2>
+                      <RewardsText>Instant Reward</RewardsText>
                       <Tooltip
                         text={
                           "The amount of ETRNL you instantly receive upon entering the loyalty gage."
@@ -564,26 +648,22 @@ function InitialGageOffering({
         </Grid>
         <Grid item md={3} xs={12}>
           <SmallBackground className="text-center container">
-            <SmallHeader style={{ fontSize: "3.5vmin" }}>IGO Info</SmallHeader>
+            <SmallHeader>IGO Info</SmallHeader>
             {remainingETRNL == '' || priceAVAX == '' || priceMIM == '' ?
               <Box sx={{ color: '#d8bfd8' }}>
                 <CircularProgress color='inherit' style={{ marginBottom: "5%"}} className="align-center" size={30}/>
               </Box>
             :
               <Stack>
-                <p
-                  style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
-                >
+                <RateText>
                   1 ETRNL = {priceAVAX} AVAX
-                </p>
-                <p
-                  style={{ fontSize: "2vmin", color: "rgba(255, 255, 255, 0.70)" }}
-                >
+                </RateText>
+                <RateText>
                   1 ETRNL = {priceMIM} MIM
-                </p>
-                <p style={{ fontSize: "1.25vmin", fontWeight: 550 }}>
-                {remainingETRNL} ETRNL left before gaging bonus decreases
-                </p>
+                </RateText>
+                <CountdownText>
+                  {remainingETRNL} ETRNL left before gaging bonus decreases
+                </CountdownText>
               </Stack>
             }
           </SmallBackground>

@@ -24,7 +24,6 @@ function TooltipComponent({ text }) {
     >
       <Button
         sx={{
-          maxWidth: "25px",
           height: "calc(2.5vmin + 5px)",
           width: "calc(2.5vmin + 5px)",
           borderRadius: "50%",
@@ -33,20 +32,20 @@ function TooltipComponent({ text }) {
             minHeight: "25px"
           },
           [theme.breakpoints.only("sm")]: {
-            minWidth: "25px",
-            minHeight: "25px"
+            minWidth: "27.5px",
+            minHeight: "27.5px"
           },
           [theme.breakpoints.only("md")]: {
-            minWidth: "20px",
-            minHeight: "20px"
+            minWidth: "27.5px",
+            minHeight: "27.5px"
           },
           [theme.breakpoints.only("lg")]: {
-            minWidth: "20px",
-            minHeight: "20px"
+            minWidth: "27.5px",
+            minHeight: "27.5px"
           },
           [theme.breakpoints.up("xl")]: {
-            minWidth: "25px",
-            minHeight: "25px"
+            minWidth: "30px",
+            minHeight: "30px"
           }
         }}
       >

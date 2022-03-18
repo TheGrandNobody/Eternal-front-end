@@ -16,7 +16,7 @@ const theme = createTheme({
   },
 });
 
-function ConfirmButton({ handleClick, refresh=()=>{}, success=()=>{}, message, delay, disabled, text }) {
+function ConfirmButton({ handleClick, refresh=()=>{}, success=()=>{}, message, delay, disabled, text, larger }) {
 
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +49,8 @@ function ConfirmButton({ handleClick, refresh=()=>{}, success=()=>{}, message, d
             fontWeight: 'bold',
             textTransform: 'inherit',
             background: '#c35c6c',
-            width: '200px',
+            minWidth: '200px',
+            width: larger ? '35%' : '25%',
             padding: 0,
             ':hover':{
               bgcolor: '#fff',

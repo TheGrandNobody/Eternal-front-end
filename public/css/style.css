@@ -191,8 +191,14 @@ a:hover .gage-block {
   color: white;
   outline: none;
   text-overflow: ellipsis;
-  font-size: 2.5vmin;
+  font-size: 16px;
   white-space: nowrap;
+}
+
+@media (min-width: 360px) {
+  .input-container input {
+    font-size: clamp(1rem, 2.5vmin, 2.5rem);
+  }
 }
 
 .select-deposit input:focus {
@@ -216,10 +222,11 @@ a:hover .gage-block {
 .token-option img {
   width: 20%;
   left: 12.5%;
+  min-width: 10px;
 }
 
 .token-option header {
-  font-size: 1.65vmin;
+  font-size: clamp(0.65rem, 1.65vmin, 0.75rem);
   font-weight: 535;
   position: relative;
   left: 40%;
@@ -251,8 +258,49 @@ a:hover .gage-block {
 .gage-stats h2 {
   color: #ffffff96 !important;
   font-weight: 500;
-  font-size: 2.5vmin;
 }
+
+@media (max-width: 2160px) {
+  .gage-stats p {
+    font-size: clamp(0.85rem, 2.25vmin, 1.75rem);
+  }
+}
+@media (min-width: 2160px) {
+  .gage-stats p {
+    font-size: clamp(1.75rem, 2.25vmin, 2.65rem);
+  }
+}
+@media (max-width: 2160px) {
+  .stake-stats p {
+    font-size: clamp(0.85rem, 2vmin, 1.5rem);
+  }
+}
+@media (min-width: 2160px) {
+  .stake-stats p {
+    font-size: clamp(1.5rem, 2vmin, 2.5rem);
+  }
+}
+@media (max-width: 2160px) {
+  .stake-stats h2 {
+    font-size: clamp(1.25rem, 2.5vmin, 2.25rem);
+  }
+}
+@media (min-width: 2160px) {
+  .stake-stats h2 {
+    font-size: clamp(2rem, 2.5vmin, 2.75rem);
+  }
+}
+@media (max-width: 2160px) {
+  .gage-stats h2 {
+    font-size: clamp(1.5rem, 2.5vmin, 2..25rem);
+  }
+}
+@media (min-width: 2160px) {
+  .gage-stats h2 {
+    font-size: clamp(2.5rem, 2vmin, 3.25rem);
+  }
+}
+
 /*  ======================================================== Gage Selection end =================================================  */
 
 /*  ======================================================== User info start =================================================  */
