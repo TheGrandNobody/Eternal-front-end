@@ -27,7 +27,7 @@ function index() {
   useEffect(() => {
     (async () => {
       if (account) {
-        const approved = await handleUserApproval('treasury');
+        const approved = await handleUserApproval('factory');
         setApproval(approved);
       }
     })();
