@@ -309,7 +309,7 @@ function CreateLiquidGage({
                     handleClick={async () => {
                       let result;
                       try {
-                        result = await handleClickOnApproveBtn('treasury');
+                        result = await handleClickOnApproveBtn('factory');
                       }
                       catch {
                         return false;
