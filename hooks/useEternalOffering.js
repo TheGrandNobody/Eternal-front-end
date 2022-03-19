@@ -26,7 +26,6 @@ function useOfferingFunction() {
     try {
       if (gageAsset == 'AVAX') {
         const options = {value: Web3.utils.toWei(`${gageDepositAmount}`, 'ether')};
-        console.log(options);
         initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset), options);
       } else {
         initiateGage = await offering.initiateEternalLoyaltyGage(Web3.utils.toWei(`${gageDepositAmount}`, 'ether'), getAddress(gageAsset));
@@ -40,7 +39,13 @@ function useOfferingFunction() {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
       if (receiptC) {
         clearInterval(interval);
-        let id = Web3.utils.toDecimal(receiptC.logs[0].data);
+        let idData;
+        if (asset == 'AVAX') {
+          idData = receiptC.logs[0].data.slice(0, 66);
+        } else {
+          idData = receiptC.logs[2].data.slice(0, 66);
+        }
+        const id = getWeb3NoAccount().eth.abi.decodeParameter('uint256', idData);
         const timer = setInterval(() => {
           new Promise(function (resolve, reject) {
             resolve(offering.viewGage(id));
