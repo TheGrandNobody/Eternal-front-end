@@ -29,6 +29,7 @@ function useFactoryFunction() {
   const initiateLiquidGage = async () => {
     let initiateGage;
     try {
+      console.log(asset);
       if (asset == 'AVAX') {
         const options = {value: Web3.utils.toWei(`${amount}`, 'ether')};
         initiateGage = await factory.initiateEternalLiquidGage(getAddress(asset), Web3.utils.toWei(`${amount}`, 'ether'), options);
@@ -46,7 +47,13 @@ function useFactoryFunction() {
       let receiptC = await getWeb3NoAccount().eth.getTransactionReceipt(initiateGage.hash);
       if (receiptC) {
         clearInterval(interval);
-        let id = Web3.utils.toDecimal(receiptC.logs[0].data);
+        let idData;
+        if (asset == 'AVAX') {
+          idData = receiptC.logs[0].data.slice(0, 66);
+        } else {
+          idData = receiptC.logs[2].data.slice(0, 66);
+        }
+        const id = getWeb3NoAccount().eth.abi.decodeParameter('uint256', idData);
         const timer = setInterval(() => {
           new Promise(function (resolve, reject) {
             resolve(storage.getAddress(Web3.utils.soliditySha3(getAddress('factory')), Web3.utils.soliditySha3('gages', id)));
