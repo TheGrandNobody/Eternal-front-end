@@ -8,18 +8,26 @@ import useStore from "../../store/useStore";
 import shallow from "zustand/shallow";
 import NoobToast from '../Toasts/NoobToast';
 import HomeButton from "../Buttons/HomeButton";
+import WalletToast from "../Toasts/WalletToast";
+import { useEffect, useState } from "react";
 
 function IndexPage() {
+  const [connect, setConnect] = useState(true);
   const router = useRouter();
-  const { setVisible, hooks, force, setForce } = useStore(state => ({
+  const { setVisible, hooks, force } = useStore(state => ({
     setVisible: state.setVisible,
     hooks: state.hooks,
-    force: state.force,
-    setForce: state.setForce
+    force: state.force
     }), shallow);
-  const { useAccount, useIsActive } = hooks;
-  const account = useAccount();
-  const active = useIsActive();
+  const { useWeb3React } = hooks;
+  const { account, active, chainId } = useWeb3React();
+
+  useEffect(() => {
+    (async () => {
+      const userChain = await chainSupported();
+      setConnect(userChain && userChain[0]);
+    })();
+  }, [chainId]);
 
   const handleAccount = async (account) => {
     const req = await getUserData(account);
@@ -32,12 +40,14 @@ function IndexPage() {
 
   const handleClickOnEarn = async () => {
     if (!active) {
-      if (await chainSupported()) {
+      if (connect) {
         setVisible(true);
       }
-    }
-    if (account && active) {
-      handleAccount(account);
+      return true;
+    } else {
+      if (account) {
+        handleAccount(account);
+      }
     }
   };
   return (
@@ -53,6 +63,7 @@ function IndexPage() {
             <h1 className="color-white bold mb-5">Less Risk, More Reward.</h1>
             <HomeButton text={'Go to platform'} handleClick={handleClickOnEarn} force={force}></HomeButton>
           </div>
+          <WalletToast init={!connect}></WalletToast>
           <NoobToast duration={localStorage.getItem('preference') ? 5000 : null}></NoobToast>
         </div>
         <Footer />

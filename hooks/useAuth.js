@@ -49,9 +49,11 @@ const handleLogin = async (id, chainId, error, actives) => {
 };
 
 export const chainSupported = async () => {
-  const web3 = new Web3(window.ethereum);
-  const id = await web3.eth.net.getId();
-  return [Object.keys(chainInfo).includes(id.toString()), id];
+  if (window.ethereum && window.ethereum.on) {
+    const web3 = new Web3(window.ethereum);
+    const id = await web3.eth.net.getId();
+    return [Object.keys(chainInfo).includes(id.toString()), id];
+  }
 };
 
 export function useActive() {
@@ -84,14 +86,12 @@ export function loginEarly() {
       if (preference) {
         if (!active) {
           const userChain = await chainSupported(); 
-          if (userChain[0]) {
+          if (userChain && userChain[0]) {
             await handleLogin(id, userChain[1], error, [activeM, activeW, activeC]);
           } else {
             if (window.ethereum && window.ethereum.on) {
               toast.error('Invalid chain: switch to Avalanche!')
               await handleLogin(id, 43114, error, active);
-            } else {
-              toast.error('This app requires a valid wallet. Please install MetaMask or another wallet supported by this website', { position: 'top-right'});
             }
           }
         }

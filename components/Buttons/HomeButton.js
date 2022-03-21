@@ -15,11 +15,20 @@ function HomeButton({ text, handleClick, force }) {
     },
   });
 
+  const onLoad = async () => {
+    setLoading(true); 
+    const result = await handleClick();
+    if (result) {
+      setTimeout(() => setLoading(!result), 2000);
+    }
+  };
+
+
   const [loading, setLoading] = useState(false);
 
     return (
       <ThemeProvider theme={theme}>
-        <LoadingButton className="btn" loading={force ? force : loading} onClick={() => {setLoading(true); handleClick()}} 
+        <LoadingButton className="btn" loading={force ? force : loading} onClick={() => onLoad()} 
         loadingIndicator={<CircularProgress color='primary' size={16}></CircularProgress>}
          sx={{
             borderRadius: '60px',

@@ -43,7 +43,8 @@ function Navbar() {
 
   useEffect(() => {
     (async () => {
-      if (await chainSupported()) {
+      const userChain = await chainSupported();
+      if (userChain && userChain[0]) {
         setConnect(true);
       } else {
         setConnect(false);
@@ -75,6 +76,7 @@ function Navbar() {
       setForce(false);
       return;
     }
+    setForce(false);
     router.push("/gage-selection");
   };
 

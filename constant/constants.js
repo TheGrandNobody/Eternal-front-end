@@ -15,9 +15,13 @@ export const chainInfo = {
   43114: {
     chainId: 43114,
     chainName: 'Avalanche Network',
-    nativeCurrency: 'AVAX',
-    rpcUrls: 'https://api.avax.network/ext/bc/C/rpc',
-    blockExplorerUrls: 'https://snowtrace.io',
+    nativeCurrency: {
+      name: "Avalanche",
+      symbol: "AVAX",
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://snowtrace.io'],
   },
   4: 4
 };
