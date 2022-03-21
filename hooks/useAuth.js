@@ -100,11 +100,13 @@ export function loginEarly() {
       }
     })();
     if (active) {
+      console.log('active', first);
       const wallet = handleActive([activeM, activeW, activeC]);
       setCurrent(connectorsByName[wallet][0].constructor.name);
       setConnector(connectorsByName[wallet][0]);
       setHook(connectorsByName[wallet][1]);
     } else {
+      console.log('not', first);
       if (!first) {
         setCurrent();
       } else {
