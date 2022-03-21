@@ -194,8 +194,6 @@ function ConnectButton({ active, account, chainId, login, disabled }) {
     current: state.current,
     }), shallow);
 
-    console.log("component", current);
-
   const handleClose = async (value) => {
     setOpen(false);
     if (value != '') {

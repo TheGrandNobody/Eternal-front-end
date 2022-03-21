@@ -73,13 +73,10 @@ export function loginEarly() {
   const { activeM, activeW, activeC, active } = useActive();
   const error = useError();
   const chain = useChainId();
-  const { setConnector, setHook, setCurrent, setFirst, first, current } = useStore(state => ({
+  const { setConnector, setHook, setCurrent } = useStore(state => ({
     setConnector: state.setConnector,
     setHook: state.setHook,
-    setCurrent: state.setCurrent,
-    setFirst: state.setFirst,
-    first: state.first,
-    current: state.current
+    setCurrent: state.setCurrent
     }), shallow);
 
   useEffect(() => {
@@ -101,23 +98,13 @@ export function loginEarly() {
       }
     })();
     if (active) {
-      console.log('active', first);
       const wallet = handleActive([activeM, activeW, activeC]);
-      console.log("name", connectorsByName[wallet][0].constructor.name);
-      console.log("constructor", connectorsByName[wallet][0].constructor);
-      console.log("whole", connectorsByName[wallet][0]);
-      setCurrent(connectorsByName[wallet][0].constructor.name);
+      setCurrent(wallet);
       setConnector(connectorsByName[wallet][0]);
       setHook(connectorsByName[wallet][1]);
     } else {
-      console.log('not', first);
-      if (!first) {
-        setCurrent();
-      } else {
-        setFirst(false);
-      }
+      setCurrent();
     }
-    console.log(current)
   }, [active, chain]);
 };
 
