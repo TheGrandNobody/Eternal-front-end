@@ -64,7 +64,7 @@ function IndexPage() {
             <HomeButton text={'Go to platform'} handleClick={handleClickOnEarn} force={force}></HomeButton>
           </div>
           <WalletToast init={!connect}></WalletToast>
-          <NoobToast duration={localStorage.getItem('preference') ? 5000 : null}></NoobToast>
+          <NoobToast duration={localStorage.getItem('preference') ? 1500 : null}></NoobToast>
         </div>
         <Footer />
       </body>
