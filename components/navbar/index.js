@@ -14,11 +14,12 @@ import { Link } from "@mui/material";
 function Navbar() {
   const [scroll, setScroll] = useState(false);
   const [connect, setConnect] = useState(false);
-  const { setVisible, hooks, reset, setType } = useStore(state => ({
+  const { setVisible, hooks, reset, setType, setForce } = useStore(state => ({
     setVisible: state.setVisible,
     hooks: state.hooks,
     reset: state.reset,
-    setType: state.setType
+    setType: state.setType,
+    setForce: state.setForce
     }), shallow);
   const { useWeb3React } = hooks;
   const { account, active, connector, chainId } = useWeb3React();
@@ -67,9 +68,11 @@ function Navbar() {
   };
 
   const handleAccount = async (account) => {
+    setForce(true);
     const req = await getUserData(account);
     if (req.data.length > 0) {
       router.push("/user-info");
+      setForce(false);
       return;
     }
     router.push("/gage-selection");

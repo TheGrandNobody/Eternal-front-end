@@ -6,6 +6,7 @@ const createWalletSlice = (set, get) => ({
     connector: connectorsByName['MetaMask'][0],
     visible: false,
     current: undefined,
+    force: false,
     setFirst: (value) => {
         set({ first: value });
     },
@@ -20,6 +21,9 @@ const createWalletSlice = (set, get) => ({
     },
     setCurrent: (value) => {
         set({ current: value });
+    },
+    setForce: (value) => {
+        set({ force: value });
     }
 });
 

@@ -11,9 +11,11 @@ import HomeButton from "../Buttons/HomeButton";
 
 function IndexPage() {
   const router = useRouter();
-  const { setVisible, hooks } = useStore(state => ({
+  const { setVisible, hooks, force, setForce } = useStore(state => ({
     setVisible: state.setVisible,
     hooks: state.hooks,
+    force: state.force,
+    setForce: state.setForce
     }), shallow);
   const { useAccount, useIsActive } = hooks;
   const account = useAccount();
@@ -49,7 +51,7 @@ function IndexPage() {
           <Navbar />
           <div className="container banner-content text-center">
             <h1 className="color-white bold mb-5">Less Risk, More Reward.</h1>
-            <HomeButton text={'Go to platform'} handleClick={() => handleClickOnEarn()}></HomeButton>
+            <HomeButton text={'Go to platform'} handleClick={handleClickOnEarn} force={force}></HomeButton>
           </div>
           <NoobToast duration={localStorage.getItem('preference') ? 5000 : null}></NoobToast>
         </div>
