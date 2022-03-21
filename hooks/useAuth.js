@@ -73,12 +73,13 @@ export function loginEarly() {
   const { activeM, activeW, activeC, active } = useActive();
   const error = useError();
   const chain = useChainId();
-  const { setConnector, setHook, setCurrent, setFirst, first } = useStore(state => ({
+  const { setConnector, setHook, setCurrent, setFirst, first, current } = useStore(state => ({
     setConnector: state.setConnector,
     setHook: state.setHook,
     setCurrent: state.setCurrent,
     setFirst: state.setFirst,
     first: state.first,
+    current: state.current
     }), shallow);
 
   useEffect(() => {
@@ -93,7 +94,7 @@ export function loginEarly() {
               toast.error('Invalid chain: switch to Avalanche!')
               await handleLogin(id, 43114, error, active);
             } else {
-              toast.error('This app requires a valid wallet. Please install MetaMask or another wallet supported by this website');
+              toast.error('This app requires a valid wallet. Please install MetaMask or another wallet supported by this website', { position: 'top-right'});
             }
           }
         }
@@ -113,6 +114,7 @@ export function loginEarly() {
         setFirst(false);
       }
     }
+    console.log(current)
   }, [active, chain]);
 };
 
