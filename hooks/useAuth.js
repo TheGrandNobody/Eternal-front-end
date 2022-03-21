@@ -104,10 +104,11 @@ export function loginEarly() {
       setCurrent(connectorsByName[wallet][0].constructor.name);
       setConnector(connectorsByName[wallet][0]);
       setHook(connectorsByName[wallet][1]);
-      setFirst(false);
     } else {
       if (!first) {
         setCurrent();
+      } else {
+        setFirst(false);
       }
     }
   }, [active, chain]);
