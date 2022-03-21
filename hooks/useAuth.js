@@ -103,6 +103,9 @@ export function loginEarly() {
     if (active) {
       console.log('active', first);
       const wallet = handleActive([activeM, activeW, activeC]);
+      console.log("name", connectorsByName[wallet][0].constructor.name);
+      console.log("constructor", connectorsByName[wallet][0].constructor);
+      console.log("whole", connectorsByName[wallet][0]);
       setCurrent(connectorsByName[wallet][0].constructor.name);
       setConnector(connectorsByName[wallet][0]);
       setHook(connectorsByName[wallet][1]);
