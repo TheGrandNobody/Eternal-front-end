@@ -96,8 +96,10 @@ function Navbar() {
           router.push("/stake");
           break;
         case 3:
+          /**
           setType('Loyalty');
           router.push("/igo");
+          */
           break;
         default:
           return;
@@ -137,7 +139,7 @@ function Navbar() {
                   <a
                     className={`nav-link ${
                       handleActiveNavMenu(3) && "active border"
-                    }`}
+                    } disabled`}
                     onClick={() => handleClickOnEarn(3)}
                   >
                     IGO
@@ -190,7 +192,7 @@ function Navbar() {
                 )}
               </li>
               <li className="nav-item mx-4">
-                <a className="nav-link disabled" href="#">
+                <a className="nav-link" href="https://snapshot.org/#/etrnl.eth">
                   Governance
                 </a>
               </li>

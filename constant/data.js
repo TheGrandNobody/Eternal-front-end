@@ -12,5 +12,5 @@ export const infoDropDownData = [
 
 export const tokenOptionData = [
   { token: 'AVAX', icon: 'img/avax.png'},
-  { token: 'MIM', icon: 'img/mim.png'}
+  { token: 'USDC.e', icon: 'img/usdce.png'}
 ]
