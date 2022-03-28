@@ -100,6 +100,7 @@ const StatText = styled.p`
 `;
 
 const StatTitle = styled.h2`
+  padding-top: 2.5%;
   color: rgba(255, 255, 255, 0.70);
   font-size: 8px;
   @media (min-width: 360px) {
@@ -152,6 +153,7 @@ const TokenIcon = styled.img`
   width: 50%;
   position: relative;
   right: 30%;
+  max-width: 40px;
 `;
 
 const TokenName = styled.header`
@@ -247,7 +249,7 @@ function InitialGageOffering({
   const [liquidityGaged, setLiquidityGaged] = useState('');
   const [remainingETRNL, setRemainingETRNL] = useState('');
   const [priceAVAX, setpriceAVAX] = useState('');
-  const [priceMIM, setpriceMIM] = useState('');
+  const [priceUSDC, setpriceUSDC] = useState('');
 
   const { setApproval, approval, risk, bonus, condition, depositInETRNL } = useStore(state => ({
     setApproval: state.setApproval,
@@ -291,7 +293,7 @@ function InitialGageOffering({
       liquidityGaged,
       remainingETRNL,
       priceAVAX,
-      priceMIM,
+      priceUSDCe,
     } = await offeringStats();
 
     setTotalContribution(totalContribution);
@@ -299,7 +301,7 @@ function InitialGageOffering({
     setLiquidityGaged(liquidityGaged);
     setRemainingETRNL(remainingETRNL);
     setpriceAVAX(priceAVAX);
-    setpriceMIM(priceMIM);
+    setpriceUSDC(priceUSDCe);
   }
 
   const handleChange = (event) => {
@@ -326,7 +328,7 @@ function InitialGageOffering({
                   <StatTitle>Total Contribution</StatTitle>
                   <Tooltip
                     text={
-                      "The total amount of ETRNL used in your MIM/AVAX contributions to gages or simple deposits."
+                      "The total amount of ETRNL used in your USDC.e/AVAX contributions to gages or simple deposits."
                     }
                   ></Tooltip>
                 </Box>
@@ -343,7 +345,7 @@ function InitialGageOffering({
                   <StatTitle>Amount Gaged</StatTitle>
                   <Tooltip
                     text={
-                      "The total amount of ETRNL used in your MIM/AVAX contributions with loyalty gages."
+                      "The total amount of ETRNL used in your USDC.e/AVAX contributions with loyalty gages."
                     }
                   ></Tooltip>
                 </Box>
@@ -360,7 +362,7 @@ function InitialGageOffering({
                   <StatTitle>Amount Deposited</StatTitle>
                   <Tooltip
                     text={
-                      "The total amount of ETRNL you have sent to liquidity pairs as a result of depositing MIM or AVAX."
+                      "The total amount of ETRNL you have sent to liquidity pairs as a result of depositing USDC.e or AVAX."
                     }
                   ></Tooltip>
                 </Box>
@@ -408,7 +410,7 @@ function InitialGageOffering({
                     <SelectHeader>Select a deposit</SelectHeader>
                     <Tooltip
                       text={
-                        "Deposit MIM or AVAX and get ETRNL in return. The deposit will be automatically added to its corresponding ETRNL liquidity pair's reserves."
+                        "Deposit USDC.e or AVAX and get ETRNL in return. The deposit will be automatically added to its corresponding ETRNL liquidity pair's reserves."
                       }
                     ></Tooltip>
                   </div>
@@ -462,7 +464,7 @@ function InitialGageOffering({
                   </SelectContainer>
                 </Box>
                 <RewardsContainer>
-                  <div className="d-flex align-center justify-content-center">
+                  <div className="d-flex justify-content-center">
                     <RewardsText>You get</RewardsText>
                     <Tooltip
                       text={
@@ -547,8 +549,8 @@ function InitialGageOffering({
                     <div className="stake-stats">
                       <div className="d-flex align-items-center justify-content-around">
                         <div>
-                          <div className="d-flex align-center justify-content-center">
-                            <h2>Bonus (%)</h2>
+                          <div className="d-flex justify-content-center">
+                            <h2 style={{paddingTop: '2.5%'}}>Bonus (%)</h2>
                             <Tooltip
                               text={
                                 "The additional percentage of your deposit you gain if the gage closes in your favor."
@@ -560,8 +562,8 @@ function InitialGageOffering({
                           </p>
                         </div>
                         <div>
-                          <div className="d-flex align-center justify-content-center">
-                              <h2>Risk (%)</h2>
+                          <div className="d-flex justify-content-center">
+                              <h2 style={{paddingTop: '2.5%'}}>Risk (%)</h2>
                               <Tooltip
                                 text={
                                   "The net loss you would incur if the gage closed in favor of Eternal."
@@ -573,8 +575,8 @@ function InitialGageOffering({
                           </p>
                         </div>
                         <div>
-                          <div className="d-flex align-center justify-content-center">
-                            <h2>Condition</h2>
+                          <div className="d-flex justify-content-center">
+                            <h2 style={{paddingTop: '2.5%'}}>Condition</h2>
                             <Tooltip
                               text={
                                 "The percentage by which the ETRNL supply must decrease before the gage closes in your favor."
@@ -589,7 +591,7 @@ function InitialGageOffering({
                     </div>
                   </Stack>
                   <RewardsContainer>
-                    <div className="d-flex align-center justify-content-center">
+                    <div className="d-flex justify-content-center">
                       <RewardsText>Instant Reward</RewardsText>
                       <Tooltip
                         text={
@@ -649,7 +651,7 @@ function InitialGageOffering({
         <Grid item md={3} xs={12}>
           <SmallBackground className="text-center container">
             <SmallHeader>IGO Info</SmallHeader>
-            {remainingETRNL == '' || priceAVAX == '' || priceMIM == '' ?
+            {remainingETRNL == '' || priceAVAX == '' || priceUSDC == '' ?
               <Box sx={{ color: '#d8bfd8' }}>
                 <CircularProgress color='inherit' style={{ marginBottom: "5%"}} className="align-center" size={30}/>
               </Box>
@@ -659,7 +661,7 @@ function InitialGageOffering({
                   1 ETRNL = {priceAVAX} AVAX
                 </RateText>
                 <RateText>
-                  1 ETRNL = {priceMIM} MIM
+                  1 ETRNL = {priceUSDC} USDC.e
                 </RateText>
                 <CountdownText>
                   {remainingETRNL} ETRNL left before gaging bonus decreases

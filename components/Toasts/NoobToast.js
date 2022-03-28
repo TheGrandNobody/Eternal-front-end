@@ -20,7 +20,7 @@ export default function NoobToast({ duration }) {
   return (
     <Snackbar open={open} autoHideDuration={duration} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}}>
       <Alert action={
-        <Button variant={'text'} href='https://docs.eternal.money/' color="info" size="small">
+        <Button variant={'text'} target='_blank' href='https://docs.eternal.money/' color="info" size="small">
           Bring me to the docs
         </Button>
       } onClose={handleClose} severity="info" sx={{ width: '100%' }}>

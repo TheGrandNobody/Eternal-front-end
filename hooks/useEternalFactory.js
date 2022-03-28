@@ -29,7 +29,6 @@ function useFactoryFunction() {
   const initiateLiquidGage = async () => {
     let initiateGage;
     try {
-      console.log(asset);
       if (asset == 'AVAX') {
         const options = {value: Web3.utils.toWei(`${amount}`, 'ether')};
         initiateGage = await factory.initiateEternalLiquidGage(getAddress(asset), Web3.utils.toWei(`${amount}`, 'ether'), options);

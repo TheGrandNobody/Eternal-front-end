@@ -225,6 +225,12 @@ a:hover .gage-block {
   min-width: 10px;
 }
 
+@media (min-width: 2160px) {
+  .token-option img {
+    max-width: 25px;
+  }
+}
+
 .token-option header {
   font-size: clamp(0.65rem, 1.65vmin, 0.75rem);
   font-weight: 535;

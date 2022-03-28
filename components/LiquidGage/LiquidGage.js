@@ -21,7 +21,7 @@ const SelectBackground = styled.div`
   }
 `;
 
-const SelectHeader = styled.p`
+const SelectHeader = styled.h2`
   padding-top: 2.5%;
   font-weight: 550;
   font-size: 16px;
@@ -31,8 +31,6 @@ const SelectHeader = styled.p`
 `;
 
 const InputContainer = styled.div`
-  height: 60%;
-  min-height: 45px;
   background: hsl(287, 76%, 13%);
   border: 5px solid hsl(287, 90%, 13%);
   box-sizing: border-box;
@@ -41,6 +39,13 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: space-around;
   width: 65%;
+  height: 60%;
+  @media (max-width: 2160px) {
+    min-height: 40px;
+  }
+  @media (min-width: 2160px) {
+    min-height: 60px;
+  }
 `;
 
 const SelectToken = styled.div`
@@ -57,6 +62,7 @@ const SelectToken = styled.div`
 
 const TokenIcon = styled.img`
   width: 42.5%;
+  max-width: 40px;
   position: relative;
   right: 30%;
 `;
@@ -76,14 +82,21 @@ const TokenList = styled.ul`
   width: 15%;
   margin-left: 67.5%;
   margin-top: -7.5%;
-  top: 80%;
   background: #30083b;
   border-radius: 6px;
   padding-left: 0;
-  z-index: 100;
+  z-index: 7;
   position: relative;
   @media (max-width: 768px) {
     top: 55%;
+  }
+  @media (min-width: 768px) and (max-width: 2160px) {
+    top: 65px;
+  }
+  @media (min-width: 2160px) {
+    top: 120px;
+    width: 10%;
+    margin-left: 72.5%;
   }
 `;
 
@@ -97,8 +110,8 @@ const Chevron = styled.img`
 `;
 
 const RewardsBlock = styled.div`
-  height: 125%;
   margin: 0 auto;
+  height: 125%;
   width: 65%;
   background: hsl(287, 76%, 13%);
   border: 5px solid hsl(287, 90%, 13%);
@@ -107,6 +120,9 @@ const RewardsBlock = styled.div`
   justify-content: space-around;
   display: flex;
   min-height: 40px;
+  @media (min-width: 2160px) {
+    max-height: 60px;
+  }
 `;
 
 const RewardsText = styled.h2`
@@ -124,7 +140,7 @@ const Amount = styled.div`
   text-overflow: ellipsis;
   font-size: 16px;
   @media (min-width: 360px) {
-    font-size: clamp(0.5rem, 2.5vmin, 2.5rem);
+    font-size: clamp(1rem, 2.5vmin, 2.5rem);
   }
 `;
 
@@ -238,7 +254,7 @@ function CreateLiquidGage({
         </Grid>
         <Grid xs={12} item container direction={'row'} alignItems={"center"} justifyContent={"space-around"} className="gage-stats">
             <Grid item xs={4}>
-              <div className="d-flex align-center justify-content-center">
+              <div className="d-flex justify-content-center">
                 <h2>Bonus (%)</h2>
                 <Tooltip
                   text={
@@ -249,7 +265,7 @@ function CreateLiquidGage({
               <p className="text-center">{bonus == null ? '' : `${bonus}%`}</p>
             </Grid>
             <Grid item xs={4}>
-              <div className="d-flex align-center justify-content-center">
+              <div className="d-flex justify-content-center">
                 <h2>Risk (%)</h2>
                 <Tooltip
                   text={
@@ -260,7 +276,7 @@ function CreateLiquidGage({
               <p className="text-center">{(risk == null ? '' : `${risk - bonus}%`)}</p>
             </Grid>
             <Grid item xs={4}>
-              <div className="d-flex align-center justify-content-center">
+              <div className="d-flex justify-content-center">
                 <h2>Condition</h2>
                 <Tooltip
                   text={
@@ -272,7 +288,7 @@ function CreateLiquidGage({
             </Grid>
         </Grid>
         <Grid container item xs={12}>
-          <Grid item xs={12} className="d-flex align-center justify-content-center">
+          <Grid item xs={12} className="d-flex justify-content-center">
             <RewardsText>Instant Reward</RewardsText>
             <Tooltip
               text={

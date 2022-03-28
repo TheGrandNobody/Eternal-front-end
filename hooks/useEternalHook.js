@@ -194,9 +194,9 @@ function useEternalHook() {
     liquidityDeposited = liquidityDeposited.toFixed(2);
     totalContribution = totalContribution.toFixed(2);
     const amountAVAX = await treasury.computeMinAmounts(getAddress('ETRNL'), getAddress('AVAX'), toWei('1'), 0);
-    const amountMIM = await treasury.computeMinAmounts(getAddress('ETRNL'), getAddress('MIM'), toWei('1'), 0);
+    const amountMIM = await treasury.computeMinAmounts(getAddress('ETRNL'), getAddress('USDC.e'), toWei('1'), 0);
     const priceAVAX = toNumber(fromWei(toBN(amountAVAX[2]))).toPrecision(2);
-    const priceMIM = toNumber(fromWei(toBN(amountMIM[2]))).toPrecision(2);
+    const priceUSDCe = toNumber(fromWei(toBN(amountMIM[2]))).toPrecision(2);
 
     return {
       totalContribution, 
@@ -204,7 +204,7 @@ function useEternalHook() {
       liquidityGaged,
       remainingETRNL,
       priceAVAX,
-      priceMIM,
+      priceUSDCe,
     };
   }
 

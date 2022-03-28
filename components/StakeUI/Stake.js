@@ -75,6 +75,7 @@ const StatText = styled.p`
 `;
 
 const StatTitle = styled.h2`
+  padding-top: 2.5%;
   color: rgba(255, 255, 255, 0.70);
   font-size: 8px;
   @media (min-width: 360px) {
@@ -82,11 +83,15 @@ const StatTitle = styled.h2`
   }
 `;
 
-const SelectHeader = styled.p`
+const SelectHeader = styled.h2`
   padding-top: 3.75%;
   font-weight: 550;
   @media (min-width: 360px) {
     font-size: clamp(2rem, 3.5vmin, 3rem);
+  }
+  @media (min-width: 2160px) {
+    font-size: clamp(2rem, 3.5vmin, 3rem);
+    padding-top: 2.5%;
   }
 `;
 
@@ -311,8 +316,8 @@ function StakeUI({
                 <div>
                   {stake === "Stake" ? (
                     <>
-                      <div className="d-flex align-center justify-content-center">
-                        <h2>Added Share</h2>
+                      <div className="d-flex justify-content-center">
+                        <h2 style={{ paddingTop: '2.5%'}}>Added Share</h2>
                         <Tooltip
                           text={
                             "The additional share of the treasury's revenue you will receive from staking this amount."
@@ -323,8 +328,8 @@ function StakeUI({
                     </>
                   ) : (
                     <>
-                      <div className="d-flex align-center justify-content-center">
-                        <h2>Deducted Share</h2>
+                      <div className="d-flex justify-content-center">
+                        <h2 style={{ paddingTop: '2.5%'}}>Deducted Share</h2>
                         <Tooltip
                           text={
                             "The share of the treasury's revenue you will give up from unstaking this amount of ETRNL."
@@ -338,8 +343,8 @@ function StakeUI({
                 <div>
                   {stake === "Stake" ? (
                     <>
-                      <div className="d-flex align-center justify-content-center">
-                        <h2>Estimated Rewards</h2>
+                      <div className="d-flex justify-content-center">
+                        <h2 style={{ paddingTop: '2.5%'}}>Estimated Rewards</h2>
                         <Tooltip
                           text={
                             "The estimated amount of ETRNL that this added treasury share will earn you in one year."
@@ -350,8 +355,8 @@ function StakeUI({
                     </>
                   ) : (
                     <>
-                      <div className="d-flex align-center justify-content-center">
-                        <h2>Rewards</h2>
+                      <div className="d-flex justify-content-center">
+                        <h2 style={{ paddingTop: '2.5%'}}>Rewards</h2>
                         <Tooltip
                           text={
                             "The rewards you will receive from unstaking this amount of ETRNL."
