@@ -749,11 +749,8 @@ a:hover .gage-block {
     max-width: 3060px;
   }
 }
-@media (min-height: 1100px) {
-  .container {
-    margin-top: 25rem;
-  }
-}
+
+
 .align-center {
   align-items: center;
 }
