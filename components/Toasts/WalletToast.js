@@ -27,6 +27,7 @@ export default function WalletToast({ init }) {
         }}
         onClick={() => setOpen(false)} 
         variant={'text'} 
+        target={'_blank'}
         href='https://docs.eternal.money/users-guide-to-eternal/how-to/get-started' 
         color="warning" 
         size="small">
