@@ -192,7 +192,7 @@ function Navbar() {
                 )}
               </li>
               <li className="nav-item mx-4">
-                <a className="nav-link" href="https://snapshot.org/#/etrnl.eth">
+                <a className="nav-link" target='_blank' href="https://snapshot.org/#/etrnl.eth">
                   Governance
                 </a>
               </li>

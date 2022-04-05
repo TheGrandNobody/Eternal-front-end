@@ -116,7 +116,7 @@ function Footer() {
               )}
             </li>
             <li className="nav-item mx-4">
-              <a className="nav-link disabled" href="#">
+              <a className="nav-link disabled" target='_blank' href="https://snapshot.org/#/etrnl.eth">
                 Governance
               </a>
             </li>
@@ -166,7 +166,7 @@ function Footer() {
             </p>
           </div>
           <div className="ms-sm-auto">
-            <a href="https://t.me/eternalfinance" className="ms-3">
+            <a target='_blank' href="https://t.me/eternalfinance" className="ms-3">
               <svg
                 width="32"
                 height="32"
@@ -201,7 +201,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="https://twitter.com/_eternalfinance" className="ms-3">
+            <a target='_blank' href="https://twitter.com/_eternalfinance" className="ms-3">
               <svg
                 width="32"
                 height="32"
@@ -218,7 +218,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="https://www.reddit.com/r/Eternal_Finance/" className="ms-3">
+            <a target='_blank' href="https://www.reddit.com/r/Eternal_Finance/" className="ms-3">
               <svg
                 width="32"
                 height="32"
@@ -253,7 +253,7 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="https://medium.com/@eternal-finance" className="ms-3">
+            <a target='_blank' href="https://medium.com/@eternal-finance" className="ms-3">
               <svg
                 width="32"
                 height="32"
