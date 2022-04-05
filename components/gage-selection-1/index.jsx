@@ -31,8 +31,8 @@ function index() {
                     <div className='gage-block d-flex align-items-center justify-content-center flex-column'>
                       <img src='img/standard-gage.svg' />
                     </div>
-                    <div className='d-flex align-center justify-content-center mt-4'>
-                      <h2 className='color-white'>Liquid Gage</h2>
+                    <div className='d-flex justify-content-center mt-4'>
+                      <h2 style={{paddingTop: '2.5%'}} className='color-white'>Liquid Gage</h2>
                       <Tooltip
                         text={
                           'Provide liquidity at a 50% discount, instantly earn 10% of your original deposit and leave it be for long enough to win another 10%!'
@@ -48,8 +48,8 @@ function index() {
                     <h2>Coming to Eternal</h2>
                     <h1>Soon</h1>
                   </div>
-                  <div className='d-flex align-center justify-content-center mt-4'>
-                    <h2 className='color-white'>Yield Gage</h2>
+                  <div className='d-flex justify-content-center mt-4'>
+                    <h2 style={{paddingTop: '2.5%'}} className='color-white'>Yield Gage</h2>
                     <Tooltip
                       text={
                         'Contender for the highest earning potential of all DeFi! A yield gage is a liquid gage whose deposit is sent to a yield farming strategy.'
@@ -64,8 +64,8 @@ function index() {
                     <h2>Coming to Eternal</h2>
                     <h1>Soon</h1>
                   </div>
-                  <div className='d-flex align-center justify-content-center mt-4'>
-                    <h2 className='color-white'>Loyalty Gage</h2>
+                  <div className='d-flex justify-content-center mt-4'>
+                    <h2 style={{paddingTop: '2.5%'}} className='color-white'>Loyalty Gage</h2>
                     <Tooltip
                       text={
                         'A loyalty gage provides instantaneous profit to the investor, and long-term healthy investors to the firm. The conditions depend on what both parties have agreed upon.'
@@ -79,10 +79,6 @@ function index() {
         </div>
 
         <Footer />
-
-        <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-        <script type='text/javascript' src='/js/mdb.min.js'></script>
-        <script src='/js/autodrop.js'></script>
       </body>
     </>
   );
