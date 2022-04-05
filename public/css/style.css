@@ -173,7 +173,6 @@ a:hover .gage-block {
 }
 .select-gage-container {
   max-width: 909px;
-  height: 82.5%;
 }
 
 .select-bg {
@@ -748,6 +747,11 @@ a:hover .gage-block {
 @media (min-width: 4000px) {
   .container {
     max-width: 3060px;
+  }
+}
+@media (min-height: 1100px) {
+  .container {
+    margin-top: 10%;
   }
 }
 .align-center {
