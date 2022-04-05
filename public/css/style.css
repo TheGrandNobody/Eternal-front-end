@@ -751,7 +751,7 @@ a:hover .gage-block {
 }
 @media (min-height: 1100px) {
   .container {
-    margin-top: 10%;
+    max-height: 990
   }
 }
 .align-center {
