@@ -19,7 +19,7 @@ function index() {
 
           <div className='container select-gage-container'>
             <div className='row m-0 position-relative text-center'>
-              <h1 className='color-white bold'>Select a Gage</h1>
+              <h1 className='color-white bold mb-5 mt-5'>Select a Gage</h1>
             </div>
             <div className='row m-0 position-relative select-gage'>
               <div className='col-sm-4 mb-4 mb-sm-0'>
