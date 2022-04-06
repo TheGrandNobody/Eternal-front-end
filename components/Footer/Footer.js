@@ -82,7 +82,7 @@ function Footer() {
                 <a
                   className={`nav-link ${
                     handleActiveNavMenu(3) && "active border"
-                  }`}
+                  } disabled`}
                   onClick={() => handleClickOnEarn(3)}
                 >
                   IGO
@@ -101,7 +101,7 @@ function Footer() {
                 <a
                   className={`nav-link ${
                     handleActiveNavMenu(1) && "active border"
-                  }`}
+                  } disabled`}
                   onClick={() => handleClickOnEarn(1)}
                 >
                   Gage
@@ -116,7 +116,7 @@ function Footer() {
               )}
             </li>
             <li className="nav-item mx-4">
-              <a className="nav-link disabled" target='_blank' href="https://snapshot.org/#/etrnl.eth">
+              <a className="nav-link" target='_blank' href="https://snapshot.org/#/etrnl.eth">
                 Governance
               </a>
             </li>
@@ -125,7 +125,7 @@ function Footer() {
                 <a
                   className={`nav-link ${
                     handleActiveNavMenu(2) && "active border"
-                  }`}
+                  } disabled`}
                   onClick={() => handleClickOnEarn(2)}
                 >
                   Stake

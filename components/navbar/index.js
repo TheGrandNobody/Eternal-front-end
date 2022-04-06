@@ -158,7 +158,7 @@ function Navbar() {
                   <a
                     className={`nav-link ${
                       handleActiveNavMenu(1) && "active border"
-                    }`}
+                    } disabled`}
                     onClick={() => handleClickOnEarn(1)}
                   >
                     Gage
@@ -177,7 +177,7 @@ function Navbar() {
                   <a
                     className={`nav-link ${
                       handleActiveNavMenu(2) && "active border"
-                    }`}
+                    } disabled`}
                     onClick={() => handleClickOnEarn(2)}
                   >
                     Stake
