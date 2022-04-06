@@ -95,23 +95,46 @@ export default function TemporaryDrawer() {
       <ul className='navbar-nav m-automt-5 mb-0'>
           <li className='nav-item mx-4 py-2'>
             {active ? (
-              <a className={`nav-link ${handleActiveNavMenu(3) && 'active border'} disabled`} onClick={() => handleClickOnEarn(3)}>
+              <a className={`nav-link ${handleActiveNavMenu(3) && 'active border'} disabled`} 
+              //onClick={() => handleClickOnEarn(3)}
+              >
                 IGO
               </a>
             ) : (
-              <a className='nav-link disabled' onClick={() => handleClickOnEarn(3)}>
+              <a className='nav-link disabled' 
+              //onClick={() => handleClickOnEarn(3)}
+              >
                 IGO
               </a>
             )}
             </li>
           <li className='nav-item mx-4 py-2'>
             {active ? (
-              <a className={`nav-link ${handleActiveNavMenu(1) && 'active border'} disabled`} onClick={() => handleClickOnEarn(1)}>
+              <a className={`nav-link ${handleActiveNavMenu(1) && 'active border'} disabled`} 
+              //onClick={() => handleClickOnEarn(1)}
+              >
                 Gage
               </a>
             ) : (
-              <a className='nav-link disabled' onClick={() => handleClickOnEarn(1)}>
+              <a className='nav-link disabled' 
+              //onClick={() => handleClickOnEarn(1)}
+              >
                 Gage
+              </a>
+            )}
+          </li>
+          <li className= 'nav-item mx-4 py-2'>
+            {active ? (
+              <a className={`nav-link ${handleActiveNavMenu(2) && 'active border'} disabled`} 
+              //onClick={() => handleClickOnEarn(2)}
+              >
+                Stake
+              </a>
+            ) : (
+              <a className={`nav-link disabled`} 
+              //onClick={() => handleClickOnEarn(2)}
+              >
+                Stake
               </a>
             )}
           </li>
@@ -119,17 +142,6 @@ export default function TemporaryDrawer() {
             <a className='nav-link' target='_blank' href="https://snapshot.org/#/etrnl.eth">
               Governance
             </a>
-          </li>
-          <li className= 'nav-item mx-4 py-2'>
-            {active ? (
-              <a className={`nav-link ${handleActiveNavMenu(2) && 'active border'} disabled`} onClick={() => handleClickOnEarn(2)}>
-                Stake
-              </a>
-            ) : (
-              <a className={`nav-link disabled`} onClick={() => handleClickOnEarn(2)}>
-                Stake
-              </a>
-            )}
           </li>
           <DropDownComponent name={'Social'} optionsToMap={socialDropDownData} />
           <DropDownComponent name={'Info'} optionsToMap={infoDropDownData} />

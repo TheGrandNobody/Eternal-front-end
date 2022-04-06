@@ -83,14 +83,14 @@ function Footer() {
                   className={`nav-link ${
                     handleActiveNavMenu(3) && "active border"
                   } disabled`}
-                  onClick={() => handleClickOnEarn(3)}
+                  //onClick={() => handleClickOnEarn(3)}
                 >
                   IGO
                 </a>
               ) : (
                 <a
                   className="nav-link disabled"
-                  onClick={() => handleClickOnEarn(3)}
+                  //onClick={() => handleClickOnEarn(3)}
                 >
                   IGO
                 </a>
@@ -102,14 +102,14 @@ function Footer() {
                   className={`nav-link ${
                     handleActiveNavMenu(1) && "active border"
                   } disabled`}
-                  onClick={() => handleClickOnEarn(1)}
+                  //onClick={() => handleClickOnEarn(1)}
                 >
                   Gage
                 </a>
               ) : (
                 <a
                   className="nav-link disabled"
-                  onClick={() => handleClickOnEarn(1)}
+                  //onClick={() => handleClickOnEarn(1)}
                 >
                   Gage
                 </a>
@@ -126,14 +126,14 @@ function Footer() {
                   className={`nav-link ${
                     handleActiveNavMenu(2) && "active border"
                   } disabled`}
-                  onClick={() => handleClickOnEarn(2)}
+                  //onClick={() => handleClickOnEarn(2)}
                 >
                   Stake
                 </a>
               ) : (
                 <a
                   className={`nav-link disabled`}
-                  onClick={() => handleClickOnEarn(2)}
+                  //onClick={() => handleClickOnEarn(2)}
                 >
                   Stake
                 </a>
