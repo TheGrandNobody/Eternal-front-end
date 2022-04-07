@@ -37,7 +37,7 @@ function DropDownComponent({ optionsToMap, name = ''}) {
       <DropDownContent className='dropdown-menu'>
         {optionsToMap.map((item, index) => (
           <SubLinkContainer key={index}>
-            <a className='dropdown-item' target='_blank' href={item.link}>
+            <a className='dropdown-item' target={item.title == 'Whitepaper' ? '_self' : '_target'} href={item.link}>
               {' '}
               {item.title}
             </a>
