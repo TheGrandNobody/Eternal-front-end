@@ -158,15 +158,14 @@ function Navbar() {
                   <a
                     className={`nav-link ${
                       handleActiveNavMenu(1) && "active border"
-                    } disabled`}
-                    //onClick={() => handleClickOnEarn(1)}
+                    }`}
+                    onClick={() => handleClickOnEarn(1)}
                   >
                     Gage
                   </a>
                 ) : (
                   <a
                     className="nav-link disabled"
-                    //onClick={() => handleClickOnEarn(1)}
                   >
                     Gage
                   </a>
@@ -177,15 +176,14 @@ function Navbar() {
                   <a
                     className={`nav-link ${
                       handleActiveNavMenu(2) && "active border"
-                    } disabled`}
-                    //onClick={() => handleClickOnEarn(2)}
+                    }`}
+                    onClick={() => handleClickOnEarn(2)}
                   >
                     Stake
                   </a>
                 ) : (
                   <a
                     className={`nav-link disabled`}
-                    //onClick={() => handleClickOnEarn(2)}
                   >
                     Stake
                   </a>

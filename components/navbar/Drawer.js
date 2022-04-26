@@ -110,14 +110,13 @@ export default function TemporaryDrawer() {
             </li>
           <li className='nav-item mx-4 py-2'>
             {active ? (
-              <a className={`nav-link ${handleActiveNavMenu(1) && 'active border'} disabled`} 
-              //onClick={() => handleClickOnEarn(1)}
+              <a className={`nav-link ${handleActiveNavMenu(1) && 'active border'}`} 
+              onClick={() => handleClickOnEarn(1)}
               >
                 Gage
               </a>
             ) : (
               <a className='nav-link disabled' 
-              //onClick={() => handleClickOnEarn(1)}
               >
                 Gage
               </a>
@@ -125,14 +124,13 @@ export default function TemporaryDrawer() {
           </li>
           <li className= 'nav-item mx-4 py-2'>
             {active ? (
-              <a className={`nav-link ${handleActiveNavMenu(2) && 'active border'} disabled`} 
-              //onClick={() => handleClickOnEarn(2)}
+              <a className={`nav-link ${handleActiveNavMenu(2) && 'active border'}`} 
+              onClick={() => handleClickOnEarn(2)}
               >
                 Stake
               </a>
             ) : (
               <a className={`nav-link disabled`} 
-              //onClick={() => handleClickOnEarn(2)}
               >
                 Stake
               </a>

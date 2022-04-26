@@ -101,17 +101,34 @@ function Footer() {
                 <a
                   className={`nav-link ${
                     handleActiveNavMenu(1) && "active border"
-                  } disabled`}
-                  //onClick={() => handleClickOnEarn(1)}
+                  } `}
+                  onClick={() => handleClickOnEarn(1)}
                 >
                   Gage
                 </a>
               ) : (
                 <a
                   className="nav-link disabled"
-                  //onClick={() => handleClickOnEarn(1)}
                 >
                   Gage
+                </a>
+              )}
+            </li>
+            <li className="nav-item mx-4">
+              {active ? (
+                <a
+                  className={`nav-link ${
+                    handleActiveNavMenu(2) && "active border"
+                  }`}
+                  onClick={() => handleClickOnEarn(2)}
+                >
+                  Stake
+                </a>
+              ) : (
+                <a
+                  className={`nav-link disabled`}
+                >
+                  Stake
                 </a>
               )}
             </li>
@@ -119,25 +136,6 @@ function Footer() {
               <a className="nav-link" target='_blank' href="https://snapshot.org/#/etrnl.eth">
                 Governance
               </a>
-            </li>
-            <li className="nav-item mx-4">
-              {active ? (
-                <a
-                  className={`nav-link ${
-                    handleActiveNavMenu(2) && "active border"
-                  } disabled`}
-                  //onClick={() => handleClickOnEarn(2)}
-                >
-                  Stake
-                </a>
-              ) : (
-                <a
-                  className={`nav-link disabled`}
-                  //onClick={() => handleClickOnEarn(2)}
-                >
-                  Stake
-                </a>
-              )}
             </li>
             <DropDownComponent
               name={"Social"}
