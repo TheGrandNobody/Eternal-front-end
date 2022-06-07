@@ -142,14 +142,14 @@ function Navbar() {
                     } disabled`}
                     //onClick={() => handleClickOnEarn(3)}
                   >
-                    IGO
+                    Coming soon
                   </a>
                 ) : (
                   <a
                     className="nav-link disabled"
                     //onClick={() => handleClickOnEarn(3)}
                   >
-                    IGO
+                    Coming soon
                   </a>
                 )}
               </li>

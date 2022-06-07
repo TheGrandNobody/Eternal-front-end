@@ -98,13 +98,13 @@ export default function TemporaryDrawer() {
               <a className={`nav-link ${handleActiveNavMenu(3) && 'active border'} disabled`} 
               //onClick={() => handleClickOnEarn(3)}
               >
-                IGO
+                Coming soon
               </a>
             ) : (
               <a className='nav-link disabled' 
               //onClick={() => handleClickOnEarn(3)}
               >
-                IGO
+                Coming soon
               </a>
             )}
             </li>
